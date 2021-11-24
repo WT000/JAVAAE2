@@ -14,14 +14,14 @@
     <dependencies>
 
         <dependency>
-            <groupId>solent.ac.uk.ood.examples</groupId>
-            <artifactId>shoppingCartApplication-model</artifactId>
+            <groupId>org.solent.com504.oodd</groupId>
+            <artifactId>ae2-model</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>solent.ac.uk.ood.examples</groupId>
-            <artifactId>shoppingCartApplication-dao</artifactId>
+            <groupId>org.solent.com504.oodd</groupId>
+            <artifactId>ae2-dao</artifactId>
             <version>${project.version}</version>
         </dependency>
         
