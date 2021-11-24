@@ -60,16 +60,16 @@
                                 <li><a href="./login">Login or create a new Account</a></li>
                                 </c:if>
                                 <c:if test="${sessionUser.userRole !='ANONYMOUS'}">
-                                <form id="logoutForm" method="POST" action="./logout">
-                                </form>
-                                <form id="profile" method="GET" action="./viewModifyUser">
+                                <li><form id="logoutForm" method="POST" action="./logout">
+                                </form></li>
+                                <li><form id="profile" method="GET" action="./viewModifyUser">
                                     <input type="hidden" name="username" value="${sessionUser.username}"/>
-                                </form>
-                                <p class="text-muted"> Welcome 
+                                </form></li>
+                                <li><p class="text-muted"> Welcome 
                                     <c:if test="${sessionUser.userRole =='ADMINISTRATOR'}"> Admin</c:if>                                   
                                     ${sessionUser.username}&nbsp;&nbsp;
                                     <a onclick="document.forms['logoutForm'].submit()">Logout</a><BR>
-                                    <a onclick="document.forms['profile'].submit()">User Profile</a></p>
+                                    <a onclick="document.forms['profile'].submit()">User Profile</a></p></li>
                                 </c:if>
                         </ul>
                     </div><!--/.nav-collapse -->
