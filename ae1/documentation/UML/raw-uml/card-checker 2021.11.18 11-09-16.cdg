@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="card-checker">
+  <ClassDiagramComponents>
+    <Class name="CalculateLunnDigit" package="org.solent.oodd.ae1.card.checker" visibility="public" xPosition="90.0" yPosition="172.0">
+      <Fields/>
+      <Constructors/>
+      <Methods>
+        <Method name="calculateCheckDigit" returnType="String" visibility="public" isStatic="true">
+          <Argument type="String" name="card"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="CardValidationResult" package="org.solent.oodd.ae1.card.checker" visibility="public" xPosition="620.0" yPosition="20.0">
+      <Fields>
+        <Field name="valid" type="boolean" visibility="private"/>
+        <Field name="cardType" type="CardCompany" visibility="private"/>
+        <Field name="error" type="String" visibility="private"/>
+        <Field name="cardNo" type="String" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+        <Constructor visibility="public">
+          <Argument type="String" name="cardNo"/>
+          <Argument type="String" name="error"/>
+        </Constructor>
+        <Constructor visibility="public">
+          <Argument type="String" name="cardNo"/>
+          <Argument type="CardCompany" name="cardType"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="isValid" returnType="boolean" visibility="public"/>
+        <Method name="getCardType" returnType="CardCompany" visibility="public"/>
+        <Method name="getError" returnType="String" visibility="public"/>
+        <Method name="getCardNo" returnType="String" visibility="public"/>
+        <Method name="setCardNo" returnType="void" visibility="public">
+          <Argument type="String" name="cardNo"/>
+        </Method>
+        <Method name="setValid" returnType="void" visibility="public">
+          <Argument type="boolean" name="valid"/>
+        </Method>
+        <Method name="setCardType" returnType="void" visibility="public">
+          <Argument type="CardCompany" name="cardType"/>
+        </Method>
+        <Method name="setError" returnType="void" visibility="public">
+          <Argument type="String" name="error"/>
+        </Method>
+        <Method name="getMessage" returnType="String" visibility="public"/>
+        <Method name="setMessage" returnType="void" visibility="public">
+          <Argument type="String" name="message"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="RegexCardValidator" package="org.solent.oodd.ae1.card.checker" visibility="public" xPosition="1040.0" yPosition="163.0">
+      <Fields/>
+      <Constructors/>
+      <Methods>
+        <Method name="isValid" returnType="CardValidationResult" visibility="public" isStatic="true">
+          <Argument type="String" name="cardIn"/>
+        </Method>
+        <Method name="luhnCheck" returnType="boolean" visibility="protected" isStatic="true">
+          <Argument type="String" name="cardNumber"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Enum name="CardCompany" package="org.solent.oodd.ae1.card.checker" visibility="public" xPosition="388.0" yPosition="130.0">
+      <Literals>
+        <Literal name="VISA"/>
+        <Literal name="MASTERCARD"/>
+        <Literal name="AMEX"/>
+        <Literal name="DINERS"/>
+        <Literal name="DISCOVER"/>
+        <Literal name="JCB"/>
+      </Literals>
+    </Enum>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations>
+    <UseRelation source="org.solent.oodd.ae1.card.checker.CardValidationResult" target="org.solent.oodd.ae1.card.checker.CardCompany" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="org.solent.oodd.ae1.card.checker.RegexCardValidator" target="org.solent.oodd.ae1.card.checker.CardValidationResult" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="cardType" source="org.solent.oodd.ae1.card.checker.CardValidationResult" target="org.solent.oodd.ae1.card.checker.CardCompany" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+  </ClassDiagramRelations>
+</ClassDiagram>

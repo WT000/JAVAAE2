@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="web">
+  <ClassDiagramComponents>
+    <Class name="PropertiesDao" package="org.solent.oodd.ae1.web.dao.properties" visibility="public" xPosition="643.0" yPosition="550.0">
+      <Fields>
+        <Field name="LOG" type="Logger" visibility="package" isStatic="true" isFinal="true"/>
+        <Field name="propertiesFile" type="File" visibility="private"/>
+        <Field name="properties" type="Properties" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="String" name="propertiesFileLocation"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getProperty" returnType="String" visibility="public" isSynchronized="true">
+          <Argument type="String" name="propertyKey"/>
+        </Method>
+        <Method name="setProperty" returnType="void" visibility="public" isSynchronized="true">
+          <Argument type="String" name="propertyKey"/>
+          <Argument type="String" name="propertyValue"/>
+        </Method>
+        <Method name="saveProperties" returnType="void" visibility="private"/>
+        <Method name="loadProperties" returnType="void" visibility="private">
+          <Argument type="boolean" name="firstLoad"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="WebObjectFactory" package="org.solent.oodd.ae1.web.dao.properties" visibility="public" xPosition="1089.0" yPosition="597.0">
+      <Fields>
+        <Field name="LOG" type="Logger" visibility="package" isStatic="true" isFinal="true"/>
+        <Field name="propertiesDao" type="PropertiesDao" visibility="private" isStatic="true"/>
+      </Fields>
+      <Constructors/>
+      <Methods>
+        <Method name="getPropertiesDao" returnType="PropertiesDao" visibility="public" isStatic="true"/>
+      </Methods>
+    </Class>
+    <Class name="MVCController" package="org.solent.oodd.ae1.web.spring.web" visibility="public" xPosition="273.0" yPosition="273.0">
+      <Fields>
+        <Field name="adminSettings" type="PropertiesDao" visibility="private" isFinal="true"/>
+      </Fields>
+      <Constructors/>
+      <Methods>
+        <Method name="index" returnType="String" visibility="public">
+          <Argument type="Model" name="model"/>
+        </Method>
+        <Method name="saleservice" returnType="String" visibility="public">
+          <Argument type="Model" name="model"/>
+          <Argument type="HttpSession" name="session"/>
+          <Argument type="String" name="action"/>
+          <Argument type="String" name="cardNo"/>
+          <Argument type="String" name="cardName"/>
+          <Argument type="String" name="cardDate"/>
+          <Argument type="String" name="cardCvv"/>
+          <Argument type="String" name="amount"/>
+        </Method>
+        <Method name="admin" returnType="String" visibility="public">
+          <Argument type="Model" name="model"/>
+          <Argument type="HttpSession" name="session"/>
+          <Argument type="String" name="action"/>
+          <Argument type="String" name="enteredUsername"/>
+          <Argument type="String" name="enteredPassword"/>
+          <Argument type="String" name="enteredBankUrl"/>
+          <Argument type="String" name="enteredBankCardNo"/>
+          <Argument type="String" name="cardNumber"/>
+          <Argument type="String" name="amount"/>
+        </Method>
+        <Method name="legacysaleservice" returnType="String" visibility="public">
+          <Argument type="Model" name="model"/>
+          <Argument type="HttpSession" name="session"/>
+          <Argument type="String" name="action"/>
+          <Argument type="String" name="cardNo"/>
+          <Argument type="String" name="cardName"/>
+          <Argument type="String" name="cardDate"/>
+          <Argument type="String" name="cardCvv"/>
+          <Argument type="String" name="amount"/>
+        </Method>
+        <Method name="myExceptionHandler" returnType="String" visibility="public">
+          <Argument type="Exception" name="e"/>
+          <Argument type="Model" name="model"/>
+          <Argument type="HttpServletRequest" name="request"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="SpringBootJspApplication" package="org.solent.oodd.ae1.web.spring.web" visibility="public" xPosition="185.0" yPosition="607.0">
+      <Fields/>
+      <Constructors/>
+      <Methods>
+        <Method name="configure" returnType="SpringApplicationBuilder" visibility="protected">
+          <Argument type="SpringApplicationBuilder" name="builder"/>
+        </Method>
+        <Method name="main" returnType="void" visibility="public" isStatic="true">
+          <Argument type="String[]" name="args"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="SpringBootJspConfiguration" package="org.solent.oodd.ae1.web.spring.web" visibility="public" xPosition="275.0" yPosition="757.0">
+      <Fields/>
+      <Constructors/>
+      <Methods/>
+    </Class>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations>
+    <HasRelation name="adminSettings" source="org.solent.oodd.ae1.web.spring.web.MVCController" target="org.solent.oodd.ae1.web.dao.properties.PropertiesDao" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="org.solent.oodd.ae1.web.dao.properties.WebObjectFactory" target="org.solent.oodd.ae1.web.dao.properties.PropertiesDao" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="propertiesDao" source="org.solent.oodd.ae1.web.dao.properties.WebObjectFactory" target="org.solent.oodd.ae1.web.dao.properties.PropertiesDao" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+  </ClassDiagramRelations>
+</ClassDiagram>

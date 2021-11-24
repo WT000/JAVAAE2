@@ -1,0 +1,225 @@
+/* 
+    Created on : 30 Oct 2021, 16:34:48
+    Author     : Will
+*/
+
+body{
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#adminMenu{
+    width: 100%;
+    height: 160px;
+    background-color: gray;
+}
+
+#adminMenuHeader h2{
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+.propertiesFormRow{
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.propertiesFormRow input{
+    margin-left: 5px;
+    margin-right: 25px;
+    width: 160px;
+    font-size: 15px;
+}
+
+.propertiesFormRow label{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 10px;
+}
+
+#appContainer{
+    width: 100%;
+    height: 65vh;
+}
+
+#resultContainer{
+    width: 100%;
+    height: 15vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#inputContainer{
+    width: 100%;
+    height: 10vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#resultContainer #result{
+    width: 80%;
+    height: 10vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+}
+
+#result p{
+    margin: 0;
+    font-family: "Lucida Console";
+    text-align: center;
+}
+
+#inputContainer #currentInput{
+    width: 60%;
+    height: 8vh;
+    margin-bottom: 2vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+}
+
+#currentInput #inputResult{
+    margin: 0;
+    font-family: "Lucida Console";
+    text-align: center;
+    white-space: pre;
+}
+
+#formPlacer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#formContainer{
+    padding: 15px;
+    width: 70%;
+    background-color: #34383c;
+    border-radius: 20px;
+}
+
+#formContainerKeypad{
+    padding: 15px;
+    width: 450px;
+    height: 260px;
+    margin-top: 5px;
+    background-color: #34383c;
+    border-radius: 20px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+#formContainerKeyboard{
+    padding: 15px;
+    width: 1000px;
+    /* Height would be 260px if numbers didn't need to be included */
+    height: 310px;
+    margin-top: 5px;
+    background-color: #34383c;
+    border-radius: 20px;
+    justify-content: space-between;
+    flex-direction: column;
+    display: none;
+}
+
+#spaceBar{
+    width: 430px;
+}
+
+.keypadRow{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#formContainerSmall{
+    padding: 15px;
+    padding-bottom: 5px;
+    width: 55%;
+    background-color: #34383c;
+    border-radius: 20px;
+}
+
+.numpadButton{
+    width: 80px;
+    height: 50px;
+}
+
+.keypadColFiller{
+    opacity: 0;
+    width: 81px;
+    height: 51px;
+}
+
+.hiddenButton{
+    background-color: #34383c;
+    border: 0;
+}
+
+.btn-warning{
+  color: white !important;
+}
+
+label{
+    color: white;
+}
+
+#functionContainer{
+    width: 100%;
+    height: 10vh;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.functionButton{
+    width: 200px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    color: white;
+    background-color: #34383c;
+    border-radius: 20px;
+}
+
+.functionButton p{
+    margin: 0;
+}
+
+.functionButton:hover{
+    font-weight: bold;
+}
+
+#adminContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#loginForm button{
+    margin-top: 9px;
+    margin-bottom: 10px;
+}
+
+/* BOOTSTRAP */
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 0;
+}
+
+.submitButton{
+    width: 25%;
+}
