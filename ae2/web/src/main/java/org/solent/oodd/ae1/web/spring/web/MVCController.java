@@ -203,7 +203,7 @@ public class MVCController {
         }
         
         // If there's currently no account configured, allow auto-login
-        if (bankUsername.equals("") || bankPassword.equals("") || bankHashedPassword.equals("") || bankCardNo.equals("") || bankUrl.equals("")) {
+        if ("".equals(bankUsername) || "".equals(bankPassword) || "".equals(bankHashedPassword) || "".equals(bankCardNo) || "".equals(bankUrl)) {
             loggedIn = true;
         }
         
