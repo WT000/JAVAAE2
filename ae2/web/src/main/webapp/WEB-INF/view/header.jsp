@@ -1,7 +1,7 @@
 <%-- 
     Document   : header
     Created on : Jan 4, 2020, 11:19:01 AM
-    Author     : cgallen
+    Author     : WT000
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -12,12 +12,8 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-        <meta name="description" content="">
-        <meta name="author" content="">
-        <link rel="icon" href="../../favicon.ico">
-        <!--<link rel="canonical" href="https://getbootstrap.com/docs/3.3/examples/navbar/">-->
 
-        <title>Navbar Template for Bootstrap</title>
+        <title>AE2 Shopping Cart</title>
 
         <!-- Bootstrap core CSS -->
         <link href="./resources/css/bootstrap.min.css" rel="stylesheet">
