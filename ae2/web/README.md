@@ -1,3 +1,16 @@
-# WEB
 
-This is the website itself, look [here](https://github.com/WT000/COM528AE1/blob/main/README.md) for run instructions.
+# Java Web WAR
+
+To run Tomcat as an embedded service using Tomcat
+
+```
+mvn cargo:run
+```
+
+then navigate to http://localhost:8080/shoppingCartApplication/
+
+
+
+
+
+

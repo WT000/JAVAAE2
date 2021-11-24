@@ -1,3 +1,2 @@
-# BANK-CLIENT
 
-This contains relevant bank service classes, for instance the ReST client and DTO Model.
+Identical project to client project in bank simulator but stand alone build. 
