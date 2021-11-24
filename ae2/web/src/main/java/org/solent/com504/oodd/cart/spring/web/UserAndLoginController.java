@@ -72,7 +72,7 @@ public class UserAndLoginController {
         model.addAttribute("message", message);
         model.addAttribute("errorMessage", errorMessage);
         // used to set tab selected
-        model.addAttribute("selectedPage", "home");
+        model.addAttribute("selectedPage", "login");
 
         return "login";
 

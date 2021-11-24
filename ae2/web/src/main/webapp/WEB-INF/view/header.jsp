@@ -20,7 +20,7 @@
 
         <!-- Custom styles for this template -->
         <link href="./resources/css/navbar.css" rel="stylesheet">
-
+        <link href="./resources/css/styles.css" rel="stylesheet">
     </head>
 
     <body>
@@ -37,7 +37,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="#">AE2 Shopping Cart</a>
+                        <a class="navbar-brand" href="./home">AE2 Shopping Cart</a>
                     </div>
                     
                     <div id="navbar" class="navbar-collapse collapse">
@@ -59,7 +59,7 @@
                         <ul class="nav navbar-nav navbar-right">
                             <!-- user role:  ${sessionUser.userRole}-->
                             <c:if test="${sessionUser.userRole =='ANONYMOUS'}">
-                                <li><a href="./login">Login or create a new Account</a></li>
+                                <li <% if ("login".equals(request.getAttribute("selectedPage"))) {%> class="active"  <% } %> ><a href="./login">Login or create a new Account</a></li>
                                 </c:if>
                                 <c:if test="${sessionUser.userRole !='ANONYMOUS'}">
                                 <li><form id="logoutForm" method="POST" action="./logout"></form></li>
@@ -68,10 +68,10 @@
                                     <input type="hidden" name="username" value="${sessionUser.username}"/>
                                 </form></li>
                                 
-                                <li><p class="text-muted"> Welcome 
+                                <li id="account-showing"><p class="text-muted"> Welcome 
                                     <c:if test="${sessionUser.userRole =='ADMINISTRATOR'}"> Admin</c:if>                                   
                                     ${sessionUser.username}&nbsp;&nbsp;
-                                    <a onclick="document.forms['logoutForm'].submit()">Logout</a><BR>
+                                    <br><a id="url-spacer" onclick="document.forms['logoutForm'].submit()">Logout</a>
                                     <a onclick="document.forms['profile'].submit()">User Profile</a></p></li>
                                 </c:if>
                         </ul>
