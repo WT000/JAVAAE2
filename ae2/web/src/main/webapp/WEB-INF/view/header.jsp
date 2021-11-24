@@ -37,7 +37,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="#">AE2 Shopping Cart PRE-ALPHA 1.0</a>
+                        <a class="navbar-brand" href="#">AE2 Shopping Cart</a>
                     </div>
                     
                     <div id="navbar" class="navbar-collapse collapse">
