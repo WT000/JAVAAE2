@@ -39,6 +39,7 @@
                         </button>
                         <a class="navbar-brand" href="#">AE2 Shopping Cart PRE-ALPHA 1.0</a>
                     </div>
+                    
                     <div id="navbar" class="navbar-collapse collapse">
                         <ul class="nav navbar-nav">
                             <li <% if ("home".equals(request.getAttribute("selectedPage"))) {%> class="active"  <% } %> ><a href="./home">Home</a></li> 
@@ -54,6 +55,7 @@
                                 </li>
                             </c:if>
                         </ul>
+                                
                         <ul class="nav navbar-nav navbar-right">
                             <!-- user role:  ${sessionUser.userRole}-->
                             <c:if test="${sessionUser.userRole =='ANONYMOUS'}">
