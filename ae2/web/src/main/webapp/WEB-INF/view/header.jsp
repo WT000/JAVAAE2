@@ -59,7 +59,7 @@
                         <ul class="nav navbar-nav navbar-right">
                             <!-- user role:  ${sessionUser.userRole}-->
                             <c:if test="${sessionUser.userRole =='ANONYMOUS'}">
-                                <li <% if ("login".equals(request.getAttribute("selectedPage"))) {%> class="active"  <% } %> ><a href="./login">Login or create a new Account</a></li>
+                                <li <% if ("login".equals(request.getAttribute("selectedPage")) || "register".equals(request.getAttribute("selectedPage"))) {%> class="active"  <% } %> ><a href="./login">Login or create a new Account</a></li>
                                 </c:if>
                                 <c:if test="${sessionUser.userRole !='ANONYMOUS'}">
                                 <li><form id="logoutForm" method="POST" action="./logout"></form></li>

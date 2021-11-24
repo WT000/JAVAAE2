@@ -10,7 +10,7 @@
 
         <footer class="footer">
             <div class="container">
-                <p class="text-muted">PRE-ALPHA 1.0</p>
+                <p class="text-muted">PRE-ALPHA 1.1</p>
             </div>
         </footer>
 

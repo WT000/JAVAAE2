@@ -94,11 +94,13 @@ public class UserAndLoginController {
         // get current session modifyUser 
         User sessionUser = getSessionUser(session);
         model.addAttribute("sessionUser", sessionUser);
-
+        
+        model.addAttribute("selectedPage", "login");
         if (!UserRole.ANONYMOUS.equals(sessionUser.getUserRole())) {
             errorMessage = "user " + sessionUser.getUsername() + " already logged in";
             LOG.warn(errorMessage);
             model.addAttribute("errorMessage", errorMessage);
+            model.addAttribute("selectedPage", "home");
             return "home";
         };
 
@@ -173,8 +175,9 @@ public class UserAndLoginController {
         model.addAttribute("sessionUser", sessionUser);
         model.addAttribute("message", message);
         model.addAttribute("errorMessage", errorMessage);
+        
         // used to set tab selected
-        model.addAttribute("selectedPage", "home");
+        model.addAttribute("selectedPage", "register");
 
         return "register";
     }
@@ -194,7 +197,8 @@ public class UserAndLoginController {
 
         User sessionUser = getSessionUser(session);
         model.addAttribute("sessionUser", sessionUser);
-
+        model.addAttribute("selectedPage", "register");
+        
         if (username == null || username.trim().isEmpty()) {
             errorMessage = "you must enter a username";
             model.addAttribute("errorMessage", errorMessage);
