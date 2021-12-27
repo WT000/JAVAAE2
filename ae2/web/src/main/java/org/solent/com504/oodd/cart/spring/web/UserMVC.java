@@ -149,7 +149,7 @@ public class UserMVC {
             model.addAttribute("errorMessage", errorMessage);
             // used to set tab selected
             model.addAttribute("selectedPage", "home");
-            return "home";
+            return "redirect:/home";
         } else {
             model.addAttribute("errorMessage", "Unknown action requested:" + action + ".");
             LOG.error("login page unknown action requested:" + action);

@@ -116,12 +116,11 @@ public class PropertiesMVC {
 
         if (errorMessage.length() == 0) {
              // No errors were found, we can attempt to set the new properties.
-             // BankRestClientImpl testClient = new BankRestClientImpl(bankURL);
-             // CreditCard testCard = new CreditCard(bankCard, bankCardName, bankCardDate, "111");
+             BankRestClientImpl testClient = new BankRestClientImpl(bankURL);
+             CreditCard testCard = new CreditCard(bankCard, bankCardName, bankCardDate, "111");
 
             try {
-                //TransactionReplyMessage testResponse = testClient.transferMoney(testCard, testCard, 0.0, bankUsername, bankPassword);
-                TransactionReplyMessage testResponse = new TransactionReplyMessage();
+                TransactionReplyMessage testResponse = testClient.transferMoney(testCard, testCard, 0.0, bankUsername, bankPassword);
                 testResponse.setStatus(BankTransactionStatus.SUCCESS);
                 
                 if (testResponse.getStatus() == BankTransactionStatus.SUCCESS) {
