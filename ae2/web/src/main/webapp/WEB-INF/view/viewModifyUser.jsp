@@ -14,25 +14,15 @@
 <main role="main" class="container">
 
     <div>
-        <H1>User Details ${modifyUser.username} </H1>
+        <h3>${modifyUser.username}'s profile</h3>
         <!-- print error message if there is one -->
         <div style="color:red;">${errorMessage}</div>
         <div style="color:green;">${message}</div>
 
+        <h1>General Information</h1>
         <form action="./viewModifyUser" method="POST">
             <table class="table">
-                <thead>
-                </thead>
-
                 <tbody>
-                    <tr>
-                        <td>User ID</td>
-                        <td>${modifyUser.id}</td>
-                    </tr>
-                    <tr>
-                        <td>username</td>
-                        <td>${modifyUser.username}</td>
-                    </tr>
                     <tr>
                         <td>First Name</td>
                         <td><input type="text" name="firstName" value="${modifyUser.firstName}" /></td>
@@ -40,10 +30,6 @@
                     <tr>
                         <td>Last Name</td>
                         <td><input type="text" name="secondName" value="${modifyUser.secondName}" /></td>
-                    </tr>
-                    <tr>
-                        <td>House Number</td>
-                        <td><input type="text" name="houseNumber" value="${modifyUser.address.houseNumber}" /></td>
                     </tr>
                     <tr>
                         <td>Address Line 1</td>
@@ -55,7 +41,7 @@
                     </tr>
                     <tr>
                         <td>City</td>
-                        <td><input type="text" name="county" value="${modifyUser.address.city}" /></td>
+                        <td><input type="text" name="city" value="${modifyUser.address.city}" /></td>
                     </tr>
                     <tr>
                         <td>County</td>
@@ -73,17 +59,41 @@
                         <td>Mobile number</td>
                         <td><input type="text" name="mobile" value="${modifyUser.address.mobile}" /></td>
                     </tr>
-
                 </tbody>
-
+            </table>
+                    
+            <h1>Saved Payment Information (optional)</h1>
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <td>Card Number</td>
+                        <td><input type="text" name="cardno" value="${modifyUser.card.cardNumber}"></td>
+                    </tr>
+                    <tr>
+                        <td>Name on Card</td>
+                        <td><input type="text" name="cardname" value="${modifyUser.card.name}"></td>
+                    </tr>
+                    <tr>
+                        <td>Expiry Date</td>
+                        <td><input type="text" name="carddate" value="${modifyUser.card.endDate}"></td>
+                    </tr>
+                </tbody>
             </table>
 
             <c:if test="${sessionUser.userRole !='ADMINISTRATOR'}">
-                <p>User Status and role </p>
+                <h1>User Details</h1>
                 <table class="table">
                     <thead>
                     </thead>
                     <tbody>
+                        <tr>
+                            <td>User ID</td>
+                            <td>${modifyUser.id}</td>
+                        </tr>
+                        <tr>
+                            <td>Username</td>
+                            <td>${modifyUser.username}</td>
+                        </tr>
                         <tr>
                             <td>Role</td>
                             <td>${modifyUser.userRole}</td>
@@ -97,7 +107,7 @@
             </c:if>
 
             <c:if test="${sessionUser.userRole =='ADMINISTRATOR'}">
-                <p>Manage User Status and role </p>
+                <h1>Manage User Status and Role</h1>
                 <table class="table">
                     <thead>
                     </thead>
@@ -128,7 +138,9 @@
             <input type="hidden" name="username" value="${modifyUser.username}"/>
             <button class="btn" type="submit" >Update User ${modifyUser.username}</button>
         </form>
-        <p>Update Password</p>
+        
+        <br>
+        <h1>Update Password</h1>
         <form action="./viewModifyUser" method="post">
             <input type="hidden" name="username" value="${modifyUser.username}"/>
             <input type="hidden" name="action" value="updatePassword"/>
@@ -143,8 +155,8 @@
             </form> 
         </c:if> 
 
-        </div>
+    </div>
 
-    </main>
+</main>
 
 <jsp:include page="footer.jsp" />

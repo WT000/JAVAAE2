@@ -23,9 +23,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/")
-public class MVCController {
+public class GenericMVC {
 
-    final static Logger LOG = LogManager.getLogger(MVCController.class);
+    final static Logger LOG = LogManager.getLogger(GenericMVC.class);
 
     // this could be done with an autowired bean
     //private ShoppingService shoppingService = WebObjectFactory.getShoppingService();

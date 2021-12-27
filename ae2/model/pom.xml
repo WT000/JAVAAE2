@@ -13,6 +13,11 @@
     <packaging>jar</packaging>
     
     <dependencies>
+        <dependency>
+            <groupId>org.solent.com504.oodd</groupId>
+            <artifactId>ae2-bank-client</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     
         <!-- dependencies for jpa annotations -->
         <dependency>

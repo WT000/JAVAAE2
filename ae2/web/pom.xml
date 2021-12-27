@@ -38,6 +38,12 @@
             <version>${project.version}</version>
         </dependency>
         
+        <dependency>
+            <groupId>org.solent.com504.oodd</groupId>
+            <artifactId>ae2-bank-client</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        
         <!-- spring boot dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

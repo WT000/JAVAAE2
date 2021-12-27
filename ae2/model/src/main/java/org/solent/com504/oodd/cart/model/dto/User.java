@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.Transient;
 import javax.persistence.Embedded;
 import org.solent.com504.oodd.password.PasswordUtils;
+import org.solent.com504.oodd.bank.model.dto.CreditCard;
 
 @Entity
 public class User {
@@ -24,6 +25,8 @@ public class User {
     private String hashedPassword = "";
 
     private Address address;
+    
+    private CreditCard card;
 
     private UserRole userRole;
 
@@ -86,6 +89,15 @@ public class User {
 
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
+    }
+    
+    @Embedded
+    public CreditCard getCard() {
+        return card;
+    }
+    
+    public void setCard(CreditCard card) {
+        this.card = card;
     }
 
     // passwords not saved in database only passwordhash is saved

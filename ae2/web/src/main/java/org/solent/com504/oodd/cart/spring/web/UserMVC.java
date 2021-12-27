@@ -12,6 +12,7 @@ import org.solent.com504.oodd.cart.dao.impl.UserRepository;
 import org.solent.com504.oodd.cart.model.dto.Address;
 import org.solent.com504.oodd.cart.model.dto.User;
 import org.solent.com504.oodd.cart.model.dto.UserRole;
+import org.solent.com504.oodd.bank.model.dto.CreditCard;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,9 +23,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/")
-public class UserAndLoginController {
+public class UserMVC {
 
-    final static Logger LOG = LogManager.getLogger(UserAndLoginController.class);
+    final static Logger LOG = LogManager.getLogger(UserMVC.class);
 
     @Autowired
     UserRepository userRepository;
@@ -43,7 +44,7 @@ public class UserAndLoginController {
     @RequestMapping(value = "/logout", method = {RequestMethod.GET, RequestMethod.POST})
     public String logout(Model model,
             HttpSession session) {
-        String message = "you have been successfully logged out";
+        String message = "You have been successfully logged out.";
         String errorMessage = "";
         // logout of session and clear
         session.invalidate();
@@ -56,14 +57,14 @@ public class UserAndLoginController {
     public String login(
             Model model,
             HttpSession session) {
-        String message = "log into site using username";
+        String message = "Please log in using your username and password.";
         String errorMessage = "";
 
         User sessionUser = getSessionUser(session);
         model.addAttribute("sessionUser", sessionUser);
 
         if (!UserRole.ANONYMOUS.equals(sessionUser.getUserRole())) {
-            errorMessage = "user " + sessionUser.getUsername() + " already logged in";
+            errorMessage = "User " + sessionUser.getUsername() + "is already logged in.";
             LOG.warn(errorMessage);
             model.addAttribute("errorMessage", errorMessage);
             return "home";
@@ -94,10 +95,10 @@ public class UserAndLoginController {
         // get current session modifyUser 
         User sessionUser = getSessionUser(session);
         model.addAttribute("sessionUser", sessionUser);
-        
+
         model.addAttribute("selectedPage", "login");
         if (!UserRole.ANONYMOUS.equals(sessionUser.getUserRole())) {
-            errorMessage = "user " + sessionUser.getUsername() + " already logged in";
+            errorMessage = "User " + sessionUser.getUsername() + "is already logged in.";
             LOG.warn(errorMessage);
             model.addAttribute("errorMessage", errorMessage);
             model.addAttribute("selectedPage", "home");
@@ -105,7 +106,7 @@ public class UserAndLoginController {
         };
 
         if (username == null || username.trim().isEmpty()) {
-            errorMessage = "you must enter a username";
+            errorMessage = "You must enter a username.";
             model.addAttribute("errorMessage", errorMessage);
             return "login";
         }
@@ -116,13 +117,13 @@ public class UserAndLoginController {
             //todo find and add modifyUser and test password
             LOG.debug("logging in user username=" + username);
             if (userList.isEmpty()) {
-                errorMessage = "cannot find user for username :" + username;
+                errorMessage = "Couldn't find an account with the username: " + username + ".";
                 LOG.warn(errorMessage);
                 model.addAttribute("errorMessage", errorMessage);
                 return "login";
             }
             if (password == null) {
-                errorMessage = "you must enter a password";
+                errorMessage = "You must enter a password.";
                 LOG.warn(errorMessage);
                 model.addAttribute("errorMessage", errorMessage);
                 return "login";
@@ -130,13 +131,12 @@ public class UserAndLoginController {
 
             User loginUser = userList.get(0);
             if (!loginUser.isValidPassword(password)) {
-                model.addAttribute("errorMessage", "invalid username or password");
+                model.addAttribute("errorMessage", "Invalid username or password.");
                 return "login";
             }
 
             if (!loginUser.getEnabled()) {
-                model.addAttribute("errorMessage", "user account "+username
-                        + " is disabled in this system");
+                model.addAttribute("errorMessage", username + "'s account has been disabled.");
                 return "login";
             }
 
@@ -151,7 +151,7 @@ public class UserAndLoginController {
             model.addAttribute("selectedPage", "home");
             return "home";
         } else {
-            model.addAttribute("errorMessage", "unknown action requested:" + action);
+            model.addAttribute("errorMessage", "Unknown action requested:" + action + ".");
             LOG.error("login page unknown action requested:" + action);
             model.addAttribute("errorMessage", errorMessage);
             // used to set tab selected
@@ -168,14 +168,14 @@ public class UserAndLoginController {
             @RequestParam(value = "password2", required = false) String password2,
             Model model,
             HttpSession session) {
-        String message = "register new user";
+        String message = "Please enter the fields below to register on the site.";
         String errorMessage = "";
 
         User sessionUser = getSessionUser(session);
         model.addAttribute("sessionUser", sessionUser);
         model.addAttribute("message", message);
         model.addAttribute("errorMessage", errorMessage);
-        
+
         // used to set tab selected
         model.addAttribute("selectedPage", "register");
 
@@ -198,9 +198,9 @@ public class UserAndLoginController {
         User sessionUser = getSessionUser(session);
         model.addAttribute("sessionUser", sessionUser);
         model.addAttribute("selectedPage", "register");
-        
+
         if (username == null || username.trim().isEmpty()) {
-            errorMessage = "you must enter a username";
+            errorMessage = "You must enter a username.";
             model.addAttribute("errorMessage", errorMessage);
             return "register";
         }
@@ -209,13 +209,15 @@ public class UserAndLoginController {
 
         if ("createNewAccount".equals(action)) {
             if (!userList.isEmpty()) {
-                errorMessage = "trying to create user with username which already exists :" + username;
+                errorMessage = username + " already exists, please enter another username.";
                 LOG.warn(errorMessage);
                 model.addAttribute("errorMessage", errorMessage);
                 return "register";
             }
             if (password == null || !password.equals(password2) || password.length() < 8) {
-                errorMessage = "you must enter two identical passwords with atleast 8 characters";
+                errorMessage = "Failed the password check, please ensure it's more"
+                        + " than 8 characters and you've entered the same password"
+                        + " twice.";
                 LOG.warn(errorMessage);
                 model.addAttribute("errorMessage", errorMessage);
                 return "register";
@@ -224,7 +226,6 @@ public class UserAndLoginController {
             User modifyUser = new User();
             modifyUser.setUserRole(UserRole.CUSTOMER);
             modifyUser.setUsername(username);
-            modifyUser.setFirstName(username);
             modifyUser.setPassword(password);
             modifyUser = userRepository.save(modifyUser);
 
@@ -237,7 +238,7 @@ public class UserAndLoginController {
             }
 
             LOG.debug("createNewAccount created new user user=" + modifyUser);
-            message = "enter user details";
+            message = "Enter user details below.";
             model.addAttribute("modifyUser", modifyUser);
             model.addAttribute("message", message);
             model.addAttribute("errorMessage", errorMessage);
@@ -260,7 +261,7 @@ public class UserAndLoginController {
         model.addAttribute("sessionUser", sessionUser);
 
         if (!UserRole.ADMINISTRATOR.equals(sessionUser.getUserRole())) {
-            errorMessage = "you must be an administrator to access users information";
+            model.addAttribute("errorMessage", "You must be an administrator to access user information.");
             return "home";
         }
 
@@ -289,7 +290,7 @@ public class UserAndLoginController {
         model.addAttribute("sessionUser", sessionUser);
 
         if (UserRole.ANONYMOUS.equals(sessionUser.getUserRole())) {
-            errorMessage = "you must be logged in to access user information";
+            errorMessage = "You must be logged in to access user information.";
             model.addAttribute("errorMessage", errorMessage);
             return "home";
         }
@@ -297,8 +298,9 @@ public class UserAndLoginController {
         if (!UserRole.ADMINISTRATOR.equals(sessionUser.getUserRole())) {
             // if not an administrator you can only access your own account info
             if (!sessionUser.getUsername().equals(username)) {
-                errorMessage = "security non admin viewModifyUser called for username " + username
-                        + "which is not the logged in user =" + sessionUser.getUsername();
+                errorMessage = username + ", you can only view your own account"
+                        + " information! " + sessionUser.getUsername() + " is"
+                        + " currently logged in.";
                 LOG.warn(errorMessage);
                 model.addAttribute("errorMessage", errorMessage);
                 return ("home");
@@ -326,19 +328,19 @@ public class UserAndLoginController {
             @RequestParam(value = "secondName", required = false) String secondName,
             @RequestParam(value = "userRole", required = false) String userRole,
             @RequestParam(value = "userEnabled", required = false) String userEnabled,
-            @RequestParam(value = "houseNumber", required = false) String houseNumber,
             @RequestParam(value = "addressLine1", required = false) String addressLine1,
             @RequestParam(value = "addressLine2", required = false) String addressLine2,
             @RequestParam(value = "city", required = false) String city,
             @RequestParam(value = "county", required = false) String county,
             @RequestParam(value = "country", required = false) String country,
             @RequestParam(value = "postcode", required = false) String postcode,
-            @RequestParam(value = "latitude", required = false) String latitude,
-            @RequestParam(value = "longitude", required = false) String longitude,
             @RequestParam(value = "telephone", required = false) String telephone,
             @RequestParam(value = "mobile", required = false) String mobile,
             @RequestParam(value = "password", required = false) String password,
             @RequestParam(value = "password2", required = false) String password2,
+            @RequestParam(value = "cardno", required = false) String cardNumber,
+            @RequestParam(value = "cardname", required = false) String cardName,
+            @RequestParam(value = "carddate", required = false) String cardDate,
             @RequestParam(value = "action", required = false) String action,
             Model model,
             HttpSession session) {
@@ -352,15 +354,16 @@ public class UserAndLoginController {
         model.addAttribute("sessionUser", sessionUser);
 
         if (UserRole.ANONYMOUS.equals(sessionUser.getUserRole())) {
-            errorMessage = "you must be logged in to access users information";
+            errorMessage = "You must be logged in to access user information.";
             model.addAttribute("errorMessage", errorMessage);
             return "home";
         }
 
         if (!UserRole.ADMINISTRATOR.equals(sessionUser.getUserRole())) {
             if (!sessionUser.getUsername().equals(username)) {
-                errorMessage = "security viewModifyUser called for non admin username " + username
-                        + "which is not the logged in user =" + sessionUser.getUsername();
+                errorMessage = username + ", you can only view your own account"
+                        + " information! " + sessionUser.getUsername() + " is"
+                        + " currently logged in.";
                 model.addAttribute("errorMessage", errorMessage);
                 LOG.warn(errorMessage);
                 return ("home");
@@ -369,7 +372,7 @@ public class UserAndLoginController {
 
         List<User> userList = userRepository.findByUsername(username);
         if (userList.isEmpty()) {
-            errorMessage = "update user called for unknown username:" + username;
+            errorMessage = "Update user called for unknown username:" + username + ".";
             LOG.warn(errorMessage);
             model.addAttribute("errorMessage", errorMessage);
             return ("home");
@@ -380,15 +383,20 @@ public class UserAndLoginController {
         // update password if requested
         if ("updatePassword".equals(action)) {
             if (password == null || !password.equals(password2) || password.length() < 8) {
-                errorMessage = "you must enter two identical passwords with atleast 8 characters";
+                errorMessage = "Failed the password check, please ensure it's more"
+                        + " than 8 characters and you've entered the same password"
+                        + " twice.";
                 LOG.warn(errorMessage);
+                
+                model.addAttribute("modifyUser", modifyUser);
                 model.addAttribute("errorMessage", errorMessage);
                 return "viewModifyUser";
+                
             } else {
                 modifyUser.setPassword(password);
                 modifyUser = userRepository.save(modifyUser);
                 model.addAttribute("modifyUser", modifyUser);
-                message = "password updated for user :" + modifyUser.getUsername();
+                message = "Password updated for user :" + modifyUser.getUsername() + ".";
                 model.addAttribute("message", message);
                 return "viewModifyUser";
             }
@@ -406,7 +414,7 @@ public class UserAndLoginController {
                     modifyUser.setEnabled(Boolean.FALSE);
                 }
             } catch (Exception ex) {
-                errorMessage = "cannot parse userRole" + userRole;
+                errorMessage = "Cannot parse userRole" + userRole + ".";
                 LOG.warn(errorMessage);
                 model.addAttribute("errorMessage", errorMessage);
                 return ("home");
@@ -416,12 +424,12 @@ public class UserAndLoginController {
         if (firstName != null) {
             modifyUser.setFirstName(firstName);
         }
+
         if (secondName != null) {
             modifyUser.setSecondName(secondName);
         }
 
         Address address = new Address();
-        address.setHouseNumber(houseNumber);
         address.setAddressLine1(addressLine1);
         address.setAddressLine2(addressLine2);
         address.setCity(city);
@@ -434,13 +442,36 @@ public class UserAndLoginController {
 
         modifyUser.setAddress(address);
 
+        // Check if one of the card fields are present
+        if (!cardNumber.equals("") || !cardName.equals("") || !cardDate.equals("")) {
+            // Check that they're all filled, then do basic validation
+            if (!cardNumber.equals("") && !cardName.equals("") && !cardDate.equals("")) {
+                CreditCard card = new CreditCard();
+                card.setCardNumber(cardNumber);
+                card.setName(cardName);
+                card.setEndDate(cardDate);
+
+                if (card.cardDateExpiredOrError()) {
+                    model.addAttribute("modifyUser", modifyUser);
+                    model.addAttribute("errorMessage", "The card has an invalid or expired date.");
+                    return "viewModifyUser";
+                }
+
+                modifyUser.setCard(card);
+            } else {
+                model.addAttribute("modifyUser", modifyUser);
+                model.addAttribute("errorMessage", "One of the card fields is missing.");
+                return "viewModifyUser";
+            }
+        }
+
         modifyUser = userRepository.save(modifyUser);
 
         model.addAttribute("modifyUser", modifyUser);
 
         // add message if there are any 
         model.addAttribute("errorMessage", errorMessage);
-        model.addAttribute("message", "User " + modifyUser.getUsername() + " updated successfully");
+        model.addAttribute("message", "User " + modifyUser.getUsername() + " updated successfully.");
 
         model.addAttribute("selectedPage", "home");
 

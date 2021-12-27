@@ -35,14 +35,14 @@ public class BankClientTest {
     @Before
     public void before() {
         fromCard = new CreditCard();
-        fromCard.setCardnumber("5133880000000012");
+        fromCard.setCardNumber("5133880000000012");
         fromCard.setCvv("123");
         fromCard.setEndDate("11/21");
         fromCard.setIssueNumber("01"); 
         fromCard.setName("test user1");
 
         toCard = new CreditCard();
-        toCard.setCardnumber("4285860000000021");
+        toCard.setCardNumber("4285860000000021");
         toCard.setCvv("123");
         toCard.setEndDate("11/21");
         toCard.setIssueNumber("01");

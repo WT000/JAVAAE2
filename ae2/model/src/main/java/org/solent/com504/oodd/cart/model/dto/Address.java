@@ -4,9 +4,6 @@ import javax.persistence.Embeddable;
 
 @Embeddable
 public class Address {
-
-    private String houseNumber;
-
     private String addressLine1;
 
     private String addressLine2;
@@ -22,14 +19,6 @@ public class Address {
     private String telephone;
 
     private String country;
-
-    public String getHouseNumber() {
-        return houseNumber;
-    }
-
-    public void setHouseNumber(String houseNumber) {
-        this.houseNumber = houseNumber;
-    }
 
     public String getAddressLine1() {
         return addressLine1;
@@ -98,7 +87,7 @@ public class Address {
 
     @Override
     public String toString() {
-        return "Address{" + "houseNumber=" + houseNumber + ", addressLine1=" + addressLine1 + ", addressLine2=" + addressLine2 + ", county=" + county + ", city=" + city + ", postcode=" + postcode + ", mobile=" + mobile + ", telephone=" + telephone + ", country=" + country + '}';
+        return "Address{addressLine1=" + addressLine1 + ", addressLine2=" + addressLine2 + ", county=" + county + ", city=" + city + ", postcode=" + postcode + ", mobile=" + mobile + ", telephone=" + telephone + ", country=" + country + '}';
     }
     
     
