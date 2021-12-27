@@ -47,7 +47,7 @@
         </Logger>
         
         <!-- Transaction logger -->
-        <Logger name="TRANSACTION_LOGGER"  additivity="false" level="DEBUG">
+        <Logger name="TRANSACTION_LOGGER" additivity="false" level="DEBUG">
             <AppenderRef ref="transactionLog"/>
         </Logger>
         

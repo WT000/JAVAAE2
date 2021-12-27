@@ -127,14 +127,8 @@ public class PropertiesMVC {
                     adminSettings.setProperty("org.solent.com504.oodd.ae2.cardNumber", bankCard);
                     adminSettings.setProperty("org.solent.com504.oodd.ae2.username", bankUsername);
                     adminSettings.setProperty("org.solent.com504.oodd.ae2.password", bankPassword);
-
-                    if (bankCardName.length() > 0) {
-                        adminSettings.setProperty("org.solent.com504.oodd.ae2.cardName", bankCardName);
-                    }
-
-                    if (bankCardDate.length() > 0) {
-                        adminSettings.setProperty("org.solent.com504.oodd.ae2.cardDate", bankCardDate);
-                    }
+                    adminSettings.setProperty("org.solent.com504.oodd.ae2.cardName", bankCardName);
+                    adminSettings.setProperty("org.solent.com504.oodd.ae2.cardDate", bankCardDate);
                     
                 } else {
                     errorMessage += "The entered details don't exist on the remote bank.<br>";

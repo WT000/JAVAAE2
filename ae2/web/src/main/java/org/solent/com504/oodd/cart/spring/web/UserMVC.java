@@ -13,6 +13,8 @@ import org.solent.com504.oodd.cart.model.dto.Address;
 import org.solent.com504.oodd.cart.model.dto.User;
 import org.solent.com504.oodd.cart.model.dto.UserRole;
 import org.solent.com504.oodd.bank.model.dto.CreditCard;
+import org.solent.com504.oodd.bank.card.checker.RegexCardValidator;
+import org.solent.com504.oodd.bank.card.checker.CardValidationResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -451,7 +453,14 @@ public class UserMVC {
                     card.setCardnumber(cardNumber);
                     card.setName(cardName);
                     card.setEndDate(cardDate);
-
+                    
+                    CardValidationResult cardNumTest = RegexCardValidator.isValid(cardNumber);
+                    if (!cardNumTest.isValid()) {
+                        model.addAttribute("modifyUser", modifyUser);
+                        model.addAttribute("errorMessage", "The card number is invalid.");
+                        return "viewModifyUser";
+                    }
+                    
                     if (card.cardDateExpiredOrError()) {
                         model.addAttribute("modifyUser", modifyUser);
                         model.addAttribute("errorMessage", "The card has an invalid or expired date.");
