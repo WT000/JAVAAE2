@@ -24,8 +24,7 @@ public class BankClientTest {
 
     final static Logger LOG = LogManager.getLogger(BankClientTest.class);
 
-    //String bankUrl = "http://com528bank.ukwest.cloudapp.azure.com:8080/bank/rest";
-    String bankUrl = "http://localhost:8080/bank/rest";
+    String bankUrl = "http://com528bank.ukwest.cloudapp.azure.com:8080/rest";
     CreditCard fromCard = null;
     CreditCard toCard = null;
     
@@ -35,14 +34,14 @@ public class BankClientTest {
     @Before
     public void before() {
         fromCard = new CreditCard();
-        fromCard.setCardNumber("5133880000000012");
+        fromCard.setCardnumber("5133880000000012");
         fromCard.setCvv("123");
         fromCard.setEndDate("11/21");
         fromCard.setIssueNumber("01"); 
         fromCard.setName("test user1");
 
         toCard = new CreditCard();
-        toCard.setCardNumber("4285860000000021");
+        toCard.setCardnumber("4285860000000021");
         toCard.setCvv("123");
         toCard.setEndDate("11/21");
         toCard.setIssueNumber("01");

@@ -15,7 +15,7 @@ public class CreditCard {
 
     private String endDate;
 
-    private String cardNumber;
+    private String cardnumber;
 
     private String cvv;
 
@@ -25,7 +25,7 @@ public class CreditCard {
      * Constructor used when no parameter is given
      */
     public CreditCard() {
-        this.cardNumber = "";
+        this.cardnumber = "";
         this.name = "";
         this.endDate = "";
         this.cvv = "111";
@@ -36,7 +36,7 @@ public class CreditCard {
      * @param cardNumber The card to set to
      */
     public CreditCard(String cardNumber) {
-        this.cardNumber = cardNumber;
+        this.cardnumber = cardNumber;
         this.name = "";
         this.endDate = "";
         this.cvv = "111";
@@ -51,7 +51,7 @@ public class CreditCard {
      * @param cvv The cvv to set to
      */
     public CreditCard(String cardNumber, String name, String endDate, String cvv) {
-        this.cardNumber = cardNumber;
+        this.cardnumber = cardNumber;
         this.name = name;
         this.endDate = endDate;
         this.cvv = cvv;
@@ -136,16 +136,16 @@ public class CreditCard {
      *
      * @return The card number
      */
-    public String getCardNumber() {
-        return cardNumber;
+    public String getCardnumber() {
+        return cardnumber;
     }
 
     /**
      *
-     * @param cardnumber The card number to set to
+     * @param cardNumber The card number to set to
      */
-    public void setCardNumber(String cardNumber) {
-        this.cardNumber = cardNumber;
+    public void setCardnumber(String cardNumber) {
+        this.cardnumber = cardNumber;
     }
 
     /**
@@ -182,6 +182,6 @@ public class CreditCard {
 
     @Override
     public String toString() {
-        return "CreditCard{" + "name=" + name + ", endDate=" + endDate + ", cardNumber=" + cardNumber + ", cvv=NOT PRINTED" + ", issueNumber=" + issueNumber + '}';
+        return "CreditCard{" + "name=" + name + ", endDate=" + endDate + ", cardNumber=" + cardnumber + ", cvv=NOT PRINTED" + ", issueNumber=" + issueNumber + '}';
     }
 }

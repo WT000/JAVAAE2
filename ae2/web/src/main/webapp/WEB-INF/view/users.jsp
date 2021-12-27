@@ -16,8 +16,8 @@
 <main role="main" class="container">
 
     <div>
-        <h1>Manage Users</h1>
-        <p>showing ${userListSize} users: </p>
+        <h3>Manage Users</h3>
+        <h1>showing ${userListSize} users:</h1>
         <table class="table">
             <thead>
                 <tr>

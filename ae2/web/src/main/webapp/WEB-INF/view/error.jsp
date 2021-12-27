@@ -8,10 +8,8 @@
 <jsp:include page="header.jsp" />
 <!-- Begin page content -->
 <main role="main" class="container">
-        <h1>Error Page</h1>
-        <p>Application has encountered an error.</p>
-        <p>${error}</p>
-        <p>${status}</p>
+        <h3>ERROR</h3>
+        <p>Error code ${status}: ${error}</p>
         <p>Failed URL: ${requestUrl}</p>
         <p>Exception:  ${exception.message}</p>
         <p>Stack trace:</p>

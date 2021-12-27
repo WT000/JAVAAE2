@@ -18,8 +18,8 @@
 
     <form action="./login" method="post">
         <input type="hidden" name="action" value="login">
-        <p>Username <input type="text" name="username" ></input></p><BR>
-        <p>Password <input type="password" name="password" ></input></p>
+        <p>Username <input type="text" name="username" ></p><br>
+        <p>Password <input type="password" name="password" ></p>
         <p><button type="submit" >Log In</button></p>
     </form> 
     

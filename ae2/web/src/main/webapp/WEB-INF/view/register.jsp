@@ -17,14 +17,14 @@
     <div style="color:green;">${message}</div>
 
 
-    <p>Username must be unique and password must be at least 8 characters</p>
+    <p>Username must be unique and password must be at least 8 characters.</p>
     <form action="./register" method="POST">
         <input type="hidden" name="action" value="createNewAccount">
-        <p>Username <input type="text" name="username" ></input></p><BR>
-        <p>Password <input type="password" name="password" ></input></p>
-        <p>Re Enter Password <input type="password" name="password2" ></input></p>
+        <p>Username <input type="text" name="username" ></p><BR>
+        <p>Password <input type="password" name="password" ></p>
+        <p>Re Enter Password <input type="password" name="password2" ></p>
         <p><button type="submit" >Create New Account</button></p>
-    </form> 
+    </form>
 
 </main>
 

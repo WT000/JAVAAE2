@@ -76,7 +76,7 @@
                         </tr>
                         <tr>
                             <td>Expiry Date</td>
-                            <td><input type="text" name="carddate" value="${sessionUser.card.endDate}"></td>
+                            <td><input type="text" name="carddate" value="${sessionUser.card.endDate}" placeholder="01/01 or 01/2000"></td>
                         </tr>
                     </tbody>
                 </table>

@@ -448,7 +448,7 @@ public class UserMVC {
                 // Check that they're all filled, then do basic validation
                 if (!cardNumber.equals("") && !cardName.equals("") && !cardDate.equals("")) {
                     CreditCard card = new CreditCard();
-                    card.setCardNumber(cardNumber);
+                    card.setCardnumber(cardNumber);
                     card.setName(cardName);
                     card.setEndDate(cardDate);
 

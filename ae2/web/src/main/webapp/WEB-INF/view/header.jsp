@@ -43,14 +43,20 @@
                     <div id="navbar" class="navbar-collapse collapse">
                         <ul class="nav navbar-nav">
                             <li <% if ("home".equals(request.getAttribute("selectedPage"))) {%> class="active"  <% } %> ><a href="./home">Home</a></li> 
-                            <li <% if ("about".equals(request.getAttribute("selectedPage"))) {%>  class="active"  <% } %> ><a href="./about">About</a></li> 
-                            <li <% if ("contact".equals(request.getAttribute("selectedPage"))) {%>  class="active"  <% }%> ><a href="./contact">Contact</a></li>                          
-                                <c:if test="${sessionUser.userRole =='ADMINISTRATOR'}">
+                            <li <% if ("about".equals(request.getAttribute("selectedPage"))) {%>  class="active"  <% } %> ><a href="./about">
+                                    Catalogue<c:if test="${sessionUser.userRole != 'ANONYMOUS'}"> (admin mode)</c:if>
+                                </a></li> 
+                            <li <% if ("contact".equals(request.getAttribute("selectedPage"))) {%>  class="active"  <% }%> ><a href="./contact">Cart</a></li>
+                            <c:if test="${sessionUser.userRole != 'ANONYMOUS'}">
+                                <li <% if ("orders".equals(request.getAttribute("selectedPage"))) {%>  class="active"  <% }%> ><a href="./contact">Orders</a></li>
+                            </c:if>
+                            
+                            <c:if test="${sessionUser.userRole == 'ADMINISTRATOR'}">
                                 <li class="dropdown" >
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> Admin <span class="caret"></span></a>
                                     <ul class="dropdown-menu">
                                         <li><a href="./users">Manage Users</a></li>
-                                        <li><a href="./catalog">Manage Catalogue</a></li>
+                                        <li><a href="./properties">Edit Properties</a></li>
                                     </ul>
                                 </li>
                             </c:if>
@@ -58,10 +64,10 @@
                                 
                         <ul class="nav navbar-nav navbar-right">
                             <!-- user role:  ${sessionUser.userRole}-->
-                            <c:if test="${sessionUser.userRole =='ANONYMOUS'}">
+                            <c:if test="${sessionUser.userRole == 'ANONYMOUS'}">
                                 <li <% if ("login".equals(request.getAttribute("selectedPage")) || "register".equals(request.getAttribute("selectedPage"))) {%> class="active"  <% } %> ><a href="./login">Login or create a new Account</a></li>
                                 </c:if>
-                                <c:if test="${sessionUser.userRole !='ANONYMOUS'}">
+                                <c:if test="${sessionUser.userRole != 'ANONYMOUS'}">
                                 <li><form id="logoutForm" method="POST" action="./logout"></form></li>
                                 
                                 <li><form id="profile" method="GET" action="./viewModifyUser">
@@ -69,7 +75,7 @@
                                 </form></li>
                                 
                                 <li id="account-showing"><p class="text-muted"> Welcome, 
-                                    <c:if test="${sessionUser.userRole =='ADMINISTRATOR'}"> Admin</c:if>                                   
+                                    <c:if test="${sessionUser.userRole == 'ADMINISTRATOR'}"> Admin</c:if>                                   
                                     ${sessionUser.username}&nbsp;&nbsp;
                                     <br><a id="url-spacer" onclick="document.forms['logoutForm'].submit()">Logout</a>
                                     <a onclick="document.forms['profile'].submit()">User Profile</a></p></li>
