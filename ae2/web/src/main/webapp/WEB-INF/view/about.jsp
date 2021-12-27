@@ -13,6 +13,7 @@
 <!-- Begin page content -->
 <main role="main" class="container">
     <H1>About</H1>
+    <p>Us at AE2 Shopping Cart hope you enjoy your time here!</p>
 </main>
 
 

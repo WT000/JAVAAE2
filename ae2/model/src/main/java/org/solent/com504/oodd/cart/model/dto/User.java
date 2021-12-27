@@ -26,6 +26,7 @@ public class User {
 
     private Address address;
     
+    // Optionally store parts of their CreditCard (not cvv)
     private CreditCard card;
 
     private UserRole userRole;

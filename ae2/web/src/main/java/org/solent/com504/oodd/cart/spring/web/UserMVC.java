@@ -140,7 +140,7 @@ public class UserMVC {
                 return "login";
             }
 
-            message = "successfully logged in user:" + username;
+            message = "You've now logged into " + username + "'s account.";
             session.setAttribute("sessionUser", loginUser);
 
             model.addAttribute("sessionUser", loginUser);
@@ -387,11 +387,11 @@ public class UserMVC {
                         + " than 8 characters and you've entered the same password"
                         + " twice.";
                 LOG.warn(errorMessage);
-                
+
                 model.addAttribute("modifyUser", modifyUser);
                 model.addAttribute("errorMessage", errorMessage);
                 return "viewModifyUser";
-                
+
             } else {
                 modifyUser.setPassword(password);
                 modifyUser = userRepository.save(modifyUser);
@@ -442,26 +442,30 @@ public class UserMVC {
 
         modifyUser.setAddress(address);
 
-        // Check if one of the card fields are present
-        if (!cardNumber.equals("") || !cardName.equals("") || !cardDate.equals("")) {
-            // Check that they're all filled, then do basic validation
-            if (!cardNumber.equals("") && !cardName.equals("") && !cardDate.equals("")) {
-                CreditCard card = new CreditCard();
-                card.setCardNumber(cardNumber);
-                card.setName(cardName);
-                card.setEndDate(cardDate);
+        if (cardNumber != null && cardName != null && cardDate != null) {
+            // Check if one of the card fields are present
+            if (!cardNumber.equals("") || !cardName.equals("") || !cardDate.equals("")) {
+                // Check that they're all filled, then do basic validation
+                if (!cardNumber.equals("") && !cardName.equals("") && !cardDate.equals("")) {
+                    CreditCard card = new CreditCard();
+                    card.setCardNumber(cardNumber);
+                    card.setName(cardName);
+                    card.setEndDate(cardDate);
 
-                if (card.cardDateExpiredOrError()) {
+                    if (card.cardDateExpiredOrError()) {
+                        model.addAttribute("modifyUser", modifyUser);
+                        model.addAttribute("errorMessage", "The card has an invalid or expired date.");
+                        return "viewModifyUser";
+                    }
+
+                    // Only store card details in the session user, not the modifyUser
+                    // which will be stored / updated in the database
+                    sessionUser.setCard(card);
+                } else {
                     model.addAttribute("modifyUser", modifyUser);
-                    model.addAttribute("errorMessage", "The card has an invalid or expired date.");
+                    model.addAttribute("errorMessage", "One of the card fields is missing.");
                     return "viewModifyUser";
                 }
-
-                modifyUser.setCard(card);
-            } else {
-                model.addAttribute("modifyUser", modifyUser);
-                model.addAttribute("errorMessage", "One of the card fields is missing.");
-                return "viewModifyUser";
             }
         }
 

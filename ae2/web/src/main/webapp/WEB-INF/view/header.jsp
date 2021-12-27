@@ -68,7 +68,7 @@
                                     <input type="hidden" name="username" value="${sessionUser.username}"/>
                                 </form></li>
                                 
-                                <li id="account-showing"><p class="text-muted"> Welcome 
+                                <li id="account-showing"><p class="text-muted"> Welcome, 
                                     <c:if test="${sessionUser.userRole =='ADMINISTRATOR'}"> Admin</c:if>                                   
                                     ${sessionUser.username}&nbsp;&nbsp;
                                     <br><a id="url-spacer" onclick="document.forms['logoutForm'].submit()">Logout</a>

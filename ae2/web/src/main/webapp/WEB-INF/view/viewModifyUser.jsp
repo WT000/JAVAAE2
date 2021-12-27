@@ -61,24 +61,26 @@
                     </tr>
                 </tbody>
             </table>
-                    
-            <h1>Saved Payment Information (optional)</h1>
-            <table class="table">
-                <tbody>
-                    <tr>
-                        <td>Card Number</td>
-                        <td><input type="text" name="cardno" value="${modifyUser.card.cardNumber}"></td>
-                    </tr>
-                    <tr>
-                        <td>Name on Card</td>
-                        <td><input type="text" name="cardname" value="${modifyUser.card.name}"></td>
-                    </tr>
-                    <tr>
-                        <td>Expiry Date</td>
-                        <td><input type="text" name="carddate" value="${modifyUser.card.endDate}"></td>
-                    </tr>
-                </tbody>
-            </table>
+            
+            <c:if test="${sessionUser.id == modifyUser.id}">
+                <h1>Session Payment Information (optional)</h1>
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td>Card Number</td>
+                            <td><input type="text" name="cardno" value="${sessionUser.card.cardNumber}"></td>
+                        </tr>
+                        <tr>
+                            <td>Name on Card</td>
+                            <td><input type="text" name="cardname" value="${sessionUser.card.name}"></td>
+                        </tr>
+                        <tr>
+                            <td>Expiry Date</td>
+                            <td><input type="text" name="carddate" value="${sessionUser.card.endDate}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </c:if>
 
             <c:if test="${sessionUser.userRole !='ADMINISTRATOR'}">
                 <h1>User Details</h1>

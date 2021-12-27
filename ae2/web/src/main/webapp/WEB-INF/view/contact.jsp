@@ -13,6 +13,7 @@
 <!-- Begin page content -->
 <main role="main" class="container">
     <H1>Contact</H1>
+    <p>We currently don't have an email or phone number...</p>
 </main>
 
 
