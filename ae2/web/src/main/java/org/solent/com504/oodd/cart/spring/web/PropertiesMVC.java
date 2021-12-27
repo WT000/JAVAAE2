@@ -121,7 +121,6 @@ public class PropertiesMVC {
 
             try {
                 TransactionReplyMessage testResponse = testClient.transferMoney(testCard, testCard, 0.0, bankUsername, bankPassword);
-                testResponse.setStatus(BankTransactionStatus.SUCCESS);
                 
                 if (testResponse.getStatus() == BankTransactionStatus.SUCCESS) {
                     adminSettings.setProperty("org.solent.com504.oodd.ae2.url", bankURL);
@@ -142,6 +141,7 @@ public class PropertiesMVC {
                 }
             } catch (Exception e) {
                 errorMessage += "The entered bank URL is invalid.<br>";
+                errorMessage += e.getMessage() + "<br>";
             }
 
         }
