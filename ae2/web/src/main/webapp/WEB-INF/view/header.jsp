@@ -44,7 +44,7 @@
                         <ul class="nav navbar-nav">
                             <li <% if ("home".equals(request.getAttribute("selectedPage"))) {%> class="active"  <% } %> ><a href="./home">Home</a></li> 
                             <li <% if ("about".equals(request.getAttribute("selectedPage"))) {%>  class="active"  <% } %> ><a href="./about">
-                                    Catalogue<c:if test="${sessionUser.userRole != 'ANONYMOUS'}"> (admin mode)</c:if>
+                                    Catalogue<c:if test="${sessionUser.userRole == 'ADMINISTRATOR'}"> (admin mode)</c:if>
                                 </a></li> 
                             <li <% if ("contact".equals(request.getAttribute("selectedPage"))) {%>  class="active"  <% }%> ><a href="./contact">Cart</a></li>
                             <c:if test="${sessionUser.userRole != 'ANONYMOUS'}">

@@ -13,11 +13,11 @@
 <jsp:include page="header.jsp" />
 <!-- Begin page content -->
 <main role="main" class="container">
-    <H1>Home</H1>
+    <h3>Home</h3>
     <div style="color:red;">${errorMessage}</div>
     <div style="color:green;">${message}</div>
 
-    <H1>Available Items</H1>
+    <h1>Available Items</h1>
     <table class="table">
 
         <tr>
