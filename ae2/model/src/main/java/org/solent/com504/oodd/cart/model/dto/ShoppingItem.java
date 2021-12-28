@@ -16,15 +16,16 @@ import javax.persistence.Id;
  */
 @Entity
 public class ShoppingItem {
-    
+
     private Long id;
-    private String uuid=null;
-    private String name=null;
-    private Integer quantity=0;
-    private Double price=0.0;
-    
-    public ShoppingItem(){
-        
+    private String uuid = null;
+    private String name = null;
+    private Integer quantity = 0;
+    private Double price = 0.0;
+    private ShoppingItemCategory category;
+
+    public ShoppingItem() {
+
     }
 
     public ShoppingItem(String name, Double price) {
@@ -74,11 +75,17 @@ public class ShoppingItem {
         this.price = price;
     }
 
+    public ShoppingItemCategory getCategory() {
+        return category;
+    }
+
+    public void setCategory(ShoppingItemCategory category) {
+        this.category = category;
+    }
+
     @Override
     public String toString() {
-        return "ShoppingItem{" + "uuuid=" + uuid + ", name=" + name + ", quantity=" + quantity + ", price=" + price + '}';
+        return "ShoppingItem{uuuid=" + uuid + ", name=" + name + ", quantity=" + quantity + ", price=" + price + "category=" + category + '}';
     }
-    
-            
-    
+
 }
