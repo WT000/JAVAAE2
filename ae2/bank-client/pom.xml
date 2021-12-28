@@ -40,20 +40,17 @@
         <dependency>
             <groupId>org.glassfish.jersey.core</groupId>
             <artifactId>jersey-client</artifactId>
-            <version>2.32</version>
         </dependency>
         
         <!-- this library allows classes to be treated as json -->
         <dependency>
             <groupId>org.glassfish.jersey.media</groupId>
             <artifactId>jersey-media-json-jackson</artifactId>
-            <version>2.32</version>
         </dependency>
         
         <dependency>
             <groupId>org.glassfish.jersey.inject</groupId>
             <artifactId>jersey-hk2</artifactId>
-            <version>2.32</version>
         </dependency>
         
         <!-- used for jpa persistance annotations-->

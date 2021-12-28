@@ -16,6 +16,8 @@ import org.solent.com504.oodd.bank.model.dto.BankTransactionStatus;
 import org.solent.com504.oodd.bank.model.dto.CreditCard;
 import org.solent.com504.oodd.bank.model.dto.TransactionReplyMessage;
 
+// Get extra tests from the old project
+
 /**
  *
  * @author cgallen
