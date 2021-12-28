@@ -127,6 +127,8 @@ public class PropertiesMVC {
                     adminSettings.setProperty("org.solent.com504.oodd.ae2.cardNumber", bankCard);
                     adminSettings.setProperty("org.solent.com504.oodd.ae2.username", bankUsername);
                     adminSettings.setProperty("org.solent.com504.oodd.ae2.password", bankPassword);
+                    
+                    // Optional information
                     adminSettings.setProperty("org.solent.com504.oodd.ae2.cardName", bankCardName);
                     adminSettings.setProperty("org.solent.com504.oodd.ae2.cardDate", bankCardDate);
                     
