@@ -20,6 +20,7 @@ public class ShoppingItem {
     private Long id;
     private String uuid = null;
     private String name = null;
+    private String description = null;
     private Integer quantity = 0;
     private Double price = 0.0;
     private ShoppingItemCategory category;
@@ -83,9 +84,17 @@ public class ShoppingItem {
         this.category = category;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public String toString() {
-        return "ShoppingItem{uuuid=" + uuid + ", name=" + name + ", quantity=" + quantity + ", price=" + price + "category=" + category + '}';
+        return "ShoppingItem{uuuid=" + uuid + ", name=" + name + ", quantity=" + quantity + ", price=" + price + "category=" + category + "description=" + description + '}';
     }
 
 }

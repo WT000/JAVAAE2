@@ -10,5 +10,5 @@ package org.solent.com504.oodd.cart.model.dto;
  * @author Will
  */
 public enum ShoppingItemCategory {
-    TECH, HOME, DIY, TOYS, CLOTHING, SPORTS, JEWELRY, OTHER
+    TECH, HOME, DIY, TOYS, CLOTHING, SPORTS, JEWELRY, ASTRONOMY, OTHER;
 }

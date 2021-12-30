@@ -5,13 +5,18 @@
  */
 package org.solent.com504.oodd.cart.spring.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import org.solent.com504.oodd.cart.dao.impl.UserRepository;
 import org.solent.com504.oodd.cart.model.dto.User;
 import org.solent.com504.oodd.cart.model.dto.UserRole;
+import org.solent.com504.oodd.cart.dao.impl.ShoppingItemCatalogRepository;
+import org.solent.com504.oodd.cart.model.dto.ShoppingItem;
+import org.solent.com504.oodd.cart.model.dto.ShoppingItemCategory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -30,15 +35,27 @@ public class PopulateDatabaseOnStart {
 
     private static final String DEFAULT_USER_PASSWORD = "user1234";
     private static final String DEFAULT_USER_USERNAME = "user1234";
+    
+    private static final String DEFAULT_ITEM_NAME_1 = "Pet Alligator";
+    private static final String DEFAULT_ITEM_DESC_1 = "You read that name right!";
+    
+    private static final String DEFAULT_ITEM_NAME_2 = "Gaming Laptop";
+    private static final String DEFAULT_ITEM_DESC_2 = "An i9 core and RTX 3070!";
+    
+    private static final String DEFAULT_ITEM_NAME_3 = "Mini Telescope";
+    private static final String DEFAULT_ITEM_DESC_3 = "Look to the stars!";
 
     @Autowired
     private UserRepository userRepository;
+    
+    @Autowired
+    private ShoppingItemCatalogRepository catalogRepository;
 
     @PostConstruct
     public void initDatabase() {
-        LOG.debug("initialising database with startup values");
+        LOG.debug("populating database with default users");
 
-        // initialising admin and normal user if dont exist
+        // Populate database with admin and normal user if they don't exist
         User adminUser = new User();
         adminUser.setUsername(DEFAULT_ADMIN_USERNAME);
         adminUser.setFirstName("default administrator");
@@ -66,7 +83,70 @@ public class PopulateDatabaseOnStart {
         } else {
             LOG.info("defaultuser already exists. Not creating new :" + defaultUser);
         }
-
+        
+        LOG.debug("populating database with default items");
+        
+        // Populate database with items if they don't exist
+        ShoppingItem petAlligator = new ShoppingItem();
+        petAlligator.setCategory(ShoppingItemCategory.OTHER);
+        petAlligator.setName(DEFAULT_ITEM_NAME_1);
+        petAlligator.setDescription(DEFAULT_ITEM_DESC_1);
+        petAlligator.setPrice(50.0);
+        petAlligator.setQuantity(2);
+        
+        List<ShoppingItem> items = catalogRepository.findByNameIgnoreCase(DEFAULT_ITEM_NAME_1);
+        
+        if (items.isEmpty()) {
+            catalogRepository.save(petAlligator);
+            LOG.info("creating new default item 1:" + petAlligator);
+            List<ShoppingItem> testItems = catalogRepository.findByNameIgnoreCase(DEFAULT_ITEM_NAME_1);
+            if (testItems.size() == 1) {
+                LOG.info("default item 1 added!");
+            }
+        } else {
+            LOG.info("default item 1 already exists. Not creating new :" + petAlligator);
+        }
+        
+        ShoppingItem gamingLaptop = new ShoppingItem();
+        gamingLaptop.setCategory(ShoppingItemCategory.TECH);
+        gamingLaptop.setName(DEFAULT_ITEM_NAME_2);
+        gamingLaptop.setDescription(DEFAULT_ITEM_DESC_2);
+        gamingLaptop.setPrice(700.0);
+        gamingLaptop.setQuantity(7);
+        
+        items = catalogRepository.findByNameIgnoreCase(DEFAULT_ITEM_NAME_2);
+        
+        if (items.isEmpty()) {
+            catalogRepository.save(gamingLaptop);
+            LOG.info("creating new default item 2:" + gamingLaptop);
+            List<ShoppingItem> testItems = catalogRepository.findByNameIgnoreCase(DEFAULT_ITEM_NAME_2);
+            if (testItems.size() == 1) {
+                LOG.info("default item 2 added!");
+            }
+        } else {
+            LOG.info("default item 2 already exists. Not creating new :" + gamingLaptop);
+        }
+        
+        ShoppingItem miniTelescope = new ShoppingItem();
+        miniTelescope.setCategory(ShoppingItemCategory.ASTRONOMY);
+        miniTelescope.setName(DEFAULT_ITEM_NAME_3);
+        miniTelescope.setDescription(DEFAULT_ITEM_DESC_3);
+        miniTelescope.setPrice(20.0);
+        miniTelescope.setQuantity(13);
+        
+        items = catalogRepository.findByNameIgnoreCase(DEFAULT_ITEM_NAME_3);
+        
+        if (items.isEmpty()) {
+            catalogRepository.save(miniTelescope);
+            LOG.info("creating new default item 3:" + miniTelescope);
+            List<ShoppingItem> testItems = catalogRepository.findByNameIgnoreCase(DEFAULT_ITEM_NAME_3);
+            if (testItems.size() == 1) {
+                LOG.info("default item 3 added!");
+            }
+        } else {
+            LOG.info("default item 3 already exists. Not creating new :" + miniTelescope);
+        }
+        
         LOG.debug("database initialised");
     }
 }
