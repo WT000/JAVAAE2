@@ -81,7 +81,17 @@ public class CatalogueOrderMVC {
         User sessionUser = getSessionUser(session);
         model.addAttribute("sessionUser", sessionUser);
         
-        return "home";
+        String message = "";
+        String errorMessage = "";
+        
+        List<ShoppingItem> specificItem = itemRepository.findByUuid(uuid);
+        
+        ShoppingItem itemToDisplay = specificItem.get(0);
+        
+        model.addAttribute("item", itemToDisplay);
+        model.addAttribute("selectedPage", "catalogue");
+        
+        return "viewModifyItem";
     }
     
     public synchronized void doTransaction() {

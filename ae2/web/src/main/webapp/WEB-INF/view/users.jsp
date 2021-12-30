@@ -43,7 +43,7 @@
                         <td>
                             <form action="./viewModifyUser" method="GET">
                                 <input type="hidden" name="username" value="${user.username}">
-                                <button class="btn" type="submit" >Modify User</button>
+                                <button class="btn btn-primary" type="submit" >Modify User</button>
                             </form> 
                         </td>
                     </tr>
@@ -52,7 +52,7 @@
             </tbody>
         </table>
         <form action="./register" method="GET">
-            <button class="btn" type="submit" >Add User</button>
+            <button class="btn btn-primary" type="submit" >Add User</button>
         </form> 
     </div>
 </main>

@@ -7,6 +7,7 @@ package org.solent.com504.oodd.cart.spring.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import javax.annotation.PostConstruct;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -96,6 +97,7 @@ public class PopulateDatabaseOnStart {
         petAlligator.setDescription(DEFAULT_ITEM_DESC_1);
         petAlligator.setPrice(50.0);
         petAlligator.setQuantity(2);
+        petAlligator.setUuid(UUID.randomUUID().toString());
         
         List<ShoppingItem> items = catalogRepository.findByNameIgnoreCase(DEFAULT_ITEM_NAME_1);
         
@@ -116,6 +118,7 @@ public class PopulateDatabaseOnStart {
         gamingLaptop.setDescription(DEFAULT_ITEM_DESC_2);
         gamingLaptop.setPrice(700.0);
         gamingLaptop.setQuantity(7);
+        gamingLaptop.setUuid(UUID.randomUUID().toString());
         
         items = catalogRepository.findByNameIgnoreCase(DEFAULT_ITEM_NAME_2);
         
@@ -136,6 +139,7 @@ public class PopulateDatabaseOnStart {
         miniTelescope.setDescription(DEFAULT_ITEM_DESC_3);
         miniTelescope.setPrice(20.0);
         miniTelescope.setQuantity(13);
+        miniTelescope.setUuid(UUID.randomUUID().toString());
         
         items = catalogRepository.findByNameIgnoreCase(DEFAULT_ITEM_NAME_3);
         
@@ -156,6 +160,7 @@ public class PopulateDatabaseOnStart {
         ps5.setDescription(DEFAULT_ITEM_DESC_4);
         ps5.setPrice(500.0);
         ps5.setQuantity(0);
+        ps5.setUuid(UUID.randomUUID().toString());
         
         items = catalogRepository.findByNameIgnoreCase(DEFAULT_ITEM_NAME_4);
         

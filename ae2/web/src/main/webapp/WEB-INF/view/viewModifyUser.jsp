@@ -76,7 +76,7 @@
                         </tr>
                         <tr>
                             <td>Expiry Date</td>
-                            <td><input type="text" name="carddate" value="${sessionUser.card.endDate}" placeholder="01/01 or 01/2000"></td>
+                            <td><input type="text" name="carddate" value="${sessionUser.card.endDate}" placeholder="01/01 or 01/2001"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -138,7 +138,7 @@
             </c:if>
 
             <input type="hidden" name="username" value="${modifyUser.username}"/>
-            <button class="btn" type="submit" >Update User ${modifyUser.username}</button>
+            <button class="btn btn-primary" type="submit" >Update User ${modifyUser.username}</button>
         </form>
         
         <br>
@@ -148,12 +148,12 @@
             <input type="hidden" name="action" value="updatePassword"/>
             <p>Password <input type="password" name="password" ></p>
             <p>Re-enter Password <input type="password" name="password2" ></p>
-            <button class="btn" type="submit" >Update ${modifyUser.username} Password</button>
+            <button class="btn btn-primary" type="submit" >Update ${modifyUser.username} Password</button>
         </form>
         <c:if test="${sessionUser.userRole =='ADMINISTRATOR'}">
             <BR>
             <form action="./users">
-                <button class="btn" type="submit" >Return To Users</button>
+                <button class="btn btn-primary" type="submit" >Return To Users</button>
             </form> 
         </c:if> 
 
