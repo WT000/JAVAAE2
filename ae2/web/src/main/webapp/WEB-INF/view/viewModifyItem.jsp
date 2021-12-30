@@ -10,8 +10,6 @@
     <div style="color:red;">${errorMessage}</div>
     <div style="color:green;">${message}</div>
 
-    <input type="hidden" name="action" value="setProperties">
-
     <table class="table">
         <tbody>
             <tr>
