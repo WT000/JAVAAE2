@@ -5,8 +5,11 @@
  */
 package org.solent.com504.oodd.cart.spring.web;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.List;
 import java.util.ArrayList;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,6 +25,7 @@ import org.solent.com504.oodd.cart.dao.impl.UserRepository;
 import org.solent.com504.oodd.cart.model.dto.ShoppingItem;
 import org.solent.com504.oodd.cart.model.dto.ShoppingItemCategory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
@@ -150,12 +154,13 @@ public class CatalogueOrderMVC {
     
     @RequestMapping(value = "/viewModifyItem", method = {RequestMethod.POST})
     public String updateItem(
-            @RequestParam(value = "uuid", required = true) String uuid,
-            @RequestParam(value = "name", required = true) String name,
+            @RequestParam(value = "action", required = true) String action,
+            @RequestParam(value = "uuid", required = false) String uuid,
+            @RequestParam(value = "name", required = false) String name,
             @RequestParam(value = "description", required = false) String description,
-            @RequestParam(value = "category", required = true) String category,
-            @RequestParam(value = "price", required = true) String price,
-            @RequestParam(value = "quantity", required = true) String quantity,
+            @RequestParam(value = "category", required = false) String category,
+            @RequestParam(value = "price", required = false) String price,
+            @RequestParam(value = "quantity", required = false) String quantity,
             Model model,
             HttpSession session) {
 
@@ -170,7 +175,7 @@ public class CatalogueOrderMVC {
             model.addAttribute(errorMessage);
             return "home";
         }
-        
+
         List<ShoppingItem> specificItem = itemRepository.findByUuid(uuid);
 
         ShoppingItem itemToEdit = specificItem.get(0);
@@ -197,5 +202,31 @@ public class CatalogueOrderMVC {
 
         // If all is well, let the transaction go through and decrement stock
         throw new UnsupportedOperationException();
+    }
+    
+    /*
+     * Default exception handler, catches all exceptions, redirects to friendly
+     * error page. Does not catch request mapping errors
+     */
+    @ExceptionHandler(Exception.class)
+    public String myExceptionHandler(final Exception e, Model model,
+            HttpSession session, HttpServletRequest request
+    ) {
+        final StringWriter sw = new StringWriter();
+        final PrintWriter pw = new PrintWriter(sw);
+        e.printStackTrace(pw);
+        final String strStackTrace = sw.toString(); // stack trace as a string
+        String urlStr = "not defined";
+        if (request != null) {
+            StringBuffer url = request.getRequestURL();
+            urlStr = url.toString();
+        }
+        User sessionUser = getSessionUser(session);
+        model.addAttribute("sessionUser", sessionUser);
+        model.addAttribute("requestUrl", urlStr);
+        model.addAttribute("strStackTrace", strStackTrace);
+        model.addAttribute("exception", e);
+        //logger.error(strStackTrace); // send to logger first
+        return "error"; // default friendly exception message for sessionUser
     }
 }

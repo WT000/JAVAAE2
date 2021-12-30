@@ -13,6 +13,7 @@
 
     <c:if test="${sessionUser.userRole == 'ADMINISTRATOR'}">
         <form action="./viewModifyItem" method="POST">
+        <input type="hidden" name="action" value="updateItem">
         <input type="hidden" name="uuid" value="${item.uuid}">
     </c:if>
     <table class="table">
@@ -34,6 +35,7 @@
                     <td><input name="description" value="${item.description}"></td>
                 </c:if>
             </tr>
+            
             <tr>
                 <td>Category</td>
                 <c:if test="${sessionUser.userRole != 'ADMINISTRATOR'}">
@@ -55,6 +57,7 @@
                     </td>
                 </c:if>
             </tr>
+            
             <tr>
                 <td>Price</td>
                 <c:if test="${sessionUser.userRole != 'ADMINISTRATOR'}">
@@ -65,6 +68,7 @@
                     <td><input name="price" value="${item.price}"></td>
                 </c:if>
             </tr>
+            
             <tr>
                 <td>Quantity</td>
                 <c:if test="${sessionUser.userRole != 'ADMINISTRATOR'}">
@@ -75,6 +79,7 @@
                     <td><input name="quantity" value="${item.quantity}"></td>
                 </c:if>
             </tr>
+            
             <tr>
                 <td>UUID</td>
                 <td>${item.uuid}</td>
@@ -82,7 +87,13 @@
         </tbody>
     </table>
     <c:if test="${sessionUser.userRole == 'ADMINISTRATOR'}">
-        <button class="btn btn-primary" type="submit" >Update ${item.name}</button>
+        <button class="btn btn-primary" type="submit">Update ${item.name}</button>
+        </form>
+        <br>
+        <form action="./viewModifyItem" method="POST">
+            <input type="hidden" name="action" value="deleteItem">
+            <input type="hidden" name="uuid" value="${item.uuid}">
+            <button class="btn btn-danger" type="submit">Delete ${item.name}</button>
         </form>
         <br>
     </c:if>

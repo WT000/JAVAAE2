@@ -167,4 +167,30 @@ public class PropertiesMVC {
 
         return "properties";
     }
+    
+    /*
+     * Default exception handler, catches all exceptions, redirects to friendly
+     * error page. Does not catch request mapping errors
+     */
+    @ExceptionHandler(Exception.class)
+    public String myExceptionHandler(final Exception e, Model model,
+            HttpSession session, HttpServletRequest request
+    ) {
+        final StringWriter sw = new StringWriter();
+        final PrintWriter pw = new PrintWriter(sw);
+        e.printStackTrace(pw);
+        final String strStackTrace = sw.toString(); // stack trace as a string
+        String urlStr = "not defined";
+        if (request != null) {
+            StringBuffer url = request.getRequestURL();
+            urlStr = url.toString();
+        }
+        User sessionUser = getSessionUser(session);
+        model.addAttribute("sessionUser", sessionUser);
+        model.addAttribute("requestUrl", urlStr);
+        model.addAttribute("strStackTrace", strStackTrace);
+        model.addAttribute("exception", e);
+        //logger.error(strStackTrace); // send to logger first
+        return "error"; // default friendly exception message for sessionUser
+    }
 }

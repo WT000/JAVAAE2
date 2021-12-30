@@ -142,7 +142,9 @@ public class GenericMVC {
      * error page. Does not catch request mapping errors
      */
     @ExceptionHandler(Exception.class)
-    public String myExceptionHandler(final Exception e, Model model, HttpServletRequest request) {
+    public String myExceptionHandler(final Exception e, Model model,
+            HttpSession session, HttpServletRequest request
+    ) {
         final StringWriter sw = new StringWriter();
         final PrintWriter pw = new PrintWriter(sw);
         e.printStackTrace(pw);
@@ -152,6 +154,8 @@ public class GenericMVC {
             StringBuffer url = request.getRequestURL();
             urlStr = url.toString();
         }
+        User sessionUser = getSessionUser(session);
+        model.addAttribute("sessionUser", sessionUser);
         model.addAttribute("requestUrl", urlStr);
         model.addAttribute("strStackTrace", strStackTrace);
         model.addAttribute("exception", e);

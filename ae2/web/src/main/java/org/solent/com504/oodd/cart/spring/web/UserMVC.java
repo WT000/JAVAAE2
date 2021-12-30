@@ -497,7 +497,7 @@ public class UserMVC {
      */
     @ExceptionHandler(Exception.class)
     public String myExceptionHandler(final Exception e, Model model,
-            HttpServletRequest request
+            HttpSession session, HttpServletRequest request
     ) {
         final StringWriter sw = new StringWriter();
         final PrintWriter pw = new PrintWriter(sw);
@@ -508,6 +508,8 @@ public class UserMVC {
             StringBuffer url = request.getRequestURL();
             urlStr = url.toString();
         }
+        User sessionUser = getSessionUser(session);
+        model.addAttribute("sessionUser", sessionUser);
         model.addAttribute("requestUrl", urlStr);
         model.addAttribute("strStackTrace", strStackTrace);
         model.addAttribute("exception", e);
