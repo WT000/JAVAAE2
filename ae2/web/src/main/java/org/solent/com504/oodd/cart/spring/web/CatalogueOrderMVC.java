@@ -69,46 +69,28 @@ public class CatalogueOrderMVC {
             model.addAttribute("action", action);
             ShoppingItemCategory trueCat = null;
 
-            if (!"".equals(toFind) && !"".equals(category)) {
-                // If toFind and category are provided
-                if (!"ALL".equals(category)) {
-                    try {
+            try {
+                if (!"".equals(toFind) && !"".equals(category)) {
+                    // If toFind and category are provided
+                    if (!"ALL".equals(category)) {
                         trueCat = ShoppingItemCategory.valueOf(category);
-                    } catch (IllegalArgumentException e) {
-                        errorMessage = "Illegal search criteria.";
-                        model.addAttribute("errorMessage", errorMessage);
-                        model.addAttribute("categories", ShoppingItemCategory.values());
-                        model.addAttribute("currentItems", currentItems);
-                        model.addAttribute("hiddenItems", hiddenItems);
-                        model.addAttribute("selectedPage", "catalogue");
-                        return "catalogue";
-                    }
-                    currentItems = itemRepository.findByNameIgnoreCaseContainingAndCategory(toFind, trueCat);
-                    
-                } else {
-                    currentItems = itemRepository.findByNameIgnoreCaseContaining(toFind);
-                }
+                        currentItems = itemRepository.findByNameIgnoreCaseContainingAndCategory(toFind, trueCat);
 
-            } else if ("".equals(toFind) && !"".equals(category)) {
-                // If only the category is provided
-                if (!"ALL".equals(category)) {
-                    try {
+                    } else {
+                        currentItems = itemRepository.findByNameIgnoreCaseContaining(toFind);
+                    }
+
+                } else if ("".equals(toFind) && !"".equals(category)) {
+                    // If only the category is provided
+                    if (!"ALL".equals(category)) {
                         trueCat = ShoppingItemCategory.valueOf(category);
-                    } catch (IllegalArgumentException e) {
-                        errorMessage = "Illegal search criteria.";
-                        model.addAttribute("errorMessage", errorMessage);
-                        model.addAttribute("categories", ShoppingItemCategory.values());
-                        model.addAttribute("currentItems", currentItems);
-                        model.addAttribute("hiddenItems", hiddenItems);
-                        model.addAttribute("selectedPage", "catalogue");
-                        return "catalogue";
+                        currentItems = itemRepository.findByCategory(trueCat);
+                        
+                    } else {
+                        currentItems = itemRepository.findAll();
                     }
-                    currentItems = itemRepository.findByCategory(trueCat);
-                } else {
-                    currentItems = itemRepository.findAll();
                 }
-
-            } else {
+            } catch (Exception e) {
                 errorMessage = "Illegal search criteria.";
                 model.addAttribute("errorMessage", errorMessage);
                 model.addAttribute("categories", ShoppingItemCategory.values());
