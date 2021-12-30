@@ -17,7 +17,7 @@
 
     <div>
         <h3>Manage Users</h3>
-        <h1>showing ${userListSize} users:</h1>
+        <h1>Showing ${userListSize} users:</h1>
         <table class="table">
             <thead>
                 <tr>

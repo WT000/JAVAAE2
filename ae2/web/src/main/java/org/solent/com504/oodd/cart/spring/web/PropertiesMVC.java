@@ -58,12 +58,15 @@ public class PropertiesMVC {
     public String getProperties(Model model, HttpSession session) {
 
         if (getSessionUser(session).getUserRole() != UserRole.ADMINISTRATOR) {
+            LOG.debug("non-admin attempted to enter properties");
             return "redirect:/home";
         }
 
         String message = "The current properties are listed below.";
         String errorMessage = "";
-
+        
+        model.addAttribute("message", message);
+        model.addAttribute("errorMessage", errorMessage);
         model.addAttribute("currentURL", adminSettings.getProperty("org.solent.com504.oodd.ae2.url"));
         model.addAttribute("currentCardNo", adminSettings.getProperty("org.solent.com504.oodd.ae2.cardNumber"));
         model.addAttribute("currentUsername", adminSettings.getProperty("org.solent.com504.oodd.ae2.username"));

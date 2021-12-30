@@ -43,12 +43,12 @@
                     <div id="navbar" class="navbar-collapse collapse">
                         <ul class="nav navbar-nav">
                             <li <% if ("home".equals(request.getAttribute("selectedPage"))) {%> class="active"  <% } %> ><a href="./home">Home</a></li> 
-                            <li <% if ("about".equals(request.getAttribute("selectedPage"))) {%>  class="active"  <% } %> ><a href="./about">
+                            <li <% if ("catalogue".equals(request.getAttribute("selectedPage"))) {%>  class="active"  <% } %> ><a href="./catalogue">
                                     Catalogue<c:if test="${sessionUser.userRole == 'ADMINISTRATOR'}"> (admin mode)</c:if>
                                 </a></li> 
                             <li <% if ("contact".equals(request.getAttribute("selectedPage"))) {%>  class="active"  <% }%> ><a href="./contact">Cart</a></li>
                             <c:if test="${sessionUser.userRole != 'ANONYMOUS'}">
-                                <li <% if ("orders".equals(request.getAttribute("selectedPage"))) {%>  class="active"  <% }%> ><a href="./contact">Orders</a></li>
+                                <li <% if ("orders".equals(request.getAttribute("selectedPage"))) {%>  class="active"  <% }%> ><a href="./contact">My Orders</a></li>
                             </c:if>
                             
                             <c:if test="${sessionUser.userRole == 'ADMINISTRATOR'}">

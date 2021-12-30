@@ -1,9 +1,3 @@
-<%-- 
-    Document   : content
-    Created on : Jan 4, 2020, 11:19:47 AM
-    Author     : cgallen
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
 // request set in controller
@@ -12,8 +6,13 @@
 <jsp:include page="header.jsp" />
 <!-- Begin page content -->
 <main role="main" class="container">
-    <H1>About</H1>
-    <p>Us at AE2 Shopping Cart hope you enjoy your time here!</p>
+    <h3>About</h3>
+    <h1>What can be done in this release?</h1>
+    <ul>
+        <li>Users exist with 4 roles (customer, admin, anon or deactivated)</li>
+        <li>Properties can be set which are validated against the remote bank</li>
+        <li>Catalogue items are stored in the database</li>
+    </ul>
 </main>
 
 
