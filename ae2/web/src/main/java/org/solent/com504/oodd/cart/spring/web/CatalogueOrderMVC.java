@@ -134,9 +134,58 @@ public class CatalogueOrderMVC {
 
         List<ShoppingItem> specificItem = itemRepository.findByUuid(uuid);
 
+        if (specificItem.isEmpty()) {
+            errorMessage = "Couldn't find the item :(";
+            model.addAttribute("errorMessage", errorMessage);
+            return "home";
+        }
+        
         ShoppingItem itemToDisplay = specificItem.get(0);
 
         model.addAttribute("item", itemToDisplay);
+        model.addAttribute("selectedPage", "catalogue");
+
+        return "viewModifyItem";
+    }
+    
+    @RequestMapping(value = "/viewModifyItem", method = {RequestMethod.POST})
+    public String updateItem(
+            @RequestParam(value = "uuid", required = true) String uuid,
+            @RequestParam(value = "name", required = true) String name,
+            @RequestParam(value = "description", required = false) String description,
+            @RequestParam(value = "category", required = true) String category,
+            @RequestParam(value = "price", required = true) String price,
+            @RequestParam(value = "quantity", required = true) String quantity,
+            Model model,
+            HttpSession session) {
+
+        User sessionUser = getSessionUser(session);
+        model.addAttribute("sessionUser", sessionUser);
+
+        String message = "";
+        String errorMessage = "";
+        
+        if (sessionUser.getUserRole() != UserRole.ADMINISTRATOR) {
+            errorMessage = "You must be logged in to update items.";
+            model.addAttribute(errorMessage);
+            return "home";
+        }
+        
+        List<ShoppingItem> specificItem = itemRepository.findByUuid(uuid);
+
+        ShoppingItem itemToEdit = specificItem.get(0);
+        
+        itemToEdit.setName(name);
+        itemToEdit.setDescription(description);
+        itemToEdit.setCategory(ShoppingItemCategory.valueOf(category));
+        itemToEdit.setPrice(Double.valueOf(price));
+        itemToEdit.setQuantity(Integer.valueOf(quantity));
+        
+        itemRepository.save(itemToEdit);
+        message = "Item successfully saved!";
+        
+        model.addAttribute("message", message);
+        model.addAttribute("item", itemToEdit);
         model.addAttribute("selectedPage", "catalogue");
 
         return "viewModifyItem";

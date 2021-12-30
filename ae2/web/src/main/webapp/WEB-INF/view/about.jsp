@@ -12,6 +12,8 @@
         <li>Users exist with 4 roles (customer, admin, anon or deactivated)</li>
         <li>Properties can be set which are validated against the remote bank</li>
         <li>Catalogue items are stored in the database</li>
+        <li>Items in the database can be searched for</li>
+        <li>Items in the database can be edited</li>
     </ul>
 </main>
 

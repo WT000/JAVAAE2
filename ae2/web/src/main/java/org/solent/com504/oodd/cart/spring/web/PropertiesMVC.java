@@ -64,7 +64,7 @@ public class PropertiesMVC {
             return "redirect:/home";
         }
 
-        String message = "The current properties are listed below.";
+        String message = "";
         String errorMessage = "";
         
         model.addAttribute("message", message);

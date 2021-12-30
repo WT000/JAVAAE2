@@ -20,7 +20,7 @@
     <div style="color:green;">${message}</div>
 
     <h1>Search Items</h1>
-    <form action="./catalogue" method="GET">
+    <form action="./catalogue" method="GET" autocomplete="off">
         <input type="hidden" name="action" value="search">
 
         <input name="toFind">
