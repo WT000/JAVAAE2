@@ -56,8 +56,10 @@ public class PropertiesMVC {
 
     @RequestMapping(value = "/properties", method = {RequestMethod.GET})
     public String getProperties(Model model, HttpSession session) {
-
-        if (getSessionUser(session).getUserRole() != UserRole.ADMINISTRATOR) {
+        User sessionUser = getSessionUser(session);
+        model.addAttribute("sessionUser", sessionUser);
+        
+        if (sessionUser.getUserRole() != UserRole.ADMINISTRATOR) {
             LOG.debug("non-admin attempted to enter properties");
             return "redirect:/home";
         }
@@ -87,7 +89,10 @@ public class PropertiesMVC {
             Model model,
             HttpSession session) {
 
-        if (getSessionUser(session).getUserRole() != UserRole.ADMINISTRATOR) {
+        User sessionUser = getSessionUser(session);
+        model.addAttribute("sessionUser", sessionUser);
+        
+        if (sessionUser.getUserRole() != UserRole.ADMINISTRATOR) {
             return "redirect:/home";
         }
 

@@ -44,6 +44,9 @@ public class PopulateDatabaseOnStart {
     
     private static final String DEFAULT_ITEM_NAME_3 = "Mini Telescope";
     private static final String DEFAULT_ITEM_DESC_3 = "Look to the stars!";
+    
+    private static final String DEFAULT_ITEM_NAME_4 = "PS5";
+    private static final String DEFAULT_ITEM_DESC_4 = "The newest gaming console!";
 
     @Autowired
     private UserRepository userRepository;
@@ -145,6 +148,26 @@ public class PopulateDatabaseOnStart {
             }
         } else {
             LOG.info("default item 3 already exists. Not creating new :" + miniTelescope);
+        }
+        
+        ShoppingItem ps5 = new ShoppingItem();
+        ps5.setCategory(ShoppingItemCategory.TECH);
+        ps5.setName(DEFAULT_ITEM_NAME_4);
+        ps5.setDescription(DEFAULT_ITEM_DESC_4);
+        ps5.setPrice(500.0);
+        ps5.setQuantity(0);
+        
+        items = catalogRepository.findByNameIgnoreCase(DEFAULT_ITEM_NAME_4);
+        
+        if (items.isEmpty()) {
+            catalogRepository.save(ps5);
+            LOG.info("creating new default item 4:" + ps5);
+            List<ShoppingItem> testItems = catalogRepository.findByNameIgnoreCase(DEFAULT_ITEM_NAME_4);
+            if (testItems.size() == 1) {
+                LOG.info("default item 4 added!");
+            }
+        } else {
+            LOG.info("default item 4 already exists. Not creating new :" + ps5);
         }
         
         LOG.debug("database initialised");
