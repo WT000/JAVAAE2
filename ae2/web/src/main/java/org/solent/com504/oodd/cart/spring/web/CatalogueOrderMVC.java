@@ -136,8 +136,9 @@ public class CatalogueOrderMVC {
         String errorMessage = "";
 
         if (sessionUser.getUserRole() != UserRole.ADMINISTRATOR) {
-            errorMessage = "You must be logged in as an admin to add items.";
+            errorMessage = "You must be logged in as an admin to create items.";
             model.addAttribute("errorMessage", errorMessage);
+            model.addAttribute("selectedPage", "home");
             return "home";
         }
 
@@ -170,8 +171,9 @@ public class CatalogueOrderMVC {
         String errorMessage = "";
 
         if (sessionUser.getUserRole() != UserRole.ADMINISTRATOR) {
-            errorMessage = "You must be logged in to update items.";
+            errorMessage = "You must be logged in to create items.";
             model.addAttribute(errorMessage);
+            model.addAttribute("selectedPage", "home");
             return "home";
         }
         
@@ -212,6 +214,7 @@ public class CatalogueOrderMVC {
         if (specificItem.isEmpty()) {
             errorMessage = "Couldn't find the item :(";
             model.addAttribute("errorMessage", errorMessage);
+            model.addAttribute("selectedPage", "home");
             return "home";
         }
 
@@ -245,6 +248,7 @@ public class CatalogueOrderMVC {
         if (sessionUser.getUserRole() != UserRole.ADMINISTRATOR) {
             errorMessage = "You must be logged in to update items.";
             model.addAttribute(errorMessage);
+            model.addAttribute("selectedPage", "home");
             return "home";
         }
 
