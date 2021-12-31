@@ -1,9 +1,3 @@
-<%-- 
-    Document   : error
-    Created on : 3 Aug 2021, 20:22:57
-    Author     : cgallen
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:include page="header.jsp" />
 <!-- Begin page content -->

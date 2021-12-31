@@ -1,8 +1,4 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%
-// request set in controller
-//    request.setAttribute("selectedPage","about");
-%>
 <jsp:include page="header.jsp" />
 <!-- Begin page content -->
 <main role="main" class="container">
@@ -18,8 +14,5 @@
         <li>Items can be added to the database</li>
     </ul>
 </main>
-
-
-
 
 <jsp:include page="footer.jsp" />

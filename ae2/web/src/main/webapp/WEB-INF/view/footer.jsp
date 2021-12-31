@@ -1,9 +1,3 @@
-<%-- 
-    Document   : footer
-    Created on : Jan 4, 2020, 11:19:23 AM
-    Author     : cgallen
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
         </div> <!-- /container -->

@@ -1,8 +1,3 @@
-<%-- 
-    Document   : header
-    Created on : Jan 4, 2020, 11:19:01 AM
-    Author     : WT000
---%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
