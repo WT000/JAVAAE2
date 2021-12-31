@@ -83,7 +83,7 @@ public class CatalogueOrderMVC {
                         currentItems = itemRepository.findByNameIgnoreCaseContainingAndCategory(toFind, trueCat);
 
                     } else {
-                        currentItems = itemRepository.findByNameIgnoreCaseContaining(toFind);
+                        currentItems = itemRepository.findByNameIgnoreCaseContaining("%" + toFind + "%");
                     }
 
                 } else if ("".equals(toFind) && !"".equals(category)) {
@@ -93,7 +93,7 @@ public class CatalogueOrderMVC {
                         currentItems = itemRepository.findByCategory(trueCat);
 
                     } else {
-                        currentItems = itemRepository.findAll();
+                        currentItems = itemRepository.findAllItems();
                     }
                 }
             } catch (Exception e) {
