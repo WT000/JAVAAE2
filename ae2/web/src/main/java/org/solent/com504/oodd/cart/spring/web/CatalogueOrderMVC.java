@@ -56,7 +56,6 @@ public class CatalogueOrderMVC {
 
     @RequestMapping(value = "/catalogue", method = {RequestMethod.GET})
     public String getCatalogue(
-            @RequestParam(value = "action", required = false) String action,
             @RequestParam(value = "toFind", required = false) String toFind,
             @RequestParam(value = "category", required = false) String category,
             Model model,
