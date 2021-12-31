@@ -18,6 +18,14 @@
 <main role="main" class="container">
     <h3>Catalogue</h3>
     <div style="color:green;">${message}</div>
+    
+    <c:if test="${sessionUser.userRole == 'ADMINISTRATOR'}">
+        <h1>Create items</h1>
+        <form action="./catalogue" method="POST" autocomplete="off">
+            <button class="btn btn-primary">Create new item</button>
+        </form>
+        <br>
+    </c:if>
 
     <h1>Search Items</h1>
     <form action="./catalogue" method="GET" autocomplete="off">

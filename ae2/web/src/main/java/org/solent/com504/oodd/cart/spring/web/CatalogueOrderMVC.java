@@ -9,6 +9,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
@@ -124,6 +125,32 @@ public class CatalogueOrderMVC {
 
         // If searching for a specific item, users can also see hidden items
         return "catalogue";
+    }
+    
+    @RequestMapping(value = "/catalogue", method = {RequestMethod.POST})
+    public String createCatalogueItem(Model model, HttpSession session) {
+        User sessionUser = getSessionUser(session);
+        model.addAttribute("sessionUser", sessionUser);
+
+        String message = "";
+        String errorMessage = "";
+
+        if (sessionUser.getUserRole() != UserRole.ADMINISTRATOR) {
+            errorMessage = "You must be logged in as an admin to add items.";
+            model.addAttribute("errorMessage", errorMessage);
+            return "home";
+        }
+        
+        // Create a blank item, add it to the database and redirect to its
+        // viewModifyItem page
+        ShoppingItem newItem = new ShoppingItem();
+        newItem.setName("New Item");
+        newItem.setQuantity(0); 
+        newItem.setCategory(ShoppingItemCategory.OTHER);
+        newItem.setUuid(UUID.randomUUID().toString());
+        
+        itemRepository.save(newItem);
+        return "redirect:/viewModifyItem?itemUuid=" + newItem.getUuid();
     }
 
     @RequestMapping(value = "/viewModifyItem", method = {RequestMethod.GET})

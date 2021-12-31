@@ -12,9 +12,9 @@ import org.springframework.stereotype.Repository;
 public interface ShoppingItemCatalogRepository  extends JpaRepository<ShoppingItem,Long>{
     public List<ShoppingItem> findByNameIgnoreCase(String name);
     
-    public List<ShoppingItem> findByNameIgnoreCaseContaining(String name);
-    
     public List<ShoppingItem> findByUuid(String uuid);
+    
+    public List<ShoppingItem> findByNameIgnoreCaseContaining(String name);
     
     public List<ShoppingItem> findByCategory(ShoppingItemCategory category);
     

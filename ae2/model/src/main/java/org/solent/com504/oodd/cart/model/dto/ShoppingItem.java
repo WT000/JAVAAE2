@@ -23,6 +23,7 @@ public class ShoppingItem {
     private String description = null;
     private Integer quantity = 0;
     private Double price = 0.0;
+
     private ShoppingItemCategory category;
 
     public ShoppingItem() {
