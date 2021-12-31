@@ -38,7 +38,7 @@
             <div class="col-sm-6 col-md-4">
                 <div class="thumbnail">
                     <div class="caption">
-                        <h1 class="text-center">${item.name} - £${item.price}</h1>
+                        <h1 class="text-center"><strong>${item.name}</strong> (<a href="catalogue?toFind=&category=${item.category}">${item.category}</a>) - £${item.price}</h1>
                         <p class="text-center">${item.description}</p>
                         <div id="button-spacer">
                             <c:if test="${item.quantity > 0}">
@@ -70,7 +70,7 @@
                 <div class="col-sm-6 col-md-4">
                     <div class="thumbnail">
                         <div class="caption">
-                            <h1 class="text-center">${item.name} - £${item.price}</h1>
+                            <h1 class="text-center"><strong>${item.name}</strong> (<a href="catalogue?toFind=&category=${item.category}">${item.category}</a>) - £${item.price}</h1>
                             <p class="text-center">${item.description}</p>
                             <div id="button-spacer">
                                 <c:if test="${item.quantity == 0}">
