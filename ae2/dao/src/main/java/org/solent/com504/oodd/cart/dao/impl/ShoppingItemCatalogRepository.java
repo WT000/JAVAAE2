@@ -14,11 +14,13 @@ public interface ShoppingItemCatalogRepository  extends JpaRepository<ShoppingIt
     
     public List<ShoppingItem> findByNameIgnoreCaseContaining(String name);
     
-    public List<ShoppingItem> findByUuid(String Uuid);
+    public List<ShoppingItem> findByUuid(String uuid);
     
     public List<ShoppingItem> findByCategory(ShoppingItemCategory category);
     
     public List<ShoppingItem> findByNameIgnoreCaseContainingAndCategory(String name, ShoppingItemCategory category);
+    
+    public Long deleteByUuid(String uuid);
     
     @Query("select si from ShoppingItem si where si.quantity > 0")
     public List<ShoppingItem> findAvailableItems();

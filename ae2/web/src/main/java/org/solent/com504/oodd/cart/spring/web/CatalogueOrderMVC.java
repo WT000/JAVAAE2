@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
@@ -89,7 +90,7 @@ public class CatalogueOrderMVC {
                     if (!"ALL".equals(category)) {
                         trueCat = ShoppingItemCategory.valueOf(category);
                         currentItems = itemRepository.findByCategory(trueCat);
-                        
+
                     } else {
                         currentItems = itemRepository.findAll();
                     }
@@ -144,7 +145,7 @@ public class CatalogueOrderMVC {
             model.addAttribute("errorMessage", errorMessage);
             return "home";
         }
-        
+
         ShoppingItem itemToDisplay = specificItem.get(0);
 
         model.addAttribute("item", itemToDisplay);
@@ -152,8 +153,9 @@ public class CatalogueOrderMVC {
 
         return "viewModifyItem";
     }
-    
+
     @RequestMapping(value = "/viewModifyItem", method = {RequestMethod.POST})
+    @Transactional
     public String updateItem(
             @RequestParam(value = "action", required = true) String action,
             @RequestParam(value = "uuid", required = false) String uuid,
@@ -170,31 +172,47 @@ public class CatalogueOrderMVC {
 
         String message = "";
         String errorMessage = "";
-        
+
         if (sessionUser.getUserRole() != UserRole.ADMINISTRATOR) {
             errorMessage = "You must be logged in to update items.";
             model.addAttribute(errorMessage);
             return "home";
         }
 
-        List<ShoppingItem> specificItem = itemRepository.findByUuid(uuid);
+        if ("updateItem".equals(action) || "deleteItem".equals(action)) {
+            List<ShoppingItem> specificItem = itemRepository.findByUuid(uuid);
 
-        ShoppingItem itemToEdit = specificItem.get(0);
-        
-        itemToEdit.setName(name);
-        itemToEdit.setDescription(description);
-        itemToEdit.setCategory(ShoppingItemCategory.valueOf(category));
-        itemToEdit.setPrice(Double.valueOf(price));
-        itemToEdit.setQuantity(Integer.valueOf(quantity));
-        
-        itemRepository.save(itemToEdit);
-        message = "Item successfully saved!";
-        
-        model.addAttribute("message", message);
-        model.addAttribute("item", itemToEdit);
-        model.addAttribute("selectedPage", "catalogue");
+            ShoppingItem itemToEdit = specificItem.get(0);
 
-        return "viewModifyItem";
+            // The user wants to update the item
+            if ("updateItem".equals(action)) {
+                itemToEdit.setName(name);
+                itemToEdit.setDescription(description);
+                itemToEdit.setCategory(ShoppingItemCategory.valueOf(category));
+                itemToEdit.setPrice(Double.valueOf(price));
+                
+                if (Integer.valueOf(quantity) < 0) {
+                    quantity = "0";
+                }
+                
+                itemToEdit.setQuantity(Integer.valueOf(quantity));
+
+                itemRepository.save(itemToEdit);
+                message = "Item successfully saved!";
+
+                model.addAttribute("message", message);
+                model.addAttribute("item", itemToEdit);
+                model.addAttribute("selectedPage", "catalogue");
+
+                return "viewModifyItem";
+            } else {
+                // The user wants to delete the item
+                itemRepository.deleteByUuid(uuid);
+                return "redirect:/catalogue";
+            }
+        } else {
+            return "redirect:/catalogue";
+        }
     }
 
     public synchronized void doTransaction() {
@@ -204,7 +222,7 @@ public class CatalogueOrderMVC {
         // If all is well, let the transaction go through and decrement stock
         throw new UnsupportedOperationException();
     }
-    
+
     /*
      * Default exception handler, catches all exceptions, redirects to friendly
      * error page. Does not catch request mapping errors
