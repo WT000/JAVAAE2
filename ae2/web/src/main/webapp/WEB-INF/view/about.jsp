@@ -13,6 +13,7 @@
         <li>Items in the database can be deleted</li>
         <li>Items can be added to the database</li>
         <li>Items can be added to a cart</li>
+        <li>Cart items can be purchased</li>
     </ul>
 </main>
 
