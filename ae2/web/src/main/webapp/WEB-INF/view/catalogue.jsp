@@ -21,9 +21,8 @@
     
     <c:if test="${sessionUser.userRole == 'ADMINISTRATOR'}">
         <h1>Create items</h1>
-        <form action="./catalogue" method="POST" autocomplete="off">
-            <button class="btn btn-primary">Create new item</button>
-        </form>
+        <a href="./createItem" class="btn btn-primary" role="button">Create a new item</a>
+        <br>
         <br>
     </c:if>
 

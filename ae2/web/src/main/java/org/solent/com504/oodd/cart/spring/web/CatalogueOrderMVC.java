@@ -126,9 +126,9 @@ public class CatalogueOrderMVC {
         // If searching for a specific item, users can also see hidden items
         return "catalogue";
     }
-    
-    @RequestMapping(value = "/catalogue", method = {RequestMethod.POST})
-    public String createCatalogueItem(Model model, HttpSession session) {
+
+    @RequestMapping(value = "/createItem", method = {RequestMethod.GET})
+    public String getCreateCatalogueItem(Model model, HttpSession session) {
         User sessionUser = getSessionUser(session);
         model.addAttribute("sessionUser", sessionUser);
 
@@ -140,17 +140,59 @@ public class CatalogueOrderMVC {
             model.addAttribute("errorMessage", errorMessage);
             return "home";
         }
-        
+
         // Create a blank item, add it to the database and redirect to its
         // viewModifyItem page
         ShoppingItem newItem = new ShoppingItem();
         newItem.setName("New Item");
-        newItem.setQuantity(0); 
+        newItem.setQuantity(0);
         newItem.setCategory(ShoppingItemCategory.OTHER);
-        newItem.setUuid(UUID.randomUUID().toString());
+
+        model.addAttribute("item", newItem);
+        return "createItem";
+    }
+
+    @RequestMapping(value = "/createItem", method = {RequestMethod.POST})
+    @Transactional
+    public String createCatalogueItem(
+            @RequestParam(value = "name", required = false) String name,
+            @RequestParam(value = "description", required = false) String description,
+            @RequestParam(value = "category", required = false) String category,
+            @RequestParam(value = "price", required = false) String price,
+            @RequestParam(value = "quantity", required = false) String quantity,
+            Model model,
+            HttpSession session) {
+
+        User sessionUser = getSessionUser(session);
+        model.addAttribute("sessionUser", sessionUser);
+
+        String message = "";
+        String errorMessage = "";
+
+        if (sessionUser.getUserRole() != UserRole.ADMINISTRATOR) {
+            errorMessage = "You must be logged in to update items.";
+            model.addAttribute(errorMessage);
+            return "home";
+        }
         
-        itemRepository.save(newItem);
-        return "redirect:/viewModifyItem?itemUuid=" + newItem.getUuid();
+        ShoppingItem itemToCreate = new ShoppingItem();
+
+        // The user wants to update the item
+        itemToCreate.setName(name);
+        itemToCreate.setDescription(description);
+        itemToCreate.setCategory(ShoppingItemCategory.valueOf(category));
+        itemToCreate.setPrice(Double.valueOf(price));
+        itemToCreate.setUuid(UUID.randomUUID().toString());
+
+        if (Integer.valueOf(quantity) < 0) {
+            quantity = "0";
+        }
+
+        itemToCreate.setQuantity(Integer.valueOf(quantity));
+
+        itemRepository.save(itemToCreate);
+
+        return "redirect:/viewModifyItem?itemUuid=" + itemToCreate.getUuid();
     }
 
     @RequestMapping(value = "/viewModifyItem", method = {RequestMethod.GET})
@@ -217,11 +259,11 @@ public class CatalogueOrderMVC {
                 itemToEdit.setDescription(description);
                 itemToEdit.setCategory(ShoppingItemCategory.valueOf(category));
                 itemToEdit.setPrice(Double.valueOf(price));
-                
+
                 if (Integer.valueOf(quantity) < 0) {
                     quantity = "0";
                 }
-                
+
                 itemToEdit.setQuantity(Integer.valueOf(quantity));
 
                 itemRepository.save(itemToEdit);
