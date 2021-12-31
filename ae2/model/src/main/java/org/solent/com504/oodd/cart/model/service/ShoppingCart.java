@@ -5,21 +5,10 @@
  */
 package org.solent.com504.oodd.cart.model.service;
 
-import org.solent.com504.oodd.cart.model.dto.ShoppingItem;
-import java.util.List;
+import java.util.LinkedHashMap;
 
-/**
- *
- * @author cgallen
- */
 public interface ShoppingCart {
-
-    public List<ShoppingItem> getShoppingCartItems();
+    public LinkedHashMap<String, Integer> getBasket();
     
-    public void addItemToCart(ShoppingItem shoppingItem);
-    
-    public void removeItemFromCart(String itemUuid);
-    
-    public double getTotal();
-    
+    public void setBasket(LinkedHashMap<String, Integer> basket);
 }

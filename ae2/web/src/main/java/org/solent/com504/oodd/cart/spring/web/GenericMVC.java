@@ -11,7 +11,6 @@ import org.solent.com504.oodd.cart.model.dto.ShoppingItem;
 import org.solent.com504.oodd.cart.model.dto.User;
 import org.solent.com504.oodd.cart.model.dto.UserRole;
 import org.solent.com504.oodd.cart.model.service.ShoppingCart;
-import org.solent.com504.oodd.cart.model.service.ShoppingService;
 import org.solent.com504.oodd.cart.web.WebObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,11 +25,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class GenericMVC {
 
     final static Logger LOG = LogManager.getLogger(GenericMVC.class);
-
-    // this could be done with an autowired bean
-    //private ShoppingService shoppingService = WebObjectFactory.getShoppingService();
-    @Autowired
-    ShoppingService shoppingService = null;
 
     // note that scope is session in configuration
     // so the shopping cart is unique for each web session

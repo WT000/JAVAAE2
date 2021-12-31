@@ -28,6 +28,8 @@ import org.solent.com504.oodd.cart.dao.impl.ShoppingItemCatalogRepository;
 import org.solent.com504.oodd.cart.dao.impl.UserRepository;
 import org.solent.com504.oodd.cart.model.dto.ShoppingItem;
 import org.solent.com504.oodd.cart.model.dto.ShoppingItemCategory;
+import org.solent.com504.oodd.cart.model.service.ShoppingCart;
+import org.solent.com504.oodd.cart.service.ShoppingCartImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -44,6 +46,9 @@ public class CatalogueOrderMVC {
 
     @Autowired
     ShoppingItemCatalogRepository itemRepository;
+    
+    @Autowired
+    ShoppingCart shoppingCart = null;
 
     private User getSessionUser(HttpSession session) {
         User sessionUser = (User) session.getAttribute("sessionUser");
@@ -145,7 +150,7 @@ public class CatalogueOrderMVC {
             // Item is found
             ShoppingItem specificItem = foundItems.get(0);
 
-            LinkedHashMap<String, Integer> basket = sessionUser.getBasket();
+            LinkedHashMap<String, Integer> basket = shoppingCart.getBasket();
 
             if (basket.get(specificItem.getUuid()) == null) {
                 // The item isn't in the basket
@@ -335,7 +340,8 @@ public class CatalogueOrderMVC {
         User sessionUser = getSessionUser(session);
         model.addAttribute("sessionUser", sessionUser);
 
-        LinkedHashMap<String, Integer> basket = sessionUser.getBasket();
+        LinkedHashMap<String, Integer> basket = shoppingCart.getBasket();
+        
         ArrayList<ShoppingItem> shoppingCartItems = new ArrayList<>();
         double total = 0;
         boolean foundError = false;
@@ -370,7 +376,7 @@ public class CatalogueOrderMVC {
             model.addAttribute("shoppingCartTotal", total);
         } else {
             model.addAttribute("errorMessage", "Something went wrong with your cart, an item may have been deleted. Resetting your cart.");
-            sessionUser.setBasket(new LinkedHashMap<String, Integer>());
+            shoppingCart.setBasket(new LinkedHashMap<String, Integer>());
         }
 
         model.addAttribute("selectedPage", "cart");
@@ -388,7 +394,7 @@ public class CatalogueOrderMVC {
         User sessionUser = getSessionUser(session);
         model.addAttribute("sessionUser", sessionUser);
 
-        LinkedHashMap<String, Integer> basket = sessionUser.getBasket();
+        LinkedHashMap<String, Integer> basket = shoppingCart.getBasket();
 
         if (basket.get(uuid) != null) {
             try {

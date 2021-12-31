@@ -1,7 +1,6 @@
 package org.solent.com504.oodd.cart.spring.web;
 
 import org.solent.com504.oodd.cart.model.service.ShoppingCart;
-import org.solent.com504.oodd.cart.model.service.ShoppingService;
 import org.solent.com504.oodd.cart.service.ServiceObjectFactory;
 import org.solent.com504.oodd.cart.spring.service.ServiceConfiguration;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -17,11 +16,6 @@ import org.springframework.web.context.WebApplicationContext;
 @Import(ServiceConfiguration.class)
 @PropertySource("classpath:persistence-app.properties")
 public class SpringBootJspConfiguration {
-
-    @Bean
-    ShoppingService getShoppingService() {
-        return ServiceObjectFactory.getShoppingService();
-    }
 
     // see https://www.baeldung.com/spring-mvc-session-attributes
     @Bean

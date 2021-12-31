@@ -32,10 +32,6 @@ public class User {
     // SessionUser
     private CreditCard card;
 
-    // Basket (UUID, amount), only store references as the ShoppingItem's may
-    // be updated
-    private LinkedHashMap<String, Integer> basket = new LinkedHashMap<String, Integer>();
-
     private UserRole userRole;
 
     private Boolean enabled = true;
@@ -135,18 +131,10 @@ public class User {
         this.hashedPassword = hashedPassword;
     }
 
-    public LinkedHashMap<String, Integer> getBasket() {
-        return basket;
-    }
-
-    public void setBasket(LinkedHashMap<String, Integer> basket) {
-        this.basket = basket;
-    }
-
     // no password or hashed password
     @Override
     public String toString() {
-        return "User{" + "id=" + id + ", firstName=" + firstName + ", secondName=" + secondName + ", username=" + username + ", password=NOT SHOWN, address=" + address + ", userRole=" + userRole + "basket=" + basket + '}';
+        return "User{" + "id=" + id + ", firstName=" + firstName + ", secondName=" + secondName + ", username=" + username + ", password=NOT SHOWN, address=" + address + ", userRole=" + userRole + '}';
     }
 
 }

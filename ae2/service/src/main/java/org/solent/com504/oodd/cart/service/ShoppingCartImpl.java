@@ -6,7 +6,7 @@
 package org.solent.com504.oodd.cart.service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import org.solent.com504.oodd.cart.model.service.ShoppingCart;
 import org.solent.com504.oodd.cart.model.dto.ShoppingItem;
@@ -17,59 +17,15 @@ import org.solent.com504.oodd.cart.model.dto.ShoppingItem;
  */
 public class ShoppingCartImpl implements ShoppingCart {
 
-    private HashMap<String, ShoppingItem> itemMap = new HashMap<String, ShoppingItem>();
-
+    private LinkedHashMap<String, Integer> basket = new LinkedHashMap<String, Integer>();
+    
     @Override
-    public List<ShoppingItem> getShoppingCartItems() {
-        List<ShoppingItem> itemlist = new ArrayList();
-        for (String itemUUID : itemMap.keySet()) {
-            ShoppingItem shoppingCartItem = itemMap.get(itemUUID);
-            itemlist.add(shoppingCartItem);
-        }
-        return itemlist;
+    public LinkedHashMap<String, Integer> getBasket() {
+        return basket;
     }
-
+    
     @Override
-    public void addItemToCart(ShoppingItem shoppingItem) {
-        // itemMap.put(shoppingItem.getUuid(), shoppingItem);
-        
-        // ANSWER
-        boolean itemExists = false;
-        for (String itemUUID : itemMap.keySet()) {
-            ShoppingItem shoppingCartItem = itemMap.get(itemUUID);
-            if (shoppingCartItem.getName().equals(shoppingItem.getName())){
-                Integer q = shoppingCartItem.getQuantity();
-                shoppingCartItem.setQuantity(q+1);
-                itemExists = true;
-                break;
-            }
-        }
-        if (!itemExists){
-            shoppingItem.setQuantity(1);
-            itemMap.put(shoppingItem.getUuid(), shoppingItem);
-        }
+    public void setBasket(LinkedHashMap<String, Integer> basket) {
+        this.basket = basket;
     }
-
-    @Override
-    public void removeItemFromCart(String itemUuid) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        // ANSWER
-        itemMap.remove(itemUuid);
-    }
-
-    @Override
-    public double getTotal() {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        // ANSWER
-        double total = 0;
-
-        for (String itemUUID : itemMap.keySet()) {
-            ShoppingItem shoppingCartItem = itemMap.get(itemUUID);
-            total = total + shoppingCartItem.getPrice() * shoppingCartItem.getQuantity();
-        }
-
-        return total;
-
-    }
-
 }
