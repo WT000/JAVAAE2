@@ -10,7 +10,7 @@
 
         <footer class="footer">
             <div class="container">
-                <a href="./about">ALPHA 1.3</a>
+                <a href="./about">ALPHA 1.4</a>
             </div>
         </footer>
 

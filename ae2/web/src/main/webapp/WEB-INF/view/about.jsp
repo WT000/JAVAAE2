@@ -14,6 +14,8 @@
         <li>Catalogue items are stored in the database</li>
         <li>Items in the database can be searched for</li>
         <li>Items in the database can be edited</li>
+        <li>Items in the database can be deleted</li>
+        <li>Items can be added to the database</li>
     </ul>
 </main>
 
