@@ -6,6 +6,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Transient;
 import javax.persistence.Embedded;
+import java.util.LinkedHashMap;
+import java.util.List;
 import org.solent.com504.oodd.password.PasswordUtils;
 import org.solent.com504.oodd.bank.model.dto.CreditCard;
 
@@ -25,9 +27,14 @@ public class User {
     private String hashedPassword = "";
 
     private Address address;
-    
-    // Optionally store parts of their CreditCard (not cvv)
+
+    // Optionally store parts of their CreditCard (not cvv), only used for
+    // SessionUser
     private CreditCard card;
+
+    // Basket (UUID, amount), only store references as the ShoppingItem's may
+    // be updated
+    private LinkedHashMap<String, Integer> basket = new LinkedHashMap<String, Integer>();
 
     private UserRole userRole;
 
@@ -91,12 +98,12 @@ public class User {
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
     }
-    
+
     @Embedded
     public CreditCard getCard() {
         return card;
     }
-    
+
     public void setCard(CreditCard card) {
         this.card = card;
     }
@@ -128,10 +135,18 @@ public class User {
         this.hashedPassword = hashedPassword;
     }
 
+    public LinkedHashMap<String, Integer> getBasket() {
+        return basket;
+    }
+
+    public void setBasket(LinkedHashMap<String, Integer> basket) {
+        this.basket = basket;
+    }
+
     // no password or hashed password
     @Override
     public String toString() {
-        return "User{" + "id=" + id + ", firstName=" + firstName + ", secondName=" + secondName + ", username=" + username + ", password=NOT SHOWN, address=" + address + ", userRole=" + userRole + '}';
+        return "User{" + "id=" + id + ", firstName=" + firstName + ", secondName=" + secondName + ", username=" + username + ", password=NOT SHOWN, address=" + address + ", userRole=" + userRole + "basket=" + basket + '}';
     }
 
 }

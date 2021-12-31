@@ -10,6 +10,7 @@ import java.io.StringWriter;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.UUID;
+import java.util.LinkedHashMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
@@ -17,6 +18,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -124,6 +126,45 @@ public class CatalogueOrderMVC {
 
         // If searching for a specific item, users can also see hidden items
         return "catalogue";
+    }
+    
+    @RequestMapping(value = "/catalogue", method = {RequestMethod.POST})
+    public String addItem(
+            @RequestParam(value = "itemUuid", required = true) String itemUuid,
+            Model model, 
+            HttpSession session, 
+            RedirectAttributes redirectAtt){
+        
+        User sessionUser = getSessionUser(session);
+        model.addAttribute("sessionUser", sessionUser);
+        
+        List<ShoppingItem> foundItems = itemRepository.findByUuid(itemUuid);
+        
+        Integer currentItemCount = null;
+        if (foundItems.size() > 0) {
+            // Item is found
+            ShoppingItem specificItem = foundItems.get(0);
+            
+            LinkedHashMap basket = sessionUser.getBasket();
+            
+            if (basket.get(specificItem.getUuid()) == null) {
+                // The item isn't in the basket
+                basket.put(specificItem.getUuid(), 1);
+                currentItemCount = 1;
+            } else {
+                // The item is in the basket
+                Integer currentValue = (Integer) basket.get(specificItem.getUuid());
+                basket.put(specificItem.getUuid(), currentValue + 1);
+                currentItemCount = currentValue + 1;
+            }
+            
+            redirectAtt.addAttribute("message", "Added " + specificItem.getName() + " to the basket (currently " + currentItemCount + ")");
+        } else {
+            // Item isn't found, it may have been deleted
+            redirectAtt.addAttribute("warnMessage", "Couldn't add the item to the basket.");
+        }
+
+        return "redirect:/catalogue";
     }
 
     @RequestMapping(value = "/createItem", method = {RequestMethod.GET})

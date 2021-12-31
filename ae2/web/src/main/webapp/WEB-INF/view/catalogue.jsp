@@ -8,7 +8,8 @@
 <!-- Begin page content -->
 <main role="main" class="container">
     <h3>Catalogue</h3>
-    <div style="color:green;">${message}</div>
+    <div style="color:green;">${param.message}</div>
+    <div style="color:red;">${param.warnMessage}</div>
     
     <c:if test="${sessionUser.userRole == 'ADMINISTRATOR'}">
         <h1>Create items</h1>
@@ -42,7 +43,10 @@
                         <p class="text-center">${item.description}</p>
                         <div id="button-spacer">
                             <c:if test="${item.quantity > 0}">
-                                <button class="btn btn-primary">Add to Cart</button>
+                                <form action="./catalogue" method="POST">
+                                    <input type="hidden" name="itemUuid" value="${item.uuid}">
+                                    <button class="btn btn-primary">Add to Cart</button>
+                                </form>
                             </c:if>
                             <c:if test="${item.quantity == 0}">
                                 <button class="btn btn-warning">Out of Stock</button>
