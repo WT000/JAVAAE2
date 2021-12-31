@@ -30,6 +30,16 @@ import org.solent.com504.oodd.cart.model.dto.ShoppingItem;
 import org.solent.com504.oodd.cart.model.dto.ShoppingItemCategory;
 import org.solent.com504.oodd.cart.model.service.ShoppingCart;
 import org.solent.com504.oodd.cart.service.ShoppingCartImpl;
+import org.solent.com504.oodd.bank.client.impl.BankRestClientImpl;
+import org.solent.com504.oodd.bank.card.checker.RegexCardValidator;
+import org.solent.com504.oodd.bank.card.checker.CardValidationResult;
+import org.solent.com504.oodd.bank.model.dto.BankAccount;
+import org.solent.com504.oodd.bank.model.dto.TransactionReplyMessage;
+import org.solent.com504.oodd.bank.model.dto.BankTransactionStatus;
+import org.solent.com504.oodd.bank.model.dto.CreditCard;
+import org.solent.com504.oodd.cart.web.PropertiesDao;
+import org.solent.com504.oodd.cart.web.WebObjectFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -43,10 +53,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class CatalogueOrderMVC {
 
     final static Logger LOG = LogManager.getLogger(CatalogueOrderMVC.class);
+    private final PropertiesDao adminSettings = WebObjectFactory.getPropertiesDao();
 
     @Autowired
     ShoppingItemCatalogRepository itemRepository;
-    
+
+    @Autowired
+    UserRepository userRepository;
+
     @Autowired
     ShoppingCart shoppingCart = null;
 
@@ -341,7 +355,7 @@ public class CatalogueOrderMVC {
         model.addAttribute("sessionUser", sessionUser);
 
         LinkedHashMap<String, Integer> basket = shoppingCart.getBasket();
-        
+
         ArrayList<ShoppingItem> shoppingCartItems = new ArrayList<>();
         double total = 0;
         boolean foundError = false;
@@ -408,14 +422,172 @@ public class CatalogueOrderMVC {
                 redirectAtt.addAttribute("errorMessage", "Something went wrong when removing the item.");
             }
         }
-        
+
         return "redirect:/cart";
     }
 
-    public synchronized void doTransaction() {
+    @RequestMapping(value = {"/checkout"}, method = RequestMethod.GET)
+    public String prepareCheckout(Model model, HttpSession session) {
+        String message = "Please confirm your details below.";
+        String errorMessage = "";
+
+        User sessionUser = getSessionUser(session);
+        model.addAttribute("sessionUser", sessionUser);
+
+        if (UserRole.ANONYMOUS.equals(sessionUser.getUserRole())) {
+            errorMessage = "You must be logged in to checkout.";
+            model.addAttribute("errorMessage", errorMessage);
+            return "home";
+        }
+
+        List<User> userList = userRepository.findByUsername(sessionUser.getUsername());
+
+        if (userList.isEmpty()) {
+            LOG.error("Checkout called for unknown username=" + sessionUser.getUsername());
+            return "home";
+        }
+
+        User checkoutUser = userList.get(0);
+
+        if (!checkoutUser.getEnabled()) {
+            errorMessage = "Sorry, your account is deactivated.";
+            model.addAttribute("errorMessage", errorMessage);
+            return "home";
+        }
+
+        model.addAttribute("checkoutUser", checkoutUser);
+        model.addAttribute("sessionUser", sessionUser);
+        model.addAttribute("selectedPage", "cart");
+        model.addAttribute("message", message);
+        model.addAttribute("errorMessage", errorMessage);
+
+        return "checkout";
+    }
+
+    @RequestMapping(value = {"/checkout"}, method = RequestMethod.POST)
+    public synchronized String doCheckout(
+            @RequestParam(value = "firstName", required = true) String firstName,
+            @RequestParam(value = "secondName", required = true) String secondName,
+            @RequestParam(value = "addressLine1", required = false) String addressLine1,
+            @RequestParam(value = "addressLine2", required = false) String addressLine2,
+            @RequestParam(value = "city", required = false) String city,
+            @RequestParam(value = "county", required = false) String county,
+            @RequestParam(value = "postcode", required = false) String postcode,
+            @RequestParam(value = "mobile", required = false) String mobile,
+            @RequestParam(value = "cardno", required = true) String cardNumber,
+            @RequestParam(value = "cardname", required = true) String cardName,
+            @RequestParam(value = "carddate", required = true) String cardDate,
+            @RequestParam(value = "cardcvv", required = true) String cardCvv,
+            Model model,
+            HttpSession session,
+            RedirectAttributes redirectAtt) {
+        String message = "";
+        String errorMessage = "";
+
+        // security check if party is allowed to access or modify this party
+        User sessionUser = getSessionUser(session);
+        model.addAttribute("sessionUser", sessionUser);
+        LinkedHashMap<String, Integer> basket = shoppingCart.getBasket();
+        
+        boolean success = false;
+        
+        // Only attempt checkout if they're signed in, the username is found, and
+        // their account is enabled
+        if (!UserRole.ANONYMOUS.equals(sessionUser.getUserRole())) {
+            List<User> userList = userRepository.findByUsername(sessionUser.getUsername());
+
+            if (!userList.isEmpty()) {
+                User checkoutUser = userList.get(0);
+
+                if (checkoutUser.getEnabled()) {
+                    LOG.debug("Attempting checkout with user=" + sessionUser.getUsername() + ".");
+
+                    // Check card details
+                    CreditCard customerCard = new CreditCard(cardNumber, cardName, cardDate, cardCvv);
+
+                    CardValidationResult cardValidityNumber = RegexCardValidator.isValid(cardNumber);
+                    boolean cardValidityDateExpired = customerCard.cardDateExpiredOrError();
+
+                    if (!cardValidityNumber.isValid() || cardValidityDateExpired) {
+                        redirectAtt.addAttribute("errorMessage", "The card is invalid or expired.");
+                        return "redirect:/checkout";
+                    }
+
+                    // Check stock levels for each basket item (same code as before)
+                    ArrayList<ShoppingItem> shoppingCartItems = new ArrayList<>();
+                    double total = 0;
+                    boolean foundError = false;
+
+                    for (String itemUuid : basket.keySet()) {
+                        List<ShoppingItem> foundItems = itemRepository.findByUuid(itemUuid);
+
+                        if (foundItems.isEmpty()) {
+                            foundError = true;
+                            break;
+                        } else {
+                            if (foundItems.get(0) instanceof ShoppingItem) {
+                                ShoppingItem foundItem = foundItems.get(0);
+
+                                foundItem.setQuantity(basket.get(itemUuid));
+                                shoppingCartItems.add(foundItems.get(0));
+                                total += (foundItem.getPrice() * foundItem.getQuantity());
+                            } else {
+                                foundError = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (foundError) {
+                        redirectAtt.addAttribute("errorMessage", "Something's wrong with your cart, an item could have been removed from the store or your cart no longer exists.");
+                        return "redirect:/checkout";
+                    }
+
+                    // All is well, attempt the purchase using current properties
+                    BankRestClientImpl restClient = new BankRestClientImpl(adminSettings.getProperty("org.solent.com504.oodd.ae2.url"));
+                    String bankCardRaw = adminSettings.getProperty("org.solent.com504.oodd.ae2.cardNumber");
+                    CreditCard bankCard = new CreditCard(bankCardRaw);
+                    String bankUsername = adminSettings.getProperty("org.solent.com504.oodd.ae2.username");
+                    String bankPassword = adminSettings.getProperty("org.solent.com504.oodd.ae2.password");
+                    
+                    try {
+                        TransactionReplyMessage result = restClient.transferMoney(customerCard, bankCard, total, bankUsername, bankPassword);
+
+                        if (result.getStatus() == BankTransactionStatus.SUCCESS) {
+                            success = true;
+                        } else {
+                            redirectAtt.addAttribute(result.getMessage());
+                            return "redirect:/checkout";
+                        }
+                    } catch (Exception e) {
+                        errorMessage = "Couldn't connect to the bank (is the configured URL correct?).";
+                    }
+                } else {
+                    errorMessage = "Your account is disabled.";
+                }
+            } else {
+                errorMessage = "Your username isn't valid.";
+            }
+        } else {
+            errorMessage = "You're not signed in.";
+        }
+
+        if (success) {
+            // Wipe the cart and redirect to the relevant order page 
+            basket.clear();
+            return "home";
+        }
+
+        // Display a relevant error msg on the checkout page
+        redirectAtt.addAttribute("errorMessage", errorMessage);
+        return "redirect:/checkout";
+    }
+
+    public synchronized TransactionReplyMessage handleTransaction(CreditCard customerCard, Double amount) {
+        // Check the card details and ensure they're valid
+
         // Check the basket and ensure each item has a quantity less / equal to
         // the current database quantity (lookup by UUID)
-
         // If all is well, let the transaction go through and decrement stock
         throw new UnsupportedOperationException();
     }

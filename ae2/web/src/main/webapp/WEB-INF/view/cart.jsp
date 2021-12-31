@@ -20,7 +20,7 @@
         <c:forEach var="item" items="${shoppingCartItems}">
             <tr>
                 <td>${item.name}</td>
-                <td>${item.price}</td>
+                <td>£${item.price}</td>
                 <td>${item.quantity}</td>
                 <td>
                     <!-- post avoids url encoded parameters -->
@@ -32,11 +32,15 @@
             </tr>
         </c:forEach>
         
-            <tr>
-            <td>TOTAL</td>
-            <td>${shoppingCartTotal}</td>
+        <tr>
+            <td><strong>TOTAL</strong></td>
+            <td>£${shoppingCartTotal}</td>
         </tr>
     </table>
+    
+    <c:if test="${sessionUser.userRole != 'ANONYMOUS' && shoppingCartItems.size() > 0}">
+        <a href="./checkout" class="btn btn-primary" role="button">Proceed to Checkout</a>
+    </c:if>
 
 </main>
 <jsp:include page="footer.jsp" />
