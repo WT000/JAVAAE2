@@ -19,8 +19,7 @@
 
     <h1>Search Items</h1>
     <form action="./catalogue" method="GET" autocomplete="off">
-        <input type="hidden" name="action" value="search">
-
+        
         <input name="toFind">
         <select name="category">
             <option value="ALL">ALL</option>
@@ -59,7 +58,7 @@
         </c:forEach>
     </div>
 
-    <c:if test="${action == 'search'}">
+    <c:if test="${didSearch == true}">
         <a href="./catalogue" class="btn btn-primary" role="button">Clear Search</a>
     </c:if>
 

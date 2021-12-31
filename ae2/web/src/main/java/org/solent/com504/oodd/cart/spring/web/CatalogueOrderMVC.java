@@ -71,8 +71,8 @@ public class CatalogueOrderMVC {
         List<ShoppingItem> hiddenItems = new ArrayList<ShoppingItem>();
 
         // Search if that's the current action
-        if ("search".equals(action)) {
-            model.addAttribute("action", action);
+        if (null != toFind) {
+            model.addAttribute("didSearch", true);
             ShoppingItemCategory trueCat = null;
 
             try {
