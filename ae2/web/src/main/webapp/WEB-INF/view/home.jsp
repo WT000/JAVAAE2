@@ -10,38 +10,17 @@
     <div style="color:red;">${errorMessage}</div>
     <div style="color:green;">${message}</div>
 
-    <h3>Shopping Cart</h3>
-    <table class="table">
-        <tr>
-            <th>Item Name</th>
-            <th>Price</th>
-            <th>Quantity</th>
-        </tr>
-
-        <c:forEach var="item" items="${shoppingCartItems}">
-
-            <tr>
-                <td>${item.name}</td>
-                <td>${item.price}</td>
-                <td>${item.quantity}</td>
-                <td>
-                    <!-- post avoids url encoded parameters -->
-                    <form action="./home" method="post">
-                        <input type="hidden" name="itemUUID" value="${item.uuid}">
-                        <input type="hidden" name="itemName" value="${item.name}">
-                        <input type="hidden" name="action" value="removeItemFromCart">
-                        <button type="submit" >Remove Item</button>
-                    </form> 
-                </td>
-            </tr>
-        </c:forEach>
-        <tr>
-            <td>TOTAL</td>
-            <td>${shoppingcartTotal}</td>
-        </tr>
-    </table>
-
-
+    <h1>Shopping Cart Application</h1>
+    <p>Welcome to the site! The current pages are as follows:</p>
+    
+    <ul>
+        <li>Catalogue - searching for items and adding items to your cart (admins can add, edit and remove items from this page)</li>
+        <li>Cart - the items which are currently in the cart and where they're purchased</li>
+        <li>My Orders - the orders made by the user</li>
+        <li>Login and Register - where a user can login or make an account</li>
+        <li>Manage Users - where an admin can edit users</li>
+        <li>Edit Properties - where an admin can set bank properties</li>
+    </ul>
 
 </main>
 <jsp:include page="footer.jsp" />

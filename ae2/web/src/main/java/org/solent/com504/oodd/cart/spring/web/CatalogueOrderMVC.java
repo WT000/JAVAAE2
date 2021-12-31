@@ -127,26 +127,26 @@ public class CatalogueOrderMVC {
         // If searching for a specific item, users can also see hidden items
         return "catalogue";
     }
-    
+
     @RequestMapping(value = "/catalogue", method = {RequestMethod.POST})
     public String addItem(
             @RequestParam(value = "itemUuid", required = true) String itemUuid,
-            Model model, 
-            HttpSession session, 
-            RedirectAttributes redirectAtt){
-        
+            Model model,
+            HttpSession session,
+            RedirectAttributes redirectAtt) {
+
         User sessionUser = getSessionUser(session);
         model.addAttribute("sessionUser", sessionUser);
-        
+
         List<ShoppingItem> foundItems = itemRepository.findByUuid(itemUuid);
-        
+
         Integer currentItemCount = null;
         if (foundItems.size() > 0) {
             // Item is found
             ShoppingItem specificItem = foundItems.get(0);
-            
-            LinkedHashMap basket = sessionUser.getBasket();
-            
+
+            LinkedHashMap<String, Integer> basket = sessionUser.getBasket();
+
             if (basket.get(specificItem.getUuid()) == null) {
                 // The item isn't in the basket
                 basket.put(specificItem.getUuid(), 1);
@@ -157,7 +157,7 @@ public class CatalogueOrderMVC {
                 basket.put(specificItem.getUuid(), currentValue + 1);
                 currentItemCount = currentValue + 1;
             }
-            
+
             redirectAtt.addAttribute("message", "Added " + specificItem.getName() + " to the basket (currently " + currentItemCount + ")");
         } else {
             // Item isn't found, it may have been deleted
@@ -216,7 +216,7 @@ public class CatalogueOrderMVC {
             model.addAttribute("selectedPage", "home");
             return "home";
         }
-        
+
         ShoppingItem itemToCreate = new ShoppingItem();
 
         // The user wants to update the item
@@ -326,6 +326,84 @@ public class CatalogueOrderMVC {
         } else {
             return "redirect:/catalogue";
         }
+    }
+
+    @RequestMapping(value = "/cart", method = {RequestMethod.GET})
+    public String getCart(Model model, HttpSession session) {
+
+        // get sessionUser from session
+        User sessionUser = getSessionUser(session);
+        model.addAttribute("sessionUser", sessionUser);
+
+        LinkedHashMap<String, Integer> basket = sessionUser.getBasket();
+        ArrayList<ShoppingItem> shoppingCartItems = new ArrayList<>();
+        double total = 0;
+        boolean foundError = false;
+
+        // Attempt to convert each item in the current cart
+        for (String itemUuid : basket.keySet()) {
+            List<ShoppingItem> foundItems = itemRepository.findByUuid(itemUuid);
+
+            if (foundItems.isEmpty()) {
+                // It couldn't find the uuid, meaning the database has updated
+                foundError = true;
+                break;
+            } else {
+                // It found an item
+                if (foundItems.get(0) instanceof ShoppingItem) {
+                    // Get the item and set its quantity to be the appropriate
+                    // amount, then add this to the running total
+                    ShoppingItem foundItem = foundItems.get(0);
+
+                    foundItem.setQuantity(basket.get(itemUuid));
+                    shoppingCartItems.add(foundItems.get(0));
+                    total += (foundItem.getPrice() * foundItem.getQuantity());
+                } else {
+                    foundError = true;
+                    break;
+                }
+            }
+        }
+
+        if (!foundError) {
+            model.addAttribute("shoppingCartItems", shoppingCartItems);
+            model.addAttribute("shoppingCartTotal", total);
+        } else {
+            model.addAttribute("errorMessage", "Something went wrong with your cart, an item may have been deleted. Resetting your cart.");
+            sessionUser.setBasket(new LinkedHashMap<String, Integer>());
+        }
+
+        model.addAttribute("selectedPage", "cart");
+        return "cart";
+    }
+
+    @RequestMapping(value = "/cart", method = {RequestMethod.POST})
+    public String removeCartItem(
+            @RequestParam(value = "uuid", required = true) String uuid,
+            Model model,
+            HttpSession session,
+            RedirectAttributes redirectAtt) {
+
+        // get sessionUser from session
+        User sessionUser = getSessionUser(session);
+        model.addAttribute("sessionUser", sessionUser);
+
+        LinkedHashMap<String, Integer> basket = sessionUser.getBasket();
+
+        if (basket.get(uuid) != null) {
+            try {
+                if (basket.get(uuid) == 1) {
+                    basket.remove(uuid);
+                } else {
+                    Integer quantity = basket.get(uuid);
+                    basket.replace(uuid, quantity - 1);
+                }
+            } catch (Exception e) {
+                redirectAtt.addAttribute("errorMessage", "Something went wrong when removing the item.");
+            }
+        }
+        
+        return "redirect:/cart";
     }
 
     public synchronized void doTransaction() {

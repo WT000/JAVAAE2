@@ -55,11 +55,7 @@ public class GenericMVC {
     }
 
     @RequestMapping(value = "/home", method = {RequestMethod.GET, RequestMethod.POST})
-    public String viewCart(@RequestParam(name = "action", required = false) String action,
-            @RequestParam(name = "itemName", required = false) String itemName,
-            @RequestParam(name = "itemUUID", required = false) String itemUuid,
-            Model model,
-            HttpSession session) {
+    public String home(Model model, HttpSession session) {
 
         // get sessionUser from session
         User sessionUser = getSessionUser(session);
@@ -71,50 +67,11 @@ public class GenericMVC {
         String message = "";
         String errorMessage = "";
 
-        // note that the shopping cart is is stored in the sessionUser's session
-        // so there is one cart per sessionUser
-//        ShoppingCart shoppingCart = (ShoppingCart) session.getAttribute("shoppingCart");
-//        if (shoppingCart == null) synchronized (this) {
-//            if (shoppingCart == null) {
-//                shoppingCart = WebObjectFactory.getNewShoppingCart();
-//                session.setAttribute("shoppingCart", shoppingCart);
-//            }
-//        }
-        if (action == null) {
-            // do nothing but show page
-        } else if ("addItemToCart".equals(action)) {
-            ShoppingItem shoppingItem = shoppingService.getNewItemByName(itemName);
-            if (shoppingItem == null) {
-                message = "cannot add unknown " + itemName + " to cart";
-            } else {
-                message = "adding " + itemName + " to cart price= " + shoppingItem.getPrice();
-                shoppingCart.addItemToCart(shoppingItem);
-            }
-        } else if ("removeItemFromCart".equals(action)) {
-            message = "removed " + itemName + " from cart";
-            shoppingCart.removeItemFromCart(itemUuid);
-        } else {
-            message = "unknown action=" + action;
-        }
-
-        List<ShoppingItem> availableItems = shoppingService.getAvailableItems();
-
-        List<ShoppingItem> shoppingCartItems = shoppingCart.getShoppingCartItems();
-
-        Double shoppingcartTotal = shoppingCart.getTotal();
-
-        // populate model with values
-        model.addAttribute("availableItems", availableItems);
-        model.addAttribute("shoppingCartItems", shoppingCartItems);
-        model.addAttribute("shoppingcartTotal", shoppingcartTotal);
-        model.addAttribute("message", message);
-        model.addAttribute("errorMessage", errorMessage);
-
         return "home";
     }
 
     @RequestMapping(value = "/about", method = {RequestMethod.GET, RequestMethod.POST})
-    public String aboutCart(Model model, HttpSession session) {
+    public String about(Model model, HttpSession session) {
 
         // get sessionUser from session
         User sessionUser = getSessionUser(session);
@@ -123,18 +80,6 @@ public class GenericMVC {
         // used to set tab selected
         model.addAttribute("selectedPage", "about");
         return "about";
-    }
-
-    @RequestMapping(value = "/contact", method = {RequestMethod.GET, RequestMethod.POST})
-    public String contactCart(Model model, HttpSession session) {
-
-        // get sessionUser from session
-        User sessionUser = getSessionUser(session);
-        model.addAttribute("sessionUser", sessionUser);
-        
-        // used to set tab selected
-        model.addAttribute("selectedPage", "contact");
-        return "contact";
     }
     
     /*
