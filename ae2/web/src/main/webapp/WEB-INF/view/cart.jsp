@@ -19,7 +19,7 @@
 
         <c:forEach var="item" items="${shoppingCartItems}">
             <tr>
-                <td>${item.name}</td>
+                <td><a href="./viewModifyItem?itemUuid=${item.uuid}">${item.name}</a></td>
                 <td>£${item.price}</td>
                 <td>${item.quantity}</td>
                 <td>

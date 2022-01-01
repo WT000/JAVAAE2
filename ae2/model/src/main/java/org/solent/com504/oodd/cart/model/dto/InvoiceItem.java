@@ -17,6 +17,9 @@ public class InvoiceItem {
     private Long id;
     private ShoppingItem dbItem;
     private Integer quantity = 0;
+    private Double price;
+    private String name;
+    
 
     public InvoiceItem() {
 
@@ -25,8 +28,10 @@ public class InvoiceItem {
     public InvoiceItem(ShoppingItem dbItem, Integer quantity) {
         this.dbItem = dbItem;
         this.quantity = quantity;
+        this.price = dbItem.getPrice();
+        this.name = dbItem.getName();
     }
-
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
@@ -53,10 +58,26 @@ public class InvoiceItem {
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
+    
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     @Override
     public String toString() {
-        return "InvoiceItem{quantity=" + quantity + ", dbItem=" + dbItem + '}';
+        return "InvoiceItem{quantity=" + quantity + ", price=" + price + ", name=" + name + ", dbItem=" + dbItem + '}';
     }
 
 }

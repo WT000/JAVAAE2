@@ -20,16 +20,12 @@ public class Invoice {
     private Date dateOfPurchase;
 
     private Double amountDue;
-
-    //private List<ShoppingItem> purchasedItems;
-    
-    //private List<ShoppingItem> savedPurchasedItems;
     
     private List<InvoiceItem> savedBasketItems;
 
     private User purchaser;
 
-    // Processing, Shipping, Out for Delivery, Complete
+    // Processing, Shipping, Out for Delivery, Complete or Custom
     private String currentStatus = "Processing";
 
     @Id
@@ -37,14 +33,6 @@ public class Invoice {
     public Long getId() {
         return id;
     }
-
-//    public List<ShoppingItem> retrieveInvoiceSavedItems() {
-//        return savedPurchasedItems;
-//    }
-//    
-//    public void setInvoiceSavedItems(List<ShoppingItem> items) {
-//        this.savedPurchasedItems = items;
-//    }
     
     public void setId(Long id) {
         this.id = id;
@@ -73,16 +61,8 @@ public class Invoice {
     public void setAmountDue(Double amountDue) {
         this.amountDue = amountDue;
     }
-
-//    @OneToMany
-//    public List<ShoppingItem> getPurchasedItems() {
-//        return purchasedItems;
-//    }
-//    
-//    public void setPurchasedItems(List<ShoppingItem> purchasedItems) {
-//        this.purchasedItems = purchasedItems;
-//    }
-//    
+    
+    // Persist, so we can cascade updates (none others are needed)
     @OneToMany(cascade = CascadeType.PERSIST) 
     public List<InvoiceItem> getSavedBasketItems() {
         return savedBasketItems;

@@ -35,24 +35,25 @@
                     </table>
 
                     <h1>Order Items</h1>
-                    <p>${savedPurchasedItems}</p>
                     <table class="table">
                         <tbody>
                             <tr>
                                 <th>Name</th>
                                 <th>Quantity</th>
-                                <th>Price</th>
+                                <th>Cost</th>
+                                <th>Total Cost</th>
                             </tr>
                             <c:forEach var="item" items="${savedPurchasedItems}">
                                 <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    <td><a href="./viewModifyItem?itemUuid=${item.dbItem.uuid}">${item.name}</a></td>
+                                    <td>${item.quantity}</td>
+                                    <td>£${item.price}</td>
+                                    <td>£${item.price * item.quantity}</td>
                                 </tr>
                             </c:forEach>
                                 <tr>
                                     <th>TOTAL</th>
-                                    <td></td>
+                                    <td colspan="2"></td>
                                     <td>£${invoice.amountDue}</td>
                                     
                                 </tr>

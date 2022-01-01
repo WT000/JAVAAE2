@@ -627,7 +627,6 @@ public class CatalogueCartMVC {
             order.setDateOfPurchase(new Date());
             order.setPurchaser(sessionUser);
             order.setInvoiceNumber(UUID.randomUUID().toString());
-            //order.setPurchasedItems(currentDbItems);
             
             ArrayList<InvoiceItem> tempList = new ArrayList<InvoiceItem>();
             
