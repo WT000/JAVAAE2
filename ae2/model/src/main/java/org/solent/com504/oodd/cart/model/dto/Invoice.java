@@ -23,6 +23,9 @@ public class Invoice {
     private List<ShoppingItem> purchasedItems;
 
     private User purchaser;
+    
+    // Processing, Shipping, Out for Delivery, Complete
+    private String currentStatus = "Processing";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

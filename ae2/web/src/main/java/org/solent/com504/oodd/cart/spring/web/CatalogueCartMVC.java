@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.UUID;
 import java.util.LinkedHashMap;
+import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
@@ -39,6 +40,8 @@ import org.solent.com504.oodd.bank.model.dto.BankTransactionStatus;
 import org.solent.com504.oodd.bank.model.dto.CreditCard;
 import org.solent.com504.oodd.cart.web.PropertiesDao;
 import org.solent.com504.oodd.cart.web.WebObjectFactory;
+import org.solent.com504.oodd.cart.dao.impl.InvoiceRepository;
+import org.solent.com504.oodd.cart.model.dto.Invoice;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -50,9 +53,9 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @Controller
 @RequestMapping("/")
-public class CatalogueOrderMVC {
+public class CatalogueCartMVC {
 
-    final static Logger LOG = LogManager.getLogger(CatalogueOrderMVC.class);
+    final static Logger LOG = LogManager.getLogger(CatalogueCartMVC.class);
     private final PropertiesDao adminSettings = WebObjectFactory.getPropertiesDao();
 
     @Autowired
@@ -60,6 +63,9 @@ public class CatalogueOrderMVC {
 
     @Autowired
     UserRepository userRepository;
+    
+    @Autowired
+    InvoiceRepository invoiceRepository;
 
     @Autowired
     ShoppingCart shoppingCart = null;
@@ -496,6 +502,7 @@ public class CatalogueOrderMVC {
         model.addAttribute("sessionUser", sessionUser);
         LinkedHashMap<String, Integer> basket = shoppingCart.getBasket();
         ArrayList<ShoppingItem> shoppingCartItems = new ArrayList<>();
+        double total = 0;
 
         boolean success = false;
 
@@ -522,14 +529,13 @@ public class CatalogueOrderMVC {
                     }
 
                     // Check stock levels for each basket item (same code as before)
-                    double total = 0;
                     boolean foundError = false;
 
                     if (basket.isEmpty()) {
                         redirectAtt.addAttribute("errorMessage", "There's nothing to checkout.");
                         return "home";
                     }
-
+                    
                     for (String itemUuid : basket.keySet()) {
                         List<ShoppingItem> foundItems = itemRepository.findByUuid(itemUuid);
 
@@ -551,7 +557,8 @@ public class CatalogueOrderMVC {
                                     dupeItem.setQuantity(basket.get(itemUuid));
 
                                     shoppingCartItems.add(dupeItem);
-                                    total += (foundItem.getPrice() * foundItem.getQuantity());
+                                    total += (foundItem.getPrice() * basket.get(itemUuid));
+                                    
                                 } else {
                                     // Else, there isn't enough stock, we need to cancel
                                     redirectAtt.addAttribute("errorMessage", "We don't have enough of the following item to complete the order: " + foundItem.getName() + ".");
@@ -599,7 +606,7 @@ public class CatalogueOrderMVC {
         }
 
         if (success) {
-            // Decrement stock, wipe the cart and redirect to the order page 
+            // Decrement stock
             for (ShoppingItem cartItem : shoppingCartItems) {
                 List<ShoppingItem> foundItems = itemRepository.findByUuid(cartItem.getUuid());
                 ShoppingItem dbItem = foundItems.get(0);
@@ -607,23 +614,25 @@ public class CatalogueOrderMVC {
                 dbItem.setQuantity(dbItem.getQuantity() - cartItem.getQuantity());
                 itemRepository.save(dbItem);
             }
-
+            
+            // Create an invoice / order
+            Invoice order = new Invoice();
+//            order.setAmountDue(total);
+//            order.setDateOfPurchase(new Date());
+//            order.setPurchaser(sessionUser);
+//            order.setPurchasedItems(shoppingCartItems);
+            order.setInvoiceNumber(UUID.randomUUID().toString());
+            
+            //invoiceRepository.save(order);
+            
+            // Clear the basket and redirect to the created invoice / order
             basket.clear();
-            return "home";
+            return "redirect:/viewModifyOrder?invoiceNumber=" + order.getInvoiceNumber();
         }
 
         // Display a relevant error msg on the checkout page
         redirectAtt.addAttribute("errorMessage", errorMessage);
         return "redirect:/checkout";
-    }
-
-    public synchronized TransactionReplyMessage handleTransaction(CreditCard customerCard, Double amount) {
-        // Check the card details and ensure they're valid
-
-        // Check the basket and ensure each item has a quantity less / equal to
-        // the current database quantity (lookup by UUID)
-        // If all is well, let the transaction go through and decrement stock
-        throw new UnsupportedOperationException();
     }
 
     /*

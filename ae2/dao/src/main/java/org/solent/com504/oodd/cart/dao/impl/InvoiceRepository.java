@@ -1,11 +1,20 @@
 package org.solent.com504.oodd.cart.dao.impl;
 
 
+import java.util.List;
 import org.solent.com504.oodd.cart.model.dto.Invoice;
+import org.solent.com504.oodd.cart.model.dto.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface InvoiceRepository  extends JpaRepository<Invoice,Long>{
+    @Query("select i from Invoice i where i.purchaser.username = ?1 order by i.id desc")
+    public List<Invoice> findByPurchaserUsername(String username);
     
+    @Query("select i from Invoice i order by i.id desc")
+    public List<Invoice> findAllInvoices();
+    
+    public List<Invoice> findByInvoiceNumber(String invoiceNumber);
 }

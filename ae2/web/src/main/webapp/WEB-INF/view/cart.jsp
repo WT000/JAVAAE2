@@ -41,6 +41,9 @@
     <c:if test="${sessionUser.userRole != 'ANONYMOUS' && shoppingCartItems.size() > 0}">
         <a href="./checkout" class="btn btn-success" role="button">Proceed to Checkout</a>
     </c:if>
+    <c:if test="${sessionUser.userRole == 'ANONYMOUS' && shoppingCartItems.size() > 0}">
+        <a href="./login" class="btn btn-primary" role="button">Login to Checkout</a>
+    </c:if>
 
 </main>
 <jsp:include page="footer.jsp" />
