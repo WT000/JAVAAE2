@@ -21,9 +21,11 @@ public class Invoice {
     private Double amountDue;
 
     private List<ShoppingItem> purchasedItems;
+    
+    private List<ShoppingItem> savedPurchasedItems;
 
     private User purchaser;
-    
+
     // Processing, Shipping, Out for Delivery, Complete
     private String currentStatus = "Processing";
 
@@ -33,6 +35,14 @@ public class Invoice {
         return id;
     }
 
+    public List<ShoppingItem> retrieveInvoiceSavedItems() {
+        return savedPurchasedItems;
+    }
+    
+    public void setInvoiceSavedItems(List<ShoppingItem> items) {
+        this.savedPurchasedItems = items;
+    }
+    
     public void setId(Long id) {
         this.id = id;
     }
@@ -65,7 +75,7 @@ public class Invoice {
     public List<ShoppingItem> getPurchasedItems() {
         return purchasedItems;
     }
-
+    
     public void setPurchasedItems(List<ShoppingItem> purchasedItems) {
         this.purchasedItems = purchasedItems;
     }
@@ -77,6 +87,14 @@ public class Invoice {
 
     public void setPurchaser(User purchaser) {
         this.purchaser = purchaser;
+    }
+
+    public String getCurrentStatus() {
+        return currentStatus;
+    }
+
+    public void setCurrentStatus(String currentStatus) {
+        this.currentStatus = currentStatus;
     }
 
 }

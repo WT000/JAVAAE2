@@ -1,6 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page import="org.solent.com504.oodd.cart.model.dto.User"%>
+<%@page import="org.solent.com504.oodd.cart.model.dto.Address"%>
 <%@page import="org.solent.com504.oodd.cart.model.dto.ShoppingItem"%>
 <%@page import="org.solent.com504.oodd.cart.model.dto.ShoppingItemCategory"%>
 
@@ -13,17 +14,50 @@
 
     <c:if test="${sessionUser.userRole == 'ADMINISTRATOR'}">
         <form action="./viewModifyOrder" method="POST">
-        <input type="hidden" name="uuid" value="${invoice.invoiceNumber}">
-    </c:if>
-    <table class="table">
-        <tbody>
-            <tr>
-                <td>Invoice Number</td>
-                <td>${invoice.invoiceNumber}</td>
-            </tr>
-        </tbody>
-    </table>
-    <a href="./orders" class="btn btn-primary" role="button">Back to your orders</a>
-</main>
+            <input type="hidden" name="uuid" value="${invoice.invoiceNumber}">
+        </c:if>
+        <table class="table">
+            <h1>General Details<h1>
+                    <tbody>
+                        <tr>
+                            <td>Invoice Number</td>
+                            <td>${invoice.invoiceNumber}</td>
+                        </tr>
+                        <tr>
+                            <td>Purchaser</td>
+                            <td>${invoice.purchaser.firstName} ${invoice.purchaser.secondName} (${invoice.purchaser.username})</td>
+                        </tr>
+                        <tr>
+                            <td>Current Status</td>
+                            <td>${invoice.currentStatus}</td>
+                        </tr>
+                    </tbody>
+                    </table>
 
-<jsp:include page="footer.jsp" />
+                    <h1>Order Items</h1>
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <th>Name</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                            </tr>
+                            <c:forEach var="item" items="${savedPurchasedItems}">
+                                <tr>
+                                    <td>${item.name}</td>
+                                    <td>${item.quantity}</td>
+                                    <td>£${item.price}</td>
+                                </tr>
+                            </c:forEach>
+                                <tr>
+                                    <th>TOTAL</th>
+                                    <td></td>
+                                    <td>£${invoice.amountDue}</td>
+                                    
+                                </tr>
+                        </tbody>
+                    </table>
+                    <a href="./orders" class="btn btn-primary" role="button">Back to your orders</a>
+                    </main>
+
+                    <jsp:include page="footer.jsp" />

@@ -5,8 +5,11 @@
  */
 package org.solent.com504.oodd.cart.spring.web;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.List;
 import java.util.Objects;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,6 +22,7 @@ import org.solent.com504.oodd.cart.model.dto.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -82,10 +86,39 @@ public class OrdersMVC {
                 return "home";
             }
         }
-
+        
+        LOG.debug("current dbitems: " + invoiceToDisplay.getPurchasedItems());
+        
+        model.addAttribute("savedPurchasedItems", invoiceToDisplay.getPurchasedItems());
         model.addAttribute("invoice", invoiceToDisplay);
         model.addAttribute("selectedPage", "orders");
 
         return "viewModifyOrder";
+    }
+    
+    /*
+     * Default exception handler, catches all exceptions, redirects to friendly
+     * error page. Does not catch request mapping errors
+     */
+    @ExceptionHandler(Exception.class)
+    public String myExceptionHandler(final Exception e, Model model,
+            HttpSession session, HttpServletRequest request
+    ) {
+        final StringWriter sw = new StringWriter();
+        final PrintWriter pw = new PrintWriter(sw);
+        e.printStackTrace(pw);
+        final String strStackTrace = sw.toString(); // stack trace as a string
+        String urlStr = "not defined";
+        if (request != null) {
+            StringBuffer url = request.getRequestURL();
+            urlStr = url.toString();
+        }
+        User sessionUser = getSessionUser(session);
+        model.addAttribute("sessionUser", sessionUser);
+        model.addAttribute("requestUrl", urlStr);
+        model.addAttribute("strStackTrace", strStackTrace);
+        model.addAttribute("exception", e);
+        //logger.error(strStackTrace); // send to logger first
+        return "error"; // default friendly exception message for sessionUser
     }
 }

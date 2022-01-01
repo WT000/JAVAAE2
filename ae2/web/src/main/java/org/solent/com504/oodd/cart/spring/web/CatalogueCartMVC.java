@@ -605,25 +605,35 @@ public class CatalogueCartMVC {
             errorMessage = "You're not signed in.";
         }
 
+        ArrayList<ShoppingItem> currentDbItems = new ArrayList<ShoppingItem>();
+        
         if (success) {
             // Decrement stock
             for (ShoppingItem cartItem : shoppingCartItems) {
                 List<ShoppingItem> foundItems = itemRepository.findByUuid(cartItem.getUuid());
                 ShoppingItem dbItem = foundItems.get(0);
-
+                
                 dbItem.setQuantity(dbItem.getQuantity() - cartItem.getQuantity());
                 itemRepository.save(dbItem);
+                
+                // Add the item to retrieve its details in the invoice if needed
+                currentDbItems.add(dbItem);
             }
             
             // Create an invoice / order
             Invoice order = new Invoice();
-//            order.setAmountDue(total);
-//            order.setDateOfPurchase(new Date());
-//            order.setPurchaser(sessionUser);
-//            order.setPurchasedItems(shoppingCartItems);
+            order.setAmountDue(total);
+            order.setDateOfPurchase(new Date());
+            order.setPurchaser(sessionUser);
             order.setInvoiceNumber(UUID.randomUUID().toString());
+            order.setPurchasedItems(currentDbItems);
             
-            //invoiceRepository.save(order);
+            //order.setInvoiceSavedItems(shoppingCartItems);
+            
+            //order.retrieveInvoiceSavedItems().add(shoppingCartItems.get(0));
+            
+            LOG.debug("Saving new invoice: current items=" + currentDbItems + ", saved items=" + shoppingCartItems);
+            invoiceRepository.save(order);
             
             // Clear the basket and redirect to the created invoice / order
             basket.clear();
