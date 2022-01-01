@@ -87,7 +87,7 @@
         </tbody>
     </table>
     <c:if test="${sessionUser.userRole == 'ADMINISTRATOR'}">
-        <button class="btn btn-primary" type="submit">Update ${item.name}</button>
+        <button class="btn btn-success" type="submit">Update ${item.name}</button>
         </form>
         <br>
         <form action="./viewModifyItem" method="POST">

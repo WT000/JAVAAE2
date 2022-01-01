@@ -51,13 +51,13 @@
                     </tr>
                 </tbody>
             </table>
-            
+
             <h1>Payment Information</h1>
             <table class="table">
                 <tbody>
                     <tr>
                         <td>Card Number</td>
-                        <td><input type="text" name="cardno" value="${sessionUser.card.cardNumber}"></td>
+                        <td><input type="text" name="cardno" value="${sessionUser.card.cardnumber}"></td>
                     </tr>
                     <tr>
                         <td>Name on Card</td>
@@ -73,8 +73,8 @@
                     </tr>
                 </tbody>
             </table>
-
-            <button class="btn btn-primary" type="submit" >Submit</button>
+            <a href="./cart" class="btn btn-primary" role="button">Back to your cart</a>    
+            <button class="btn btn-success" type="submit" >Submit</button>
         </form>
     </div>
 </main>

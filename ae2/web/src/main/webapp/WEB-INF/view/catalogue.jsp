@@ -45,7 +45,7 @@
                             <c:if test="${item.quantity > 0}">
                                 <form action="./catalogue" method="POST">
                                     <input type="hidden" name="itemUuid" value="${item.uuid}">
-                                    <button class="btn btn-primary">Add to Cart</button>
+                                    <button class="btn btn-success">Add to Cart</button>
                                 </form>
                             </c:if>
                             <c:if test="${item.quantity == 0}">

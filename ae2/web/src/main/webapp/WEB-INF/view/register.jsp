@@ -14,7 +14,7 @@
         <p>Username <input type="text" name="username" ></p><BR>
         <p>Password <input type="password" name="password" ></p>
         <p>Re Enter Password <input type="password" name="password2" ></p>
-        <p><button type="submit" >Create New Account</button></p>
+        <p><button class="btn btn-success" type="submit" >Create New Account</button></p>
     </form>
 
 </main>

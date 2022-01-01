@@ -11,7 +11,7 @@
         <input type="hidden" name="action" value="login">
         <p>Username <input type="text" name="username" ></p><br>
         <p>Password <input type="password" name="password" ></p>
-        <p><button type="submit" >Log In</button></p>
+        <p><button class="btn btn-success" type="submit" >Log In</button></p>
     </form> 
     
     <a href="./register">Create a new account</a>

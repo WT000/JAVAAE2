@@ -11,10 +11,7 @@ import java.util.List;
 import org.solent.com504.oodd.cart.model.service.ShoppingCart;
 import org.solent.com504.oodd.cart.model.dto.ShoppingItem;
 
-/**
- *
- * @author cgallen
- */
+
 public class ShoppingCartImpl implements ShoppingCart {
 
     private LinkedHashMap<String, Integer> basket = new LinkedHashMap<String, Integer>();

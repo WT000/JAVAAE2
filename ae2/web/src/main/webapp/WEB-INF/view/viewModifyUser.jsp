@@ -63,7 +63,7 @@
                     <tbody>
                         <tr>
                             <td>Card Number</td>
-                            <td><input type="text" name="cardno" value="${sessionUser.card.cardNumber}"></td>
+                            <td><input type="text" name="cardno" value="${sessionUser.card.cardnumber}"></td>
                         </tr>
                         <tr>
                             <td>Name on Card</td>
@@ -133,7 +133,7 @@
             </c:if>
 
             <input type="hidden" name="username" value="${modifyUser.username}"/>
-            <button class="btn btn-primary" type="submit" >Update User ${modifyUser.username}</button>
+            <button class="btn btn-success" type="submit" >Update User ${modifyUser.username}</button>
         </form>
         
         <br>
@@ -143,7 +143,7 @@
             <input type="hidden" name="action" value="updatePassword"/>
             <p>Password <input type="password" name="password" ></p>
             <p>Re-enter Password <input type="password" name="password2" ></p>
-            <button class="btn btn-primary" type="submit" >Update ${modifyUser.username} Password</button>
+            <button class="btn btn-success" type="submit" >Update ${modifyUser.username} Password</button>
         </form>
         <c:if test="${sessionUser.userRole =='ADMINISTRATOR'}">
             <BR>
