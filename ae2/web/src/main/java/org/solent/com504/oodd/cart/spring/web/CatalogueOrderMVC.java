@@ -455,6 +455,12 @@ public class CatalogueOrderMVC {
             return "home";
         }
 
+        if (shoppingCart.getBasket().isEmpty()) {
+            errorMessage = "There's nothing to checkout.";
+            model.addAttribute("errorMessage", errorMessage);
+            return "home";
+        }
+
         model.addAttribute("checkoutUser", checkoutUser);
         model.addAttribute("sessionUser", sessionUser);
         model.addAttribute("selectedPage", "cart");
@@ -465,6 +471,7 @@ public class CatalogueOrderMVC {
     }
 
     @RequestMapping(value = {"/checkout"}, method = RequestMethod.POST)
+    @Transactional
     public synchronized String doCheckout(
             @RequestParam(value = "firstName", required = true) String firstName,
             @RequestParam(value = "secondName", required = true) String secondName,
@@ -488,9 +495,10 @@ public class CatalogueOrderMVC {
         User sessionUser = getSessionUser(session);
         model.addAttribute("sessionUser", sessionUser);
         LinkedHashMap<String, Integer> basket = shoppingCart.getBasket();
-        
+        ArrayList<ShoppingItem> shoppingCartItems = new ArrayList<>();
+
         boolean success = false;
-        
+
         // Only attempt checkout if they're signed in, the username is found, and
         // their account is enabled
         if (!UserRole.ANONYMOUS.equals(sessionUser.getUserRole())) {
@@ -514,9 +522,13 @@ public class CatalogueOrderMVC {
                     }
 
                     // Check stock levels for each basket item (same code as before)
-                    ArrayList<ShoppingItem> shoppingCartItems = new ArrayList<>();
                     double total = 0;
                     boolean foundError = false;
+
+                    if (basket.isEmpty()) {
+                        redirectAtt.addAttribute("errorMessage", "There's nothing to checkout.");
+                        return "home";
+                    }
 
                     for (String itemUuid : basket.keySet()) {
                         List<ShoppingItem> foundItems = itemRepository.findByUuid(itemUuid);
@@ -528,9 +540,23 @@ public class CatalogueOrderMVC {
                             if (foundItems.get(0) instanceof ShoppingItem) {
                                 ShoppingItem foundItem = foundItems.get(0);
 
-                                foundItem.setQuantity(basket.get(itemUuid));
-                                shoppingCartItems.add(foundItems.get(0));
-                                total += (foundItem.getPrice() * foundItem.getQuantity());
+                                // Set the quantity and add if there's enough stock for it
+                                if (foundItem.getQuantity() - basket.get(itemUuid) >= 0) {
+                                    ShoppingItem dupeItem = new ShoppingItem();
+
+                                    // Only store needed information for the invoice
+                                    dupeItem.setUuid(foundItem.getUuid());
+                                    dupeItem.setName(foundItem.getName());
+                                    dupeItem.setPrice(foundItem.getPrice());
+                                    dupeItem.setQuantity(basket.get(itemUuid));
+
+                                    shoppingCartItems.add(dupeItem);
+                                    total += (foundItem.getPrice() * foundItem.getQuantity());
+                                } else {
+                                    // Else, there isn't enough stock, we need to cancel
+                                    redirectAtt.addAttribute("errorMessage", "We don't have enough of the following item to complete the order: " + foundItem.getName() + ".");
+                                    return "redirect:/checkout";
+                                }
                             } else {
                                 foundError = true;
                                 break;
@@ -549,7 +575,7 @@ public class CatalogueOrderMVC {
                     CreditCard bankCard = new CreditCard(bankCardRaw);
                     String bankUsername = adminSettings.getProperty("org.solent.com504.oodd.ae2.username");
                     String bankPassword = adminSettings.getProperty("org.solent.com504.oodd.ae2.password");
-                    
+
                     try {
                         TransactionReplyMessage result = restClient.transferMoney(customerCard, bankCard, total, bankUsername, bankPassword);
 
@@ -573,7 +599,15 @@ public class CatalogueOrderMVC {
         }
 
         if (success) {
-            // Wipe the cart and redirect to the relevant order page 
+            // Decrement stock, wipe the cart and redirect to the order page 
+            for (ShoppingItem cartItem : shoppingCartItems) {
+                List<ShoppingItem> foundItems = itemRepository.findByUuid(cartItem.getUuid());
+                ShoppingItem dbItem = foundItems.get(0);
+
+                dbItem.setQuantity(dbItem.getQuantity() - cartItem.getQuantity());
+                itemRepository.save(dbItem);
+            }
+
             basket.clear();
             return "home";
         }

@@ -29,9 +29,9 @@ public interface ShoppingItemCatalogRepository  extends JpaRepository<ShoppingIt
     
     public Long deleteByUuid(String uuid);
     
-    @Query("select si from ShoppingItem si where si.quantity > 0")
+    @Query("select si from ShoppingItem si where si.quantity > 0 order by si.id desc")
     public List<ShoppingItem> findAvailableItems();
     
-    @Query("select si from ShoppingItem si where si.quantity = 0")
+    @Query("select si from ShoppingItem si where si.quantity = 0 order by si.id desc")
     public List<ShoppingItem> findUnavailableItems();
 }
