@@ -13,6 +13,7 @@ import java.util.UUID;
 import javax.transaction.Transactional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.junit.Assert.*;
@@ -22,6 +23,7 @@ import org.solent.com504.oodd.cart.model.dto.User;
 import org.solent.com504.oodd.cart.dao.impl.UserRepository;
 import org.solent.com504.oodd.cart.model.dto.Invoice;
 import org.solent.com504.oodd.cart.model.dto.ShoppingItem;
+import org.solent.com504.oodd.cart.model.dto.InvoiceItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -68,23 +70,31 @@ public class InvoiceRepositoryTest {
         invoice1 = invoiceRepository.save(invoice1);
         assertEquals(1, invoiceRepository.count());
 
-        // do catalog item
+        // do cataloge item
         ShoppingItem shoppingItem1 = new ShoppingItem();
         shoppingItem1.setName("item 1");
         shoppingItem1.setPrice(100.1);
-        shoppingItem1.setQuantity(1);
+        shoppingItem1.setQuantity(5);
         shoppingItem1.setUuid(UUID.randomUUID().toString());
         shoppingItem1 = shoppingItemCatalogRepository.save(shoppingItem1);
-
-        List<ShoppingItem> purchasedItems = new ArrayList<ShoppingItem>();
-
-        invoice1.setPurchasedItems(purchasedItems);
-        invoice1 = invoiceRepository.save(invoice1);
+        
+        // find the catalogue item and "purchase" a certain amount
+        List<ShoppingItem> results = shoppingItemCatalogRepository.findByUuid(shoppingItem1.getUuid());
+        
+        List<InvoiceItem> toSave = new ArrayList<InvoiceItem>();
+        InvoiceItem toAdd = new InvoiceItem(results.get(0), 1);
+        toSave.add(toAdd);
+        
+        invoice1.setSavedBasketItems(toSave);
+        
+        LOG.debug("invoice in invoice object : " + invoice1.getSavedBasketItems());
+        
+        invoiceRepository.save(invoice1);
 
         Optional<Invoice> optional = invoiceRepository.findById(invoice1.getId());
         Invoice foundInvoice = optional.get();
 
-        LOG.debug("found Invoice : " + foundInvoice);
+        LOG.debug("found Invoice : " + foundInvoice.getSavedBasketItems());
 
         LOG.debug("****************** test complete");
     }

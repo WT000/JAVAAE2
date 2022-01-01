@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.CascadeType;
 
 @Entity
 public class Invoice {
@@ -20,9 +21,11 @@ public class Invoice {
 
     private Double amountDue;
 
-    private List<ShoppingItem> purchasedItems;
+    //private List<ShoppingItem> purchasedItems;
     
-    private List<ShoppingItem> savedPurchasedItems;
+    //private List<ShoppingItem> savedPurchasedItems;
+    
+    private List<InvoiceItem> savedBasketItems;
 
     private User purchaser;
 
@@ -35,13 +38,13 @@ public class Invoice {
         return id;
     }
 
-    public List<ShoppingItem> retrieveInvoiceSavedItems() {
-        return savedPurchasedItems;
-    }
-    
-    public void setInvoiceSavedItems(List<ShoppingItem> items) {
-        this.savedPurchasedItems = items;
-    }
+//    public List<ShoppingItem> retrieveInvoiceSavedItems() {
+//        return savedPurchasedItems;
+//    }
+//    
+//    public void setInvoiceSavedItems(List<ShoppingItem> items) {
+//        this.savedPurchasedItems = items;
+//    }
     
     public void setId(Long id) {
         this.id = id;
@@ -71,13 +74,22 @@ public class Invoice {
         this.amountDue = amountDue;
     }
 
-    @OneToMany
-    public List<ShoppingItem> getPurchasedItems() {
-        return purchasedItems;
+//    @OneToMany
+//    public List<ShoppingItem> getPurchasedItems() {
+//        return purchasedItems;
+//    }
+//    
+//    public void setPurchasedItems(List<ShoppingItem> purchasedItems) {
+//        this.purchasedItems = purchasedItems;
+//    }
+//    
+    @OneToMany(cascade = CascadeType.PERSIST) 
+    public List<InvoiceItem> getSavedBasketItems() {
+        return savedBasketItems;
     }
     
-    public void setPurchasedItems(List<ShoppingItem> purchasedItems) {
-        this.purchasedItems = purchasedItems;
+    public void setSavedBasketItems(List<InvoiceItem> basketItems) {
+        this.savedBasketItems = basketItems;
     }
 
     @OneToOne

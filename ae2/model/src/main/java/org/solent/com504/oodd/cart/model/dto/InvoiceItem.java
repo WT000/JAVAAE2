@@ -9,25 +9,21 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
+import javax.persistence.OneToOne;
 
 @Entity
 public class InvoiceItem {
 
     private Long id;
-    private String uuid = null;
-    private String name = null;
+    private ShoppingItem dbItem;
     private Integer quantity = 0;
-    private Double price = 0.0;
-    
+
     public InvoiceItem() {
 
     }
 
     public InvoiceItem(ShoppingItem dbItem, Integer quantity) {
-        this.uuid = dbItem.getUuid();
-        this.name = dbItem.getName();
-        this.price = dbItem.getPrice();
+        this.dbItem = dbItem;
         this.quantity = quantity;
     }
 
@@ -40,21 +36,14 @@ public class InvoiceItem {
     public void setId(Long id) {
         this.id = id;
     }
-
-    public String getUuid() {
-        return uuid;
+    
+    @OneToOne
+    public ShoppingItem getDbItem() {
+        return dbItem;
     }
 
-    public void setUuid(String uuuid) {
-        this.uuid = uuuid;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setDbItem(ShoppingItem dbItem) {
+        this.dbItem = dbItem;
     }
 
     public Integer getQuantity() {
@@ -65,17 +54,9 @@ public class InvoiceItem {
         this.quantity = quantity;
     }
 
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
     @Override
     public String toString() {
-        return "InvoiceItem{uuuid=" + uuid + ", name=" + name + ", quantity=" + quantity + ", price=" + price + '}';
+        return "InvoiceItem{quantity=" + quantity + ", dbItem=" + dbItem + '}';
     }
 
 }

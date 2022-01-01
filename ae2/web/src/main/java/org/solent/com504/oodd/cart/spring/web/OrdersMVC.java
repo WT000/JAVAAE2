@@ -87,9 +87,9 @@ public class OrdersMVC {
             }
         }
         
-        LOG.debug("current dbitems: " + invoiceToDisplay.getPurchasedItems());
+        //LOG.debug("current dbitems: " + invoiceToDisplay.getPurchasedItems());
         
-        model.addAttribute("savedPurchasedItems", invoiceToDisplay.getPurchasedItems());
+        model.addAttribute("savedPurchasedItems", invoiceToDisplay.getSavedBasketItems());
         model.addAttribute("invoice", invoiceToDisplay);
         model.addAttribute("selectedPage", "orders");
 

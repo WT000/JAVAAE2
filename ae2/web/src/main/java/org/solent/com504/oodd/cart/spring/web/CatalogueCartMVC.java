@@ -28,6 +28,7 @@ import org.solent.com504.oodd.cart.model.dto.UserRole;
 import org.solent.com504.oodd.cart.dao.impl.ShoppingItemCatalogRepository;
 import org.solent.com504.oodd.cart.dao.impl.UserRepository;
 import org.solent.com504.oodd.cart.model.dto.ShoppingItem;
+import org.solent.com504.oodd.cart.model.dto.InvoiceItem;
 import org.solent.com504.oodd.cart.model.dto.ShoppingItemCategory;
 import org.solent.com504.oodd.cart.model.service.ShoppingCart;
 import org.solent.com504.oodd.cart.service.ShoppingCartImpl;
@@ -626,11 +627,19 @@ public class CatalogueCartMVC {
             order.setDateOfPurchase(new Date());
             order.setPurchaser(sessionUser);
             order.setInvoiceNumber(UUID.randomUUID().toString());
-            order.setPurchasedItems(currentDbItems);
+            //order.setPurchasedItems(currentDbItems);
             
-            //order.setInvoiceSavedItems(shoppingCartItems);
+            ArrayList<InvoiceItem> tempList = new ArrayList<InvoiceItem>();
             
-            //order.retrieveInvoiceSavedItems().add(shoppingCartItems.get(0));
+            for (ShoppingItem cartItem : shoppingCartItems) {
+                List<ShoppingItem> foundItems = itemRepository.findByUuid(cartItem.getUuid());
+                ShoppingItem dbItem = foundItems.get(0);
+                
+                InvoiceItem toAdd = new InvoiceItem(dbItem, basket.get(cartItem.getUuid()));
+                tempList.add(toAdd);
+            }
+            
+            order.setSavedBasketItems(tempList);
             
             LOG.debug("Saving new invoice: current items=" + currentDbItems + ", saved items=" + shoppingCartItems);
             invoiceRepository.save(order);

@@ -35,6 +35,7 @@
                     </table>
 
                     <h1>Order Items</h1>
+                    <p>${savedPurchasedItems}</p>
                     <table class="table">
                         <tbody>
                             <tr>
@@ -44,9 +45,9 @@
                             </tr>
                             <c:forEach var="item" items="${savedPurchasedItems}">
                                 <tr>
-                                    <td>${item.name}</td>
-                                    <td>${item.quantity}</td>
-                                    <td>£${item.price}</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
                                 </tr>
                             </c:forEach>
                                 <tr>
