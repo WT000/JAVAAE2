@@ -43,7 +43,7 @@
                                 </a></li> 
                             <li <% if ("cart".equals(request.getAttribute("selectedPage"))) {%>  class="active"  <% }%> ><a href="./cart">Cart</a></li>
                             <c:if test="${sessionUser.userRole != 'ANONYMOUS'}">
-                                <li <% if ("orders".equals(request.getAttribute("selectedPage"))) {%>  class="active"  <% }%> ><a href="./orders">My Orders</a></li>
+                                <li <% if ("orders".equals(request.getAttribute("selectedPage"))) {%>  class="active"  <% }%> ><a href="./orders">Orders <c:if test="${sessionUser.userRole == 'ADMINISTRATOR'}"> (admin mode)</c:if></a></li>
                             </c:if>
                             
                             <c:if test="${sessionUser.userRole == 'ADMINISTRATOR'}">

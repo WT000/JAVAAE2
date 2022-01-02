@@ -14,19 +14,13 @@ import javax.persistence.CascadeType;
 public class Invoice {
 
     private Long id;
-
     private String invoiceNumber;
-
+    private String paymentCardNumber;
     private Date dateOfPurchase;
-
     private Double amountDue;
-    
-    private List<InvoiceItem> savedBasketItems;
-
     private User purchaser;
-
-    // Processing, Shipping, Out for Delivery, Complete or Custom
-    private String currentStatus = "Processing";
+    private List<InvoiceItem> savedBasketItems;
+    private InvoiceStatus currentStatus = InvoiceStatus.PROCESSING;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -81,12 +75,20 @@ public class Invoice {
         this.purchaser = purchaser;
     }
 
-    public String getCurrentStatus() {
+    public InvoiceStatus getCurrentStatus() {
         return currentStatus;
     }
 
-    public void setCurrentStatus(String currentStatus) {
+    public void setCurrentStatus(InvoiceStatus currentStatus) {
         this.currentStatus = currentStatus;
+    }
+    
+    public String getPaymentCardNumber() {
+        return paymentCardNumber;
+    }
+
+    public void setPaymentCardNumber(String paymentCardNumber) {
+        this.paymentCardNumber = paymentCardNumber;
     }
 
 }
