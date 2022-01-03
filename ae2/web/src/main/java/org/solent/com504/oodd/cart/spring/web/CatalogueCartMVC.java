@@ -498,7 +498,6 @@ public class CatalogueCartMVC {
         String message = "";
         String errorMessage = "";
 
-        // security check if party is allowed to access or modify this party
         User sessionUser = getSessionUser(session);
         model.addAttribute("sessionUser", sessionUser);
         LinkedHashMap<String, Integer> basket = shoppingCart.getBasket();
@@ -506,7 +505,7 @@ public class CatalogueCartMVC {
         double total = 0;
 
         boolean success = false;
-
+        
         // Only attempt checkout if they're signed in, the username is found, and
         // their account is enabled
         if (!UserRole.ANONYMOUS.equals(sessionUser.getUserRole())) {
@@ -517,10 +516,16 @@ public class CatalogueCartMVC {
 
                 if (checkoutUser.getEnabled()) {
                     LOG.debug("Attempting checkout with user=" + sessionUser.getUsername() + ".");
-
+                    // Make sure the card isn't the properties card
+                    if (cardNumber.equals(adminSettings.getProperty("org.solent.com504.oodd.ae2.cardNumber"))) {
+                        redirectAtt.addAttribute("errorMessage", "You attempted to use our card, we're not purchasing the item for you!");
+                        return "redirect:/checkout";
+                    }
+                    
+                    
                     // Check card details
                     CreditCard customerCard = new CreditCard(cardNumber, cardName, cardDate, cardCvv);
-
+                        
                     CardValidationResult cardValidityNumber = RegexCardValidator.isValid(cardNumber);
                     boolean cardValidityDateExpired = customerCard.cardDateExpiredOrError();
 
@@ -579,8 +584,7 @@ public class CatalogueCartMVC {
 
                     // All is well, attempt the purchase using current properties
                     BankRestClientImpl restClient = new BankRestClientImpl(adminSettings.getProperty("org.solent.com504.oodd.ae2.url"));
-                    String bankCardRaw = adminSettings.getProperty("org.solent.com504.oodd.ae2.cardNumber");
-                    CreditCard bankCard = new CreditCard(bankCardRaw);
+                    CreditCard bankCard = new CreditCard(adminSettings.getProperty("org.solent.com504.oodd.ae2.cardNumber"));
                     String bankUsername = adminSettings.getProperty("org.solent.com504.oodd.ae2.username");
                     String bankPassword = adminSettings.getProperty("org.solent.com504.oodd.ae2.password");
 
@@ -594,7 +598,7 @@ public class CatalogueCartMVC {
                             return "redirect:/checkout";
                         }
                     } catch (Exception e) {
-                        errorMessage = "Couldn't connect to the bank (is the configured URL correct?).";
+                        errorMessage = "Couldn't connect to the bank, check the configured properties.";
                     }
                 } else {
                     errorMessage = "Your account is disabled.";

@@ -152,11 +152,8 @@ public class OrdersMVC {
             } else if ("refund".equals(action)) {
                 // Follow a process similar to transactions, but the bank card is used as the toCard
                 BankRestClientImpl restClient = new BankRestClientImpl(adminSettings.getProperty("org.solent.com504.oodd.ae2.url"));
-                String bankCardRaw = adminSettings.getProperty("org.solent.com504.oodd.ae2.cardNumber");
-                CreditCard bankCard = new CreditCard(bankCardRaw);
-
-                String orderCard = invoiceToDisplay.getPaymentCardNumber();
-                CreditCard customerCard = new CreditCard(orderCard);
+                CreditCard bankCard = new CreditCard(adminSettings.getProperty("org.solent.com504.oodd.ae2.cardNumber"));
+                CreditCard customerCard = new CreditCard(invoiceToDisplay.getPaymentCardNumber());
 
                 try {
                     TransactionReplyMessage result = restClient.transferMoney(bankCard, customerCard, invoiceToDisplay.getAmountDue());
@@ -170,7 +167,7 @@ public class OrdersMVC {
                         errorMessage = "Something went wrong: " + result.getMessage();
                     }
                 } catch (Exception e) {
-                    errorMessage = "Couldn't connect to the bank (is the configured URL correct?).";
+                    errorMessage = "Couldn't connect to the bank, check the configured properties.";
                 }
             }
         }
