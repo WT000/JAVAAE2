@@ -468,7 +468,8 @@ public class UserMVC {
                     }
 
                     // Only store card details in the session user, not the modifyUser
-                    // which will be stored / updated in the database
+                    // which will be stored / updated in the database. Storing this
+                    // information in the database is a massive security risk
                     sessionUser.setCard(card);
                 } else {
                     model.addAttribute("modifyUser", modifyUser);

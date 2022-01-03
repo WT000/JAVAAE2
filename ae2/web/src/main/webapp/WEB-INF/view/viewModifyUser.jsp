@@ -58,7 +58,7 @@
             </table>
             
             <c:if test="${sessionUser.id == modifyUser.id}">
-                <h1>Session Payment Information (optional)</h1>
+                <h1>Saved Payment Information (optional)</h1>
                 <table class="table">
                     <tbody>
                         <tr>

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface InvoiceRepository  extends JpaRepository<Invoice,Long>{
-    @Query("select i from Invoice i where i.purchaser.username = ?1 order by i.id desc")
+    @Query("select i from Invoice i where UPPER(i.purchaser.username) = UPPER(?1) order by i.id desc")
     public List<Invoice> findByPurchaserUsername(String username);
     
     @Query("select i from Invoice i order by i.id desc")
