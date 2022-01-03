@@ -70,7 +70,7 @@
             </tr>
             <c:forEach var="item" items="${savedPurchasedItems}">
                 <tr>
-                    <td><a href="./viewModifyItem?itemUuid=${item.dbItem.uuid}">${item.name}</a></td>
+                    <td><a href="./viewModifyItem?itemUuid=${item.uuid}">${item.name}</a></td>
                     <td>${item.quantity}</td>
                     <td>£${item.price}</td>
                     <td>£${item.price * item.quantity}</td>
@@ -84,7 +84,7 @@
         </tbody>
     </table>
         
-    <c:if test="${sessionUser.userRole == 'ADMINISTRATOR'}">
+    <c:if test="${sessionUser.userRole == 'ADMINISTRATOR' && invoice.currentStatus != InvoiceStatus.REFUNDED}">
         <form action="./viewModifyOrder" method="POST">
             <input type="hidden" name="action" value="refund">
             <input type="hidden" name="invoiceNumber" value="${invoice.invoiceNumber}">

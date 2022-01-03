@@ -13,24 +13,29 @@ import javax.persistence.OneToOne;
 
 @Entity
 public class InvoiceItem {
-
+    // Uncomment the various lines of code if you want the link between items
+    // to be saved! It's off by default, as I want the invoice to be saved
+    // even if the items within it are deleted.
+    
     private Long id;
-    private ShoppingItem dbItem;
+    private String uuid;
     private Integer quantity = 0;
     private Double price;
     private String name;
+//    private ShoppingItem dbItem;
 
     public InvoiceItem() {
 
     }
 
     public InvoiceItem(ShoppingItem dbItem, Integer quantity) {
-        this.dbItem = dbItem;
+        this.uuid = dbItem.getUuid();
         this.quantity = quantity;
         this.price = dbItem.getPrice();
         this.name = dbItem.getName();
+//        this.dbItem = dbItem;
     }
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
@@ -41,15 +46,6 @@ public class InvoiceItem {
         this.id = id;
     }
     
-    @OneToOne
-    public ShoppingItem getDbItem() {
-        return dbItem;
-    }
-
-    public void setDbItem(ShoppingItem dbItem) {
-        this.dbItem = dbItem;
-    }
-
     public Integer getQuantity() {
         return quantity;
     }
@@ -57,7 +53,7 @@ public class InvoiceItem {
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
-    
+
     public Double getPrice() {
         return price;
     }
@@ -74,9 +70,26 @@ public class InvoiceItem {
         this.name = name;
     }
 
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+    
+//    @OneToOne
+//    public ShoppingItem getDbItem() {
+//        return dbItem;
+//    }
+//
+//    public void setDbItem(ShoppingItem dbItem) {
+//        this.dbItem = dbItem;
+//    }
+
     @Override
     public String toString() {
-        return "InvoiceItem{quantity=" + quantity + ", price=" + price + ", name=" + name + ", dbItem=" + dbItem + '}';
+        return "InvoiceItem{uuid=" + uuid + ", quantity=" + quantity + ", price=" + price + ", name=" + name + '}';
     }
 
 }
