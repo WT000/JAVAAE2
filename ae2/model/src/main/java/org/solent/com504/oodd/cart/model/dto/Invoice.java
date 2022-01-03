@@ -90,5 +90,9 @@ public class Invoice {
     public void setPaymentCardNumber(String paymentCardNumber) {
         this.paymentCardNumber = paymentCardNumber;
     }
-
+    
+    @Override
+    public String toString() {
+        return "Invoice{InvoiceNumber=" + invoiceNumber + ", paymentCardNumber=" + paymentCardNumber + ", amountDue=" + amountDue + ", items=" + savedBasketItems + '}';
+    }
 }
