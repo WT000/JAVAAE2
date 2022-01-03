@@ -19,7 +19,6 @@ public class InvoiceItem {
     private Integer quantity = 0;
     private Double price;
     private String name;
-    private String paymentCard;
 
     public InvoiceItem() {
 
