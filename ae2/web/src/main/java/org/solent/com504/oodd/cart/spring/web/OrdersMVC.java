@@ -7,6 +7,7 @@ package org.solent.com504.oodd.cart.spring.web;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +23,8 @@ import org.solent.com504.oodd.bank.client.impl.BankRestClientImpl;
 import org.solent.com504.oodd.bank.model.dto.BankTransactionStatus;
 import org.solent.com504.oodd.bank.model.dto.CreditCard;
 import org.solent.com504.oodd.bank.model.dto.TransactionReplyMessage;
+import org.solent.com504.oodd.cart.model.dto.ShoppingItem;
+import org.solent.com504.oodd.cart.model.dto.ShoppingItemCategory;
 import org.solent.com504.oodd.cart.model.dto.User;
 import org.solent.com504.oodd.cart.model.dto.UserRole;
 import org.solent.com504.oodd.cart.web.PropertiesDao;
@@ -61,6 +64,52 @@ public class OrdersMVC {
             session.setAttribute("sessionUser", sessionUser);
         }
         return sessionUser;
+    }
+    
+    @RequestMapping(value = "/orders", method = {RequestMethod.GET})
+    public String getAllOrders(
+            @RequestParam(value = "toFind", required = false) String toFind,
+            Model model,
+            HttpSession session) {
+        User sessionUser = getSessionUser(session);
+        model.addAttribute("sessionUser", sessionUser);
+        
+        String message = "";
+        String errorMessage = "";
+        
+        if (sessionUser.getUserRole() == UserRole.ANONYMOUS) {
+            errorMessage = "You must be logged in to see orders.";
+            model.addAttribute("errorMessage", errorMessage);
+            model.addAttribute("selectedPage", "home");
+            return "home";
+        }
+
+        List<Invoice> ordersToShow = new ArrayList<Invoice>();
+
+        // Search if that's the action, but ensure it's an admin doing it
+        if (null != toFind && sessionUser.getUserRole() == UserRole.ADMINISTRATOR) {
+            model.addAttribute("didSearch", true);
+            ordersToShow = invoiceRepository.findByPurchaserUsername(toFind);
+            
+        } else {
+            if (sessionUser.getUserRole() != UserRole.ADMINISTRATOR) {
+                ordersToShow = invoiceRepository.findByPurchaserUsername(sessionUser.getUsername());
+            } else {
+                ordersToShow = invoiceRepository.findAllInvoices();
+            }
+        }
+
+        if (ordersToShow.isEmpty()) {
+            errorMessage = "We couldn't find any orders :(";
+        }
+
+        model.addAttribute("message", message);
+        model.addAttribute("errorMessage", errorMessage);
+        model.addAttribute("orders", ordersToShow);
+        model.addAttribute("selectedPage", "orders");
+
+        // If searching for a specific item, users can also see hidden items
+        return "orders";
     }
 
     @RequestMapping(value = "/viewModifyOrder", method = {RequestMethod.GET})
@@ -102,7 +151,7 @@ public class OrdersMVC {
 
         return "viewModifyOrder";
     }
-
+    
     @RequestMapping(value = "/viewModifyOrder", method = {RequestMethod.POST})
     @Transactional
     public synchronized String alterOrder(

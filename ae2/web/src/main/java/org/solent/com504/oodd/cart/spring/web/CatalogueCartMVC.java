@@ -146,7 +146,6 @@ public class CatalogueCartMVC {
         model.addAttribute("errorMessage", errorMessage);
         model.addAttribute("categories", ShoppingItemCategory.values());
         model.addAttribute("currentItems", currentItems);
-        model.addAttribute("currentItemsCount", currentItems.size());
         model.addAttribute("hiddenItems", hiddenItems);
         model.addAttribute("selectedPage", "catalogue");
 

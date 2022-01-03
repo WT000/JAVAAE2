@@ -84,10 +84,6 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>User ID</td>
-                            <td>${modifyUser.id}</td>
-                        </tr>
-                        <tr>
                             <td>Username</td>
                             <td>${modifyUser.username}</td>
                         </tr>

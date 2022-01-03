@@ -12,6 +12,7 @@
     <h3>AE2 Shopping Cart Invoice - ${invoice.dateOfPurchase}</h3>
     <div style="color:red;">${errorMessage}</div>
     <div style="color:red;">${param.errorMessage}</div>
+    <div style="color:green;">${message}</div>
     <div style="color:green;">${param.message}</div>
 
     <table class="table">

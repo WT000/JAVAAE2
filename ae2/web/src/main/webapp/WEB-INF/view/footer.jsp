@@ -4,7 +4,7 @@
 
         <footer class="footer">
             <div class="container">
-                <a href="./about">BETA 1.2</a>
+                <a href="./about">RELEASE 1.0</a>
             </div>
         </footer>
 

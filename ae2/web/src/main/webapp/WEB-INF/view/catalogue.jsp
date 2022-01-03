@@ -32,7 +32,7 @@
     </form>
 
     <br>
-    <h1>Items (${currentItemsCount})</h1>
+    <h1>Items (${currentItems.size()})</h1>
     <div style="color:red;">${errorMessage}</div>
     <div class="row">
         <c:forEach var="item" items="${currentItems}">
