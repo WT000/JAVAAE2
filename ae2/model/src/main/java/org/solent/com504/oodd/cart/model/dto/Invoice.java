@@ -93,6 +93,6 @@ public class Invoice {
     
     @Override
     public String toString() {
-        return "Invoice{InvoiceNumber=" + invoiceNumber + ", paymentCardNumber=" + paymentCardNumber + ", amountDue=" + amountDue + ", items=" + savedBasketItems + '}';
+        return "Invoice{invoiceNumber=" + invoiceNumber + ", paymentCardNumber=" + paymentCardNumber + ", amountDue=" + amountDue + ", items=" + savedBasketItems + '}';
     }
 }
