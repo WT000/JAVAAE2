@@ -14,6 +14,9 @@
         <li>Items can be added to the database</li>
         <li>Items can be added to a cart</li>
         <li>Cart items can be purchased</li>
+        <li>Cart items are converted into an order</li>
+        <li>Orders can be viewed by relevant customers and admins</li>
+        <li>Orders can have their status edited by an admin (including refund)</li>
     </ul>
 </main>
 
