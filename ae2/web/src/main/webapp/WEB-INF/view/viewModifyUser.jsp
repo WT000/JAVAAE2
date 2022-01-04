@@ -56,7 +56,7 @@
                     </tr>
                 </tbody>
             </table>
-            
+
             <c:if test="${sessionUser.id == modifyUser.id}">
                 <h1>Saved Payment Information (optional)</h1>
                 <table class="table">
@@ -72,6 +72,10 @@
                         <tr>
                             <td>Expiry Date</td>
                             <td><input type="text" name="carddate" value="${sessionUser.card.endDate}" placeholder="01/01 or 01/2001"></td>
+                        </tr>
+                        <tr>
+                            <td>Save to Database</td>
+                            <td><input type="checkbox" name="savecard"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -94,9 +98,9 @@
                         <tr>
                             <td>Enabled</td>
                             <td><c:if test="${modifyUser.enabled}">ENABLED</c:if><c:if test="${!modifyUser.enabled}">DISABLED</c:if></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                        </tr>
+                    </tbody>
+                </table>
             </c:if>
 
             <c:if test="${sessionUser.userRole =='ADMINISTRATOR'}">
@@ -131,7 +135,7 @@
             <input type="hidden" name="username" value="${modifyUser.username}"/>
             <button class="btn btn-success" type="submit" >Update User ${modifyUser.username}</button>
         </form>
-        
+
         <br>
         <h1>Update Password</h1>
         <form action="./viewModifyUser" method="post">
@@ -142,10 +146,8 @@
             <button class="btn btn-success" type="submit" >Update ${modifyUser.username} Password</button>
         </form>
         <c:if test="${sessionUser.userRole =='ADMINISTRATOR'}">
-            <BR>
-            <form action="./users">
-                <button class="btn btn-primary" type="submit" >Return To Users</button>
-            </form> 
+            <br>
+            <a href="./users" class="btn btn-primary" role="button">Return to Users</a>   
         </c:if> 
 
     </div>

@@ -343,6 +343,7 @@ public class UserMVC {
             @RequestParam(value = "cardno", required = false) String cardNumber,
             @RequestParam(value = "cardname", required = false) String cardName,
             @RequestParam(value = "carddate", required = false) String cardDate,
+            @RequestParam(value = "savecard", required = false) String saveCard,
             @RequestParam(value = "action", required = false) String action,
             Model model,
             HttpSession session) {
@@ -437,44 +438,57 @@ public class UserMVC {
         address.setCity(city);
         address.setCounty(county);
         address.setCountry(country);
-
         address.setPostcode(postcode);
         address.setMobile(mobile);
         address.setTelephone(telephone);
 
         modifyUser.setAddress(address);
+        
+        // Only modify the card if it's the user themselves doing it
+        if (sessionUser.getUsername().equals(modifyUser.getUsername())) {
+            LOG.debug("modifyUser is signed in user editing card: " + cardNumber + " " + cardName + " " + cardDate + " save to database: " + saveCard);
+            if (cardNumber != null && cardName != null && cardDate != null) {
+                // Check if one of the card fields are present
+                if (!cardNumber.equals("") || !cardName.equals("") || !cardDate.equals("")) {
+                    // Check that they're all filled, then do basic validation
+                    if (!cardNumber.equals("") && !cardName.equals("") && !cardDate.equals("")) {
+                        CreditCard card = new CreditCard();
+                        card.setCardnumber(cardNumber);
+                        card.setName(cardName);
+                        card.setEndDate(cardDate);
 
-        if (cardNumber != null && cardName != null && cardDate != null) {
-            // Check if one of the card fields are present
-            if (!cardNumber.equals("") || !cardName.equals("") || !cardDate.equals("")) {
-                // Check that they're all filled, then do basic validation
-                if (!cardNumber.equals("") && !cardName.equals("") && !cardDate.equals("")) {
-                    CreditCard card = new CreditCard();
-                    card.setCardnumber(cardNumber);
-                    card.setName(cardName);
-                    card.setEndDate(cardDate);
-                    
-                    CardValidationResult cardNumTest = RegexCardValidator.isValid(cardNumber);
-                    if (!cardNumTest.isValid()) {
+                        CardValidationResult cardNumTest = RegexCardValidator.isValid(cardNumber);
+                        if (!cardNumTest.isValid()) {
+                            model.addAttribute("modifyUser", modifyUser);
+                            model.addAttribute("errorMessage", "The card number is invalid.");
+                            return "viewModifyUser";
+                        }
+
+                        if (card.cardDateExpiredOrError()) {
+                            model.addAttribute("modifyUser", modifyUser);
+                            model.addAttribute("errorMessage", "The card has an invalid or expired date.");
+                            return "viewModifyUser";
+                        }
+
+                        // Only store card details in the session user, not the modifyUser
+                        // which will be stored / updated in the database. Storing this
+                        // information in the database is a massive security risk
+                        if (saveCard != null) {
+                            // Save it anyway if they checked the box
+                            modifyUser.setCard(card);
+                            LOG.debug("saving " + modifyUser.getUsername() + "'s card to the database");
+                        }
+
+                        sessionUser.setCard(card);
+
+                    } else {
                         model.addAttribute("modifyUser", modifyUser);
-                        model.addAttribute("errorMessage", "The card number is invalid.");
+                        model.addAttribute("errorMessage", "One of the card fields is missing.");
                         return "viewModifyUser";
                     }
-                    
-                    if (card.cardDateExpiredOrError()) {
-                        model.addAttribute("modifyUser", modifyUser);
-                        model.addAttribute("errorMessage", "The card has an invalid or expired date.");
-                        return "viewModifyUser";
-                    }
-
-                    // Only store card details in the session user, not the modifyUser
-                    // which will be stored / updated in the database. Storing this
-                    // information in the database is a massive security risk
-                    sessionUser.setCard(card);
                 } else {
-                    model.addAttribute("modifyUser", modifyUser);
-                    model.addAttribute("errorMessage", "One of the card fields is missing.");
-                    return "viewModifyUser";
+                    sessionUser.setCard(new CreditCard());
+                    modifyUser.setCard(new CreditCard());
                 }
             }
         }
@@ -482,11 +496,8 @@ public class UserMVC {
         modifyUser = userRepository.save(modifyUser);
 
         model.addAttribute("modifyUser", modifyUser);
-
-        // add message if there are any 
         model.addAttribute("errorMessage", errorMessage);
         model.addAttribute("message", "User " + modifyUser.getUsername() + " updated successfully.");
-
         model.addAttribute("selectedPage", "home");
 
         return "viewModifyUser";
