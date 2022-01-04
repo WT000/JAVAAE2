@@ -10,6 +10,7 @@
     <div>
         <h3>Checkout</h3>
         <!-- print error message if there is one -->
+        <div style="color:red;">${errorMessage}</div>
         <div style="color:red;">${param.errorMessage}</div>
         <div style="color:green;">${message}</div>
 

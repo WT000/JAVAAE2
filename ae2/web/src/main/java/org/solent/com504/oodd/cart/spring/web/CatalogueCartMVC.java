@@ -521,7 +521,6 @@ public class CatalogueCartMVC {
                         return "redirect:/checkout";
                     }
                     
-                    
                     // Check card details
                     CreditCard customerCard = new CreditCard(cardNumber, cardName, cardDate, cardCvv);
                         
@@ -593,7 +592,7 @@ public class CatalogueCartMVC {
                         if (result.getStatus() == BankTransactionStatus.SUCCESS) {
                             success = true;
                         } else {
-                            redirectAtt.addAttribute(result.getMessage());
+                            redirectAtt.addAttribute("errorMessage", result.getMessage());
                             return "redirect:/checkout";
                         }
                     } catch (Exception e) {
