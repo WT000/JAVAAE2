@@ -27,7 +27,7 @@
 
                 <tr>
                     <th>Description</th>
-                    <c:if test="${sessionUser.userRole != 'ADMINISTRATOR'}">
+                        <c:if test="${sessionUser.userRole != 'ADMINISTRATOR'}">
                         <td>${item.description}</td>
                     </c:if>
 
@@ -38,7 +38,7 @@
 
                 <tr>
                     <th>Category</th>
-                    <c:if test="${sessionUser.userRole != 'ADMINISTRATOR'}">
+                        <c:if test="${sessionUser.userRole != 'ADMINISTRATOR'}">
                         <td>${item.category}</td>
                     </c:if>
 
@@ -60,18 +60,18 @@
 
                 <tr>
                     <th>Price</th>
-                    <c:if test="${sessionUser.userRole != 'ADMINISTRATOR'}">
+                        <c:if test="${sessionUser.userRole != 'ADMINISTRATOR'}">
                         <td>£${item.price}</td>
                     </c:if>
 
                     <c:if test="${sessionUser.userRole == 'ADMINISTRATOR'}">
                         <td><input name="price" value="${item.price}"></td>
-                    </c:if>
+                        </c:if>
                 </tr>
 
                 <tr>
                     <th>Quantity</th>
-                    <c:if test="${sessionUser.userRole != 'ADMINISTRATOR'}">
+                        <c:if test="${sessionUser.userRole != 'ADMINISTRATOR'}">
                         <td>${item.quantity}</td>
                     </c:if>
 
@@ -97,10 +97,15 @@
         </form>
         <br>
     </c:if>
-    <form action="./catalogue" method="POST">
-        <input type="hidden" name="itemUuid" value="${item.uuid}">
-        <button class="btn btn-success">Add to Cart</button>
-    </form>
+    <c:if test="${item.quantity > 0}">
+        <form action="./catalogue" method="POST">
+            <input type="hidden" name="itemUuid" value="${item.uuid}">
+            <button class="btn btn-success">Add to Cart</button>
+        </form>
+    </c:if>
+    <c:if test="${item.quantity == 0}">
+        <button class="btn btn-warning">Out of Stock</button>
+    </c:if>
     <br><a href="./catalogue" class="btn btn-primary" role="button">Back to the Catalogue</a>
 </main>
 

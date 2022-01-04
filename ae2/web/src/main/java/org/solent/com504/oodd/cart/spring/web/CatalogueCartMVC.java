@@ -169,6 +169,10 @@ public class CatalogueCartMVC {
         if (foundItems.size() > 0) {
             // Item is found
             ShoppingItem specificItem = foundItems.get(0);
+            
+            if (specificItem.getQuantity() == 0) {
+                redirectAtt.addAttribute("errorMessage", "The item is out of stock.");
+            }
 
             LinkedHashMap<String, Integer> basket = shoppingCart.getBasket();
 
@@ -186,7 +190,7 @@ public class CatalogueCartMVC {
             redirectAtt.addAttribute("message", "Added " + specificItem.getName() + " to the basket (currently " + currentItemCount + ")");
         } else {
             // Item isn't found, it may have been deleted
-            redirectAtt.addAttribute("warnMessage", "Couldn't add the item to the basket.");
+            redirectAtt.addAttribute("errorMessage", "Couldn't add the item to the basket.");
         }
 
         return "redirect:/catalogue";

@@ -9,7 +9,7 @@
 <main role="main" class="container">
     <h3>Catalogue</h3>
     <div style="color:green;">${param.message}</div>
-    <div style="color:red;">${param.warnMessage}</div>
+    <div style="color:red;">${param.errorMessage}</div>
     
     <c:if test="${sessionUser.userRole == 'ADMINISTRATOR'}">
         <h1>Create items</h1>
