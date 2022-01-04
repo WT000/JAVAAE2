@@ -104,7 +104,7 @@
         </form>
     </c:if>
     <c:if test="${item.quantity == 0}">
-        <button class="btn btn-warning">Out of Stock</button>
+        <button class="btn btn-warning">Out of Stock</button><br>
     </c:if>
     <br><a href="./catalogue" class="btn btn-primary" role="button">Back to the Catalogue</a>
 </main>
