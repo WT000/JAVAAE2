@@ -202,6 +202,8 @@ public class OrdersMVC {
                 // Follow a process similar to transactions, but the bank card is used as the toCard
                 BankRestClientImpl restClient = new BankRestClientImpl(adminSettings.getProperty("org.solent.com504.oodd.ae2.url"));
                 CreditCard bankCard = new CreditCard(adminSettings.getProperty("org.solent.com504.oodd.ae2.cardNumber"));
+                bankCard.setName(adminSettings.getProperty("org.solent.com504.oodd.ae2.cardName"));
+                bankCard.setEndDate(adminSettings.getProperty("org.solent.com504.oodd.ae2.cardDate"));
                 CreditCard customerCard = new CreditCard(invoiceToDisplay.getPaymentCardNumber());
 
                 try {

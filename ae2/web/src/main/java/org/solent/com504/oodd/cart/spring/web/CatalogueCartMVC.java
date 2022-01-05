@@ -585,6 +585,8 @@ public class CatalogueCartMVC {
                     // All is well, attempt the purchase using current properties
                     BankRestClientImpl restClient = new BankRestClientImpl(adminSettings.getProperty("org.solent.com504.oodd.ae2.url"));
                     CreditCard bankCard = new CreditCard(adminSettings.getProperty("org.solent.com504.oodd.ae2.cardNumber"));
+                    bankCard.setName(adminSettings.getProperty("org.solent.com504.oodd.ae2.cardName"));
+                    bankCard.setEndDate(adminSettings.getProperty("org.solent.com504.oodd.ae2.cardDate"));
                     String bankUsername = adminSettings.getProperty("org.solent.com504.oodd.ae2.username");
                     String bankPassword = adminSettings.getProperty("org.solent.com504.oodd.ae2.password");
 

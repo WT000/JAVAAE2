@@ -56,19 +56,19 @@
                 <tbody>
                     <tr>
                         <td>Card Number</td>
-                        <td><input type="text" name="cardno" value="${sessionUser.card.cardnumber}"></td>
+                        <td><input type="text" name="cardno" value="${sessionUser.card.cardnumber}" placeholder="1111222233334444" pattern="[0-9]{16}" required></td>
                     </tr>
                     <tr>
                         <td>Name on Card</td>
-                        <td><input type="text" name="cardname" value="${sessionUser.card.name}"></td>
+                        <td><input type="text" name="cardname" value="${sessionUser.card.name}" placeholder="John Doe" required></td>
                     </tr>
                     <tr>
                         <td>Expiry Date</td>
-                        <td><input type="text" name="carddate" value="${sessionUser.card.endDate}" placeholder="01/01 or 01/2001"></td>
+                        <td><input type="text" name="carddate" value="${sessionUser.card.endDate}" placeholder="01/01 or 01/2001" pattern="([0-9]{2}[/]?){2}|([0-9]{2}[/]?){3}" required></td>
                     </tr>
                     <tr>
                         <td>Cvv</td>
-                        <td><input type="text" name="cardcvv"></td>
+                        <td><input type="text" name="cardcvv" placeholder="123" pattern="[0-9]{3}" required></td>
                     </tr>
                 </tbody>
             </table>

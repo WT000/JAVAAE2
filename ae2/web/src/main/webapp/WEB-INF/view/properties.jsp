@@ -15,19 +15,19 @@
             <tbody>
                 <tr>
                     <td>Remote Bank URL</td>
-                    <td><input type="text" name="BankURL" value="${currentURL}"/></td>
+                    <td><input type="url" name="BankURL" value="${currentURL}" required/></td>
                 </tr>
                 <tr>
                     <td>Bank Card</td>
-                    <td><input type="text" name="BankCard" value="${currentCardNo}"/></td>
+                    <td><input type="text" name="BankCard" value="${currentCardNo}" placeholder="1111222233334444" pattern="[0-9]{16}" required/></td>
                 </tr>
                 <tr>
                     <td>Bank Username</td>
-                    <td><input type="text" name="BankUsername" value="${currentUsername}"/></td>
+                    <td><input type="text" name="BankUsername" value="${currentUsername}" required/></td>
                 </tr>
                 <tr>
                     <td>Bank Password</td>
-                    <td><input type="password" name="BankPassword" value=""/></td>
+                    <td><input type="password" name="BankPassword" required/></td>
                 </tr>
             </tbody>
         </table>
@@ -41,11 +41,11 @@
                 </tr>
                 <tr>
                     <td>Expiry Date</td>
-                    <td><input type="text" name="BankCardExpiry" value="${currentCardDate}"/></td>
+                    <td><input type="text" name="BankCardExpiry" value="${currentCardDate}" placeholder="01/01 or 01/2001" pattern="([0-9]{2}[/]?){2}|([0-9]{2}[/]?){3}"/></td>
                 </tr>
             </tbody>
         </table>
-        <button class="btn btn-success" type="submit" >Submit</button>
+        <button class="btn btn-success" type="submit">Submit</button>
     </form>
 </main>
 
