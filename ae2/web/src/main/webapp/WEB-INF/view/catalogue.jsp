@@ -1,6 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@page import="org.solent.com504.oodd.cart.model.dto.ShoppingItem"%>
 <%@page import="org.solent.com504.oodd.cart.model.dto.ShoppingItemCategory"%>
 
 <jsp:include page="header.jsp" />
@@ -68,7 +67,7 @@
 
     <c:if test="${sessionUser.userRole == 'ADMINISTRATOR'}">
         <br>
-        <h1>Unavailable Items</h1>
+        <h1>Unavailable Items (${hiddenItems.size()})</h1>
         <div class="row">
             <c:forEach var="item" items="${hiddenItems}">
                 <div class="col-sm-6 col-md-4">

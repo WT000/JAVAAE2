@@ -6,8 +6,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Transient;
 import javax.persistence.Embedded;
-import java.util.LinkedHashMap;
-import java.util.List;
 import org.solent.com504.oodd.password.PasswordUtils;
 import org.solent.com504.oodd.bank.model.dto.CreditCard;
 

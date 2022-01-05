@@ -31,11 +31,9 @@ import org.solent.com504.oodd.cart.model.dto.ShoppingItem;
 import org.solent.com504.oodd.cart.model.dto.InvoiceItem;
 import org.solent.com504.oodd.cart.model.dto.ShoppingItemCategory;
 import org.solent.com504.oodd.cart.model.service.ShoppingCart;
-import org.solent.com504.oodd.cart.service.ShoppingCartImpl;
 import org.solent.com504.oodd.bank.client.impl.BankRestClientImpl;
 import org.solent.com504.oodd.bank.card.checker.RegexCardValidator;
 import org.solent.com504.oodd.bank.card.checker.CardValidationResult;
-import org.solent.com504.oodd.bank.model.dto.BankAccount;
 import org.solent.com504.oodd.bank.model.dto.TransactionReplyMessage;
 import org.solent.com504.oodd.bank.model.dto.BankTransactionStatus;
 import org.solent.com504.oodd.bank.model.dto.CreditCard;
@@ -182,7 +180,7 @@ public class CatalogueCartMVC {
                 currentItemCount = 1;
             } else {
                 // The item is in the basket
-                Integer currentValue = (Integer) basket.get(specificItem.getUuid());
+                Integer currentValue = basket.get(specificItem.getUuid());
                 basket.put(specificItem.getUuid(), currentValue + 1);
                 currentItemCount = currentValue + 1;
             }

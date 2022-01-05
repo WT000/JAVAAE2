@@ -1,8 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@page import="org.solent.com504.oodd.cart.model.dto.User"%>
-<%@page import="org.solent.com504.oodd.cart.model.dto.UserRole"%>
-<c:set var = "selectedPage" value = "admin" scope="request"/>
 
 <jsp:include page="header.jsp" />
 

@@ -31,6 +31,7 @@ import org.solent.com504.oodd.bank.card.checker.RegexCardValidator;
 import org.solent.com504.oodd.bank.card.checker.CardValidationResult;
 import org.solent.com504.oodd.bank.model.dto.TransactionReplyMessage;
 import org.solent.com504.oodd.bank.model.dto.BankTransactionStatus;
+import org.solent.com504.oodd.password.PasswordUtils;
 
 /**
  *
@@ -135,6 +136,7 @@ public class PropertiesMVC {
                     adminSettings.setProperty("org.solent.com504.oodd.ae2.cardNumber", bankCard);
                     adminSettings.setProperty("org.solent.com504.oodd.ae2.username", bankUsername);
                     adminSettings.setProperty("org.solent.com504.oodd.ae2.password", bankPassword);
+                    adminSettings.setProperty("org.solent.com504.oodd.ae2.hashedPassword", PasswordUtils.hashPassword(bankPassword));
                     
                     // Optional information
                     adminSettings.setProperty("org.solent.com504.oodd.ae2.cardName", bankCardName);

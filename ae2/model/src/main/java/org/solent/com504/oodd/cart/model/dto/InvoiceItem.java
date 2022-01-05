@@ -9,13 +9,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
 
 @Entity
 public class InvoiceItem {
     // Uncomment the various lines of code if you want the link between items
     // to be saved! It's off by default, as I want the invoice to be saved
     // even if the items within it are deleted.
+    // Ensure you import javax.persistence.OneToOne; if you do.
     
     private Long id;
     private String uuid;

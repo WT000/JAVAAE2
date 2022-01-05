@@ -9,7 +9,7 @@ import org.solent.com504.oodd.cart.model.service.ShoppingCart;
 
 public class ServiceObjectFactory {
     
-    // cannot instantiate
+    // Cannot instantiate
     private ServiceObjectFactory(){
         
     }

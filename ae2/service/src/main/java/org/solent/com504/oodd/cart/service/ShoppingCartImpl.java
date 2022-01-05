@@ -5,11 +5,8 @@
  */
 package org.solent.com504.oodd.cart.service;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import org.solent.com504.oodd.cart.model.service.ShoppingCart;
-import org.solent.com504.oodd.cart.model.dto.ShoppingItem;
 
 
 public class ShoppingCartImpl implements ShoppingCart {
