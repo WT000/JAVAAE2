@@ -57,8 +57,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
- *
- * @author Will
+ * The MVC controller for the catalogue and User cart
+ * @author WT000
  */
 @Controller
 @RequestMapping("/")
@@ -90,6 +90,14 @@ public class CatalogueCartMVC {
         return sessionUser;
     }
 
+    /**
+     *
+     * @param toFind If searching, the item to find
+     * @param category If searching, the category to find
+     * @param model Attributes
+     * @param session Session
+     * @return If successful, the catalogue page
+     */
     @RequestMapping(value = "/catalogue", method = {RequestMethod.GET})
     public String getCatalogue(
             @RequestParam(value = "toFind", required = false) String toFind,
@@ -161,6 +169,14 @@ public class CatalogueCartMVC {
         return "catalogue";
     }
 
+    /**
+     *
+     * @param itemUuid The UUID to lookup
+     * @param model Attributes
+     * @param session Session
+     * @param redirectAtt Redirect Attributes
+     * @return If successful, the catalogue page
+     */
     @RequestMapping(value = "/catalogue", method = {RequestMethod.POST})
     public String addItem(
             @RequestParam(value = "itemUuid", required = true) String itemUuid,
@@ -204,6 +220,12 @@ public class CatalogueCartMVC {
         return "redirect:/catalogue";
     }
 
+    /**
+     *
+     * @param model Attributes
+     * @param session Session
+     * @return If successful, the createItem page
+     */
     @RequestMapping(value = "/createItem", method = {RequestMethod.GET})
     public String getCreateCatalogueItem(Model model, HttpSession session) {
         User sessionUser = getSessionUser(session);
@@ -230,6 +252,17 @@ public class CatalogueCartMVC {
         return "createItem";
     }
 
+    /**
+     *
+     * @param name Item name
+     * @param description Item description
+     * @param category Item category
+     * @param price Item price
+     * @param quantity Item quantity
+     * @param model Attributes
+     * @param session Session
+     * @return If successful, the viewModifyItem page of the item
+     */
     @RequestMapping(value = "/createItem", method = {RequestMethod.POST})
     @Transactional
     public String createCatalogueItem(
@@ -274,6 +307,13 @@ public class CatalogueCartMVC {
         return "redirect:/viewModifyItem?itemUuid=" + itemToCreate.getUuid();
     }
 
+    /**
+     *
+     * @param uuid The UUID to lookup
+     * @param model Attributes
+     * @param session Session
+     * @return If successful, the viewModifyItem page of the item
+     */
     @RequestMapping(value = "/viewModifyItem", method = {RequestMethod.GET})
     public String getItem(
             @RequestParam(value = "itemUuid", required = true) String uuid,
@@ -303,6 +343,20 @@ public class CatalogueCartMVC {
         return "viewModifyItem";
     }
 
+    /**
+     *
+     * @param action The action to be performed
+     * @param uuid Item UUID
+     * @param name Item name
+     * @param description Item description
+     * @param category Item category
+     * @param price Item price
+     * @param quantity Item quantity
+     * @param model Attributes
+     * @param session Session
+     * @param redirectAtt Redirect Attributes
+     * @return If successful, the viewModifyItem page (update) or catalogue page (delete)
+     */
     @RequestMapping(value = "/viewModifyItem", method = {RequestMethod.POST})
     @Transactional
     public String updateItem(
@@ -314,7 +368,8 @@ public class CatalogueCartMVC {
             @RequestParam(value = "price", required = false) String price,
             @RequestParam(value = "quantity", required = false) String quantity,
             Model model,
-            HttpSession session) {
+            HttpSession session,
+            RedirectAttributes redirectAtt) {
 
         User sessionUser = getSessionUser(session);
         model.addAttribute("sessionUser", sessionUser);
@@ -350,11 +405,11 @@ public class CatalogueCartMVC {
                 itemRepository.save(itemToEdit);
                 message = "Item successfully saved!";
 
-                model.addAttribute("message", message);
+                redirectAtt.addAttribute("message", message);
                 model.addAttribute("item", itemToEdit);
                 model.addAttribute("selectedPage", "catalogue");
 
-                return "viewModifyItem";
+                return "redirect:/viewModifyItem?itemUuid=" + itemToEdit.getUuid();
             } else {
                 // The user wants to delete the item
                 itemRepository.deleteByUuid(uuid);
@@ -365,6 +420,12 @@ public class CatalogueCartMVC {
         }
     }
 
+    /**
+     *
+     * @param model Attributes
+     * @param session Session
+     * @return If successful, the cart page
+     */
     @RequestMapping(value = "/cart", method = {RequestMethod.GET})
     public String getCart(Model model, HttpSession session) {
 
@@ -415,6 +476,14 @@ public class CatalogueCartMVC {
         return "cart";
     }
 
+    /**
+     *
+     * @param uuid The UUID to search for
+     * @param model Attributes
+     * @param session Session
+     * @param redirectAtt Redirect Attributes
+     * @return If successful, the cart page
+     */
     @RequestMapping(value = "/cart", method = {RequestMethod.POST})
     public String removeCartItem(
             @RequestParam(value = "uuid", required = true) String uuid,
@@ -444,6 +513,12 @@ public class CatalogueCartMVC {
         return "redirect:/cart";
     }
 
+    /**
+     *
+     * @param model Attributes
+     * @param session Session
+     * @return If successful, the checkout page
+     */
     @RequestMapping(value = {"/checkout"}, method = RequestMethod.GET)
     public String prepareCheckout(Model model, HttpSession session) {
         String message = "Please confirm your details below.";
@@ -488,6 +563,25 @@ public class CatalogueCartMVC {
         return "checkout";
     }
 
+    /**
+     *
+     * @param firstName Checkout first name
+     * @param secondName Checkout surname
+     * @param addressLine1 Checkout address line 1
+     * @param addressLine2 Checkout address line 2
+     * @param city Checkout city
+     * @param county Checkout country
+     * @param postcode Checkout postcode
+     * @param mobile Checkout mobile number
+     * @param cardNumber Card number
+     * @param cardName Name on card
+     * @param cardDate Card expiry date
+     * @param cardCvv Card cvv
+     * @param model Attributes
+     * @param session Session
+     * @param redirectAtt Redirect Attributes
+     * @return If successful, the newly made invoice
+     */
     @RequestMapping(value = {"/checkout"}, method = RequestMethod.POST)
     @Transactional
     public synchronized String doCheckout(
@@ -673,6 +767,15 @@ public class CatalogueCartMVC {
     /*
      * Default exception handler, catches all exceptions, redirects to friendly
      * error page. Does not catch request mapping errors
+     */
+
+    /**
+     *
+     * @param e The exception
+     * @param model Attributes
+     * @param session Session
+     * @param request Request
+     * @return Error page
      */
     @ExceptionHandler(Exception.class)
     public String myExceptionHandler(final Exception e, Model model,

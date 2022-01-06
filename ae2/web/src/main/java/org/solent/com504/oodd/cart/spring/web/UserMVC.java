@@ -38,6 +38,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+/**
+ * The MVC controller for User's and logging in
+ * @author WT000
+ */
 @Controller
 @RequestMapping("/")
 public class UserMVC {
@@ -58,6 +62,12 @@ public class UserMVC {
         return sessionUser;
     }
 
+    /**
+     *
+     * @param model Attributes
+     * @param session Session
+     * @return If successful, the home page
+     */
     @RequestMapping(value = "/logout", method = {RequestMethod.GET, RequestMethod.POST})
     public String logout(Model model,
             HttpSession session) {
@@ -69,11 +79,14 @@ public class UserMVC {
         return "redirect:/home";
     }
 
+    /**
+     *
+     * @param model Attributes
+     * @param session Session
+     * @return The login page
+     */
     @RequestMapping(value = "/login", method = {RequestMethod.GET})
-    @Transactional
-    public String login(
-            Model model,
-            HttpSession session) {
+    public String login(Model model, HttpSession session) {
         String message = "Please log in using your username and password.";
         String errorMessage = "";
 
@@ -96,12 +109,20 @@ public class UserMVC {
 
     }
 
+    /**
+     *
+     * @param action The action
+     * @param username The username to login with
+     * @param password The password to login with
+     * @param model Attributes
+     * @param session Session
+     * @return If successful, the home page after logging in
+     */
     @RequestMapping(value = "/login", method = {RequestMethod.POST})
     @Transactional
     public String login(@RequestParam(value = "action", required = false) String action,
             @RequestParam(value = "username", required = false) String username,
             @RequestParam(value = "password", required = false) String password,
-            @RequestParam(value = "password2", required = false) String password2,
             Model model,
             HttpSession session) {
         String message = "";
@@ -177,14 +198,14 @@ public class UserMVC {
         }
     }
 
+    /**
+     *
+     * @param model Attributes
+     * @param session Session
+     * @return The register page
+     */
     @RequestMapping(value = "/register", method = {RequestMethod.GET})
-    @Transactional
-    public String registerGET(@RequestParam(value = "action", required = false) String action,
-            @RequestParam(value = "username", required = false) String username,
-            @RequestParam(value = "password", required = false) String password,
-            @RequestParam(value = "password2", required = false) String password2,
-            Model model,
-            HttpSession session) {
+    public String registerGet(Model model, HttpSession session) {
         String message = "Please enter the fields below to register on the site.";
         String errorMessage = "";
 
@@ -199,9 +220,19 @@ public class UserMVC {
         return "register";
     }
 
+    /**
+     *
+     * @param action The action
+     * @param username The username to set
+     * @param password The password to set
+     * @param password2 The confirmed password
+     * @param model Attributes
+     * @param session Session
+     * @return If successful, the home page after creating the account
+     */
     @RequestMapping(value = "/register", method = {RequestMethod.POST})
     @Transactional
-    public String register(@RequestParam(value = "action", required = false) String action,
+    public String registerPost(@RequestParam(value = "action", required = false) String action,
             @RequestParam(value = "username", required = false) String username,
             @RequestParam(value = "password", required = false) String password,
             @RequestParam(value = "password2", required = false) String password2,
@@ -267,10 +298,14 @@ public class UserMVC {
         }
     }
 
+    /**
+     *
+     * @param model Attributes
+     * @param session Session
+     * @return The users page
+     */
     @RequestMapping(value = {"/users"}, method = RequestMethod.GET)
-    @Transactional
-    public String users(Model model,
-            HttpSession session) {
+    public String users(Model model, HttpSession session) {
         String message = "";
         String errorMessage = "";
 
@@ -290,8 +325,15 @@ public class UserMVC {
         return "users";
     }
 
+    /**
+     *
+     * @param username The username to search for
+     * @param model Attributes
+     * @param session Session
+     * @return If successful, the viewModifyUser page for the User
+     */
     @RequestMapping(value = {"/viewModifyUser"}, method = RequestMethod.GET)
-    public String modifyuser(
+    public String modifyUser(
             @RequestParam(value = "username", required = true) String username,
             Model model,
             HttpSession session) {
@@ -338,8 +380,35 @@ public class UserMVC {
         return "viewModifyUser";
     }
 
+    /**
+     *
+     * @param username User username
+     * @param firstName User first name
+     * @param secondName User surname
+     * @param userRole User role
+     * @param userEnabled User enabled status
+     * @param addressLine1 User address line 1
+     * @param addressLine2 User address line 2
+     * @param city User city
+     * @param county User county
+     * @param country User country
+     * @param postcode User postcode
+     * @param telephone User telephone
+     * @param mobile User mobile
+     * @param password User password
+     * @param password2 User confirmed password
+     * @param cardNumber User card number
+     * @param cardName User name on card
+     * @param cardDate User card expiry date
+     * @param saveCard User choice to save into the database (not null) or session (null)
+     * @param action The action
+     * @param model Attributes
+     * @param session Session
+     * @return If successful, the viewModifyUser page with updated information
+     */
     @RequestMapping(value = {"/viewModifyUser"}, method = RequestMethod.POST)
-    public String updateuser(
+    @Transactional
+    public String updateUser(
             @RequestParam(value = "username", required = true) String username,
             @RequestParam(value = "firstName", required = false) String firstName,
             @RequestParam(value = "secondName", required = false) String secondName,
@@ -521,6 +590,15 @@ public class UserMVC {
     /*
      * Default exception handler, catches all exceptions, redirects to friendly
      * error page. Does not catch request mapping errors
+     */
+
+    /**
+     *
+     * @param e Exception
+     * @param model Attributes
+     * @param session Session
+     * @param request Request
+     * @return Error page
      */
     @ExceptionHandler(Exception.class)
     public String myExceptionHandler(final Exception e, Model model,

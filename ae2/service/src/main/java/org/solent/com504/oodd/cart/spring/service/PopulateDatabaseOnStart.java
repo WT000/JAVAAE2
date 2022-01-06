@@ -32,8 +32,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- *
- * @author cgallen
+ * Populate the database if it's started for the first time
+ * @author WT000
  */
 @Component
 public class PopulateDatabaseOnStart {
@@ -64,6 +64,9 @@ public class PopulateDatabaseOnStart {
     @Autowired
     private ShoppingItemCatalogRepository catalogRepository;
 
+    /**
+     * Put User and ShoppingItem objects into relevant databases
+     */
     @PostConstruct
     public void initDatabase() {
         LOG.debug("populating database with default users");

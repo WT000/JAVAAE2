@@ -20,14 +20,27 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
+/**
+ *
+ * @author WT000
+ */
 @SpringBootApplication(scanBasePackages = "org.solent.com504.oodd.cart.spring.web")
 public class SpringBootJspApplication extends SpringBootServletInitializer {
 
+    /**
+     *
+     * @param builder Spring builder
+     * @return Builder sources
+     */
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
         return builder.sources(SpringBootJspApplication.class);
     }
 
+    /**
+     * 
+     * @param args Arguments
+     */
     public static void main(String[] args) {
         SpringApplication.run(SpringBootJspApplication.class);
     }

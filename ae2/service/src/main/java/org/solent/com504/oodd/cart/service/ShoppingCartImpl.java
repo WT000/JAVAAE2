@@ -18,16 +18,27 @@ package org.solent.com504.oodd.cart.service;
 import java.util.LinkedHashMap;
 import org.solent.com504.oodd.cart.model.service.ShoppingCart;
 
-
+/**
+ * The implemented version of ShoppingCart
+ * @author WT000
+ */
 public class ShoppingCartImpl implements ShoppingCart {
 
     private LinkedHashMap<String, Integer> basket = new LinkedHashMap<String, Integer>();
     
+    /**
+     *
+     * @return The current basket, each item is a UUID string (key) and quantity int (value)
+     */
     @Override
     public LinkedHashMap<String, Integer> getBasket() {
         return basket;
     }
     
+    /**
+     *
+     * @param basket basket to set to
+     */
     @Override
     public void setBasket(LinkedHashMap<String, Integer> basket) {
         this.basket = basket;

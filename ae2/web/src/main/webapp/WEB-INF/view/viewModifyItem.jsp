@@ -9,7 +9,7 @@
 <main role="main" class="container">
     <h3>${item.name}</h3>
     <div style="color:red;">${errorMessage}</div>
-    <div style="color:green;">${message}</div>
+    <div style="color:green;">${param.message}</div>
 
     <c:if test="${sessionUser.userRole == 'ADMINISTRATOR'}">
         <form action="./viewModifyItem" method="POST">

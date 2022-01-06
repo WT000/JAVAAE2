@@ -17,13 +17,10 @@ package org.solent.com504.oodd.cart.spring.web;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.transaction.Transactional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -44,8 +41,8 @@ import org.solent.com504.oodd.bank.model.dto.BankTransactionStatus;
 import org.solent.com504.oodd.password.PasswordUtils;
 
 /**
- *
- * @author Will
+ * The MVC controller for setting properties
+ * @author WT000
  */
 @Controller
 @RequestMapping("/")
@@ -65,6 +62,12 @@ public class PropertiesMVC {
         return sessionUser;
     }
 
+    /**
+     *
+     * @param model Attributes
+     * @param session Session
+     * @return If successful, the properties page
+     */
     @RequestMapping(value = "/properties", method = {RequestMethod.GET})
     public String getProperties(Model model, HttpSession session) {
         User sessionUser = getSessionUser(session);
@@ -89,6 +92,18 @@ public class PropertiesMVC {
         return "properties";
     }
 
+    /**
+     * 
+     * @param bankURL The bank URL to set to (usually ends in /rest)
+     * @param bankCard The bank card number
+     * @param bankUsername The bank account username
+     * @param bankPassword The bank account password
+     * @param bankCardName (optional) Name on card
+     * @param bankCardDate (optional) Expiry date on card
+     * @param model Attributes
+     * @param session Session
+     * @return If successful, the properties page with updated values
+     */
     @RequestMapping(value = "/properties", method = {RequestMethod.POST})
     public String setProperties(
             @RequestParam(value = "BankURL", required = false) String bankURL,
@@ -159,7 +174,6 @@ public class PropertiesMVC {
                 errorMessage += "The entered bank URL is invalid.<br>";
                 errorMessage += e.getMessage() + "<br>";
             }
-
         }
         
         // Check to ensure an error or Exception didn't happen
@@ -183,6 +197,15 @@ public class PropertiesMVC {
     /*
      * Default exception handler, catches all exceptions, redirects to friendly
      * error page. Does not catch request mapping errors
+     */
+
+    /**
+     *
+     * @param e The Exception
+     * @param model Attributes
+     * @param session Session
+     * @param request Request
+     * @return Error page
      */
     @ExceptionHandler(Exception.class)
     public String myExceptionHandler(final Exception e, Model model,

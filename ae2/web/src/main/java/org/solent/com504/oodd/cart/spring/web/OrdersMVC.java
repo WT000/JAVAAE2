@@ -49,8 +49,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
- *
- * @author Will
+ * The MVC controller for orders / invoices
+ * @author WT000
  */
 @Controller
 @RequestMapping("/")
@@ -76,6 +76,13 @@ public class OrdersMVC {
         return sessionUser;
     }
     
+    /**
+     *
+     * @param toFind If searching, the order to find
+     * @param model Attributes
+     * @param session Session
+     * @return If successful, the relevant orders / invoices
+     */
     @RequestMapping(value = "/orders", method = {RequestMethod.GET})
     public String getAllOrders(
             @RequestParam(value = "toFind", required = false) String toFind,
@@ -122,6 +129,13 @@ public class OrdersMVC {
         return "orders";
     }
 
+    /**
+     *
+     * @param invoiceNumber The invoice number to search for
+     * @param model Attributes
+     * @param session Session
+     * @return If successful, the orders page for the invoice
+     */
     @RequestMapping(value = "/viewModifyOrder", method = {RequestMethod.GET})
     public String getOrder(
             @RequestParam(value = "invoiceNumber", required = true) String invoiceNumber,
@@ -162,6 +176,16 @@ public class OrdersMVC {
         return "viewModifyOrder";
     }
     
+    /**
+     *
+     * @param invoiceNumber The invoice number
+     * @param action The action
+     * @param status The status to set the invoice to
+     * @param model Attributes
+     * @param session Session
+     * @param redirectAtt Redirect Attributes
+     * @return If successful, the edited invoice
+     */
     @RequestMapping(value = "/viewModifyOrder", method = {RequestMethod.POST})
     @Transactional
     public synchronized String alterOrder(
@@ -246,6 +270,15 @@ public class OrdersMVC {
     /*
      * Default exception handler, catches all exceptions, redirects to friendly
      * error page. Does not catch request mapping errors
+     */
+
+    /**
+     *
+     * @param e The Exception
+     * @param model Attributes
+     * @param session Session
+     * @param request Request
+     * @return Error page
      */
     @ExceptionHandler(Exception.class)
     public String myExceptionHandler(final Exception e, Model model,

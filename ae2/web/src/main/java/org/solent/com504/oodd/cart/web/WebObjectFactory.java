@@ -16,22 +16,26 @@
 package org.solent.com504.oodd.cart.web;
 
 import java.io.File;
-import org.solent.com504.oodd.cart.service.ShoppingCartImpl;
 import org.solent.com504.oodd.cart.model.service.ShoppingCart;
 import org.solent.com504.oodd.cart.service.ServiceObjectFactory;
 
 /**
- *
- * @author cgallen
+ * Returns relevant objects through its methods
+ * @author WT000
  */
 public class WebObjectFactory {
     private static PropertiesDao propertiesDao = null;
 
-    // cannot instantiate
+    /**
+     * Blank constructor
+     */
     private WebObjectFactory() {
 
     }
-
+    
+    /**
+     * @return A new ShoppingCard object for the user
+     */
     public static ShoppingCart getNewShoppingCart() {
         return ServiceObjectFactory.getNewShoppingCart();
     }

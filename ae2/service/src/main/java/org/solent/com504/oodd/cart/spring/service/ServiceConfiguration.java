@@ -23,7 +23,7 @@ import org.springframework.context.annotation.Import;
 
 /**
  *
- * @author cgallen
+ * @author WT000
  */
 @Configuration
 

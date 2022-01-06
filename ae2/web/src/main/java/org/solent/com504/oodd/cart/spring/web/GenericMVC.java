@@ -31,6 +31,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+/**
+ * The MVC controller for generic pages
+ * @author WT000
+ */
 @Controller
 @RequestMapping("/")
 public class GenericMVC {
@@ -54,11 +58,23 @@ public class GenericMVC {
     }
 
     // this redirects calls to the root of our application to index.html
+
+    /**
+     *
+     * @param model Attributes
+     * @return The index page
+     */
     @RequestMapping(value = "/", method = {RequestMethod.GET, RequestMethod.POST})
     public String index(Model model) {
         return "redirect:/index.html";
     }
 
+    /**
+     *
+     * @param model Attributes
+     * @param session Session
+     * @return The home page
+     */
     @RequestMapping(value = "/home", method = {RequestMethod.GET, RequestMethod.POST})
     public String home(Model model, HttpSession session) {
 
@@ -75,6 +91,12 @@ public class GenericMVC {
         return "home";
     }
 
+    /**
+     * Click the version number to go here!
+     * @param model Attributes
+     * @param session Session
+     * @return The about page
+     */
     @RequestMapping(value = "/about", method = {RequestMethod.GET, RequestMethod.POST})
     public String about(Model model, HttpSession session) {
 
@@ -90,6 +112,15 @@ public class GenericMVC {
     /*
      * Default exception handler, catches all exceptions, redirects to friendly
      * error page. Does not catch request mapping errors
+     */
+
+    /**
+     *
+     * @param e The exception
+     * @param model Attributes
+     * @param session Session
+     * @param request Request
+     * @return Error page
      */
     @ExceptionHandler(Exception.class)
     public String myExceptionHandler(final Exception e, Model model,

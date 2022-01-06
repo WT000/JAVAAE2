@@ -17,6 +17,10 @@ package org.solent.com504.oodd.cart.service;
 
 import org.solent.com504.oodd.cart.model.service.ShoppingCart;
 
+/**
+ * A factory which allows for getting ShoppingCart objects
+ * @author WT000
+ */
 public class ServiceObjectFactory {
     
     // Cannot instantiate
@@ -24,6 +28,10 @@ public class ServiceObjectFactory {
         
     }
     
+    /**
+     *
+     * @return A new ShoppingCart object
+     */
     public static ShoppingCart getNewShoppingCart(){
         return new ShoppingCartImpl();
     }
