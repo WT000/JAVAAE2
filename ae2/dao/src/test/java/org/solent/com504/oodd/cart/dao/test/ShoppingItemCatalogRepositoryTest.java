@@ -56,7 +56,7 @@ public class ShoppingItemCatalogRepositoryTest {
         shoppingItem1.setQuantity(1);
         shoppingItem1.setUuid(UUID.randomUUID().toString());
 
-        shoppingItem1 = shoppingItemCatalogRepository.save(shoppingItem1);
+        shoppingItemCatalogRepository.save(shoppingItem1);
 
         ShoppingItem shoppingItem2 = new ShoppingItem();
         shoppingItem2.setName("item 1");
@@ -71,8 +71,17 @@ public class ShoppingItemCatalogRepositoryTest {
         Optional<ShoppingItem> optional = shoppingItemCatalogRepository.findById(shoppingItem2.getId());
         ShoppingItem foundItem = optional.get();
 
-        LOG.debug("found user: " + foundItem);
-
+        LOG.debug("found item: " + foundItem);
+        
+        LOG.debug("editing found item");
+        foundItem.setName("THE BEST ITEM");
+        shoppingItemCatalogRepository.save(foundItem);
+        
+        optional = shoppingItemCatalogRepository.findById(shoppingItem2.getId());
+        foundItem = optional.get();
+        
+        assertEquals("THE BEST ITEM", foundItem.getName());
+        
         LOG.debug("****************** test complete");
     }
 

@@ -17,6 +17,7 @@ import org.solent.com504.oodd.cart.dao.impl.InvoiceRepository;
 import org.solent.com504.oodd.cart.dao.impl.ShoppingItemCatalogRepository;
 import org.solent.com504.oodd.cart.model.dto.User;
 import org.solent.com504.oodd.cart.dao.impl.UserRepository;
+import org.solent.com504.oodd.cart.model.dto.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -68,7 +69,17 @@ public class UserRepositoryTest {
         List<User> foundUsers = userRepository.findByNames("craig", "gallen");
         LOG.debug("found user3: " + foundUsers);
         
-
+        LOG.debug("making user3 a deactivated admin");
+        User user3 = foundUsers.get(0);
+        user3.setUserRole(UserRole.ADMINISTRATOR);
+        user3.setEnabled(false);
+        
+        userRepository.save(user3);
+        
+        List<User> foundEditedUsers = userRepository.findByNames("craig", "gallen");
+        assertEquals(UserRole.ADMINISTRATOR, foundEditedUsers.get(0).getUserRole());
+        assertEquals(false, foundEditedUsers.get(0).getEnabled());
+        
         LOG.debug("****************** test complete");
     }
 

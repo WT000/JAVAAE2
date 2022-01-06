@@ -24,6 +24,7 @@ import org.solent.com504.oodd.cart.dao.impl.UserRepository;
 import org.solent.com504.oodd.cart.model.dto.Invoice;
 import org.solent.com504.oodd.cart.model.dto.ShoppingItem;
 import org.solent.com504.oodd.cart.model.dto.InvoiceItem;
+import org.solent.com504.oodd.cart.model.dto.InvoiceStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -78,11 +79,8 @@ public class InvoiceRepositoryTest {
         shoppingItem1.setUuid(UUID.randomUUID().toString());
         shoppingItem1 = shoppingItemCatalogRepository.save(shoppingItem1);
         
-        // find the catalogue item and "purchase" a certain amount
-        List<ShoppingItem> results = shoppingItemCatalogRepository.findByUuid(shoppingItem1.getUuid());
-        
-        List<InvoiceItem> toSave = new ArrayList<InvoiceItem>();
-        InvoiceItem toAdd = new InvoiceItem(results.get(0), 1);
+        ArrayList<InvoiceItem> toSave = new ArrayList<InvoiceItem>();
+        InvoiceItem toAdd = new InvoiceItem(shoppingItem1, 1);
         toSave.add(toAdd);
         
         invoice1.setSavedBasketItems(toSave);
@@ -94,8 +92,12 @@ public class InvoiceRepositoryTest {
         Optional<Invoice> optional = invoiceRepository.findById(invoice1.getId());
         Invoice foundInvoice = optional.get();
 
-        LOG.debug("found Invoice : " + foundInvoice.getSavedBasketItems());
-
+        LOG.debug("found Invoice, validating...");
+        assertEquals(InvoiceStatus.PROCESSING, foundInvoice.getCurrentStatus());
+        assertEquals("craig", foundInvoice.getPurchaser().getFirstName());
+        assertEquals((Double) 100.0, foundInvoice.getAmountDue());
+        assertEquals(1, foundInvoice.getSavedBasketItems().size());
+        
         LOG.debug("****************** test complete");
     }
 
