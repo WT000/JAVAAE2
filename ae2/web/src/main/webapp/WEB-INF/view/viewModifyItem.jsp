@@ -21,7 +21,7 @@
                 <c:if test="${sessionUser.userRole == 'ADMINISTRATOR'}">
                     <tr>
                         <th>Name</th>
-                        <td><input name="name" value="${item.name}"></td>
+                        <td><input name="name" value="${item.name}" required></td>
                     </tr>
                 </c:if>
 
@@ -44,7 +44,7 @@
 
                     <c:if test="${sessionUser.userRole == 'ADMINISTRATOR'}">
                         <td>
-                            <select name="category">
+                            <select name="category" required>
                                 <c:forEach var="category" items="${ShoppingItemCategory.values()}">
                                     <c:if test="${ShoppingItemCategory.valueOf(category) == ShoppingItemCategory.valueOf(item.category)}">
                                         <option value="${category}" selected>${category}</option>
@@ -65,7 +65,7 @@
                     </c:if>
 
                     <c:if test="${sessionUser.userRole == 'ADMINISTRATOR'}">
-                        <td><input name="price" value="${item.price}"></td>
+                        <td><input type="number" name="price" value="${item.price}" required></td>
                         </c:if>
                 </tr>
 
@@ -76,7 +76,7 @@
                     </c:if>
 
                     <c:if test="${sessionUser.userRole == 'ADMINISTRATOR'}">
-                        <td><input name="quantity" value="${item.quantity}"></td>
+                        <td><input type="number" name="quantity" value="${item.quantity}" required></td>
                         </c:if>
                 </tr>
 

@@ -38,7 +38,7 @@
                             <form action="./viewModifyOrder" method="POST">
                                 <input type="hidden" name="action" value="updateStatus">
                                 <input type="hidden" name="invoiceNumber" value="${invoice.invoiceNumber}">
-                                    <select name="status">
+                                    <select name="status" required>
                                         <c:forEach var="status" items="${InvoiceStatus.values()}">
                                             <c:if test="${InvoiceStatus.valueOf(status) == InvoiceStatus.valueOf(invoice.currentStatus)}">
                                                 <option value="${status}" selected>${status}</option>

@@ -16,7 +16,7 @@
         <tbody>
             <tr>
                 <td>Name</td>
-                <td><input name="name" value="${item.name}"></td>
+                <td><input name="name" value="${item.name}" required></td>
             </tr>
             <tr>
                 <td>Description</td>
@@ -25,7 +25,7 @@
             <tr>
                 <td>Category</td>
                 <td>
-                    <select name="category">
+                    <select name="category" required>
                         <c:forEach var="category" items="${ShoppingItemCategory.values()}">
                             <option value="${category}" selected>${category}</option>
                         </c:forEach>
@@ -34,11 +34,11 @@
             </tr>
             <tr>
                 <td>Price</td>
-                <td><input name="price" value="${item.price}"></td>
+                <td><input type="number" name="price" value="${item.price}" required></td>
             </tr>
             <tr>
                 <td>Quantity</td>
-                <td><input name="quantity" value="${item.quantity}"></td>
+                <td><input type="number" name="quantity" value="${item.quantity}" required></td>
             </tr>
         </tbody>
     </table>

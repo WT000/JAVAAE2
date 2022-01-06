@@ -19,39 +19,39 @@
                 <tbody>
                     <tr>
                         <td>First Name</td>
-                        <td><input type="text" name="firstName" value="${modifyUser.firstName}" /></td>
+                        <td><input type="text" name="firstName" value="${modifyUser.firstName}"/></td>
                     </tr>
                     <tr>
                         <td>Last Name</td>
-                        <td><input type="text" name="secondName" value="${modifyUser.secondName}" /></td>
+                        <td><input type="text" name="secondName" value="${modifyUser.secondName}"/></td>
                     </tr>
                     <tr>
                         <td>Address Line 1</td>
-                        <td><input type="text" name="addressLine1" value="${modifyUser.address.addressLine1}" /></td>
+                        <td><input type="text" name="addressLine1" value="${modifyUser.address.addressLine1}"/></td>
                     </tr>
                     <tr>
                         <td>Address Line 2</td>
-                        <td><input type="text" name="addressLine2" value="${modifyUser.address.addressLine2}" /></td>
+                        <td><input type="text" name="addressLine2" value="${modifyUser.address.addressLine2}"/></td>
                     </tr>
                     <tr>
                         <td>City</td>
-                        <td><input type="text" name="city" value="${modifyUser.address.city}" /></td>
+                        <td><input type="text" name="city" value="${modifyUser.address.city}"/></td>
                     </tr>
                     <tr>
                         <td>County</td>
-                        <td><input type="text" name="county" value="${modifyUser.address.county}" /></td>
+                        <td><input type="text" name="county" value="${modifyUser.address.county}"/></td>
                     </tr>
                     <tr>
                         <td>Postcode</td>
-                        <td><input type="text" name="postcode" value="${modifyUser.address.postcode}" /></td>
+                        <td><input type="text" name="postcode" value="${modifyUser.address.postcode}"/></td>
                     </tr>
                     <tr>
                         <td>Telephone number</td>
-                        <td><input type="text" name="telephone" value="${modifyUser.address.telephone}" /></td>
+                        <td><input type="text" name="telephone" value="${modifyUser.address.telephone}"/></td>
                     </tr>
                     <tr>
                         <td>Mobile number</td>
-                        <td><input type="text" name="mobile" value="${modifyUser.address.mobile}" /></td>
+                        <td><input type="text" name="mobile" value="${modifyUser.address.mobile}"/></td>
                     </tr>
                 </tbody>
             </table>
