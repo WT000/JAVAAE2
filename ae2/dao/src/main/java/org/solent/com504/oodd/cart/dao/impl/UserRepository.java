@@ -22,13 +22,27 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-
+/**
+ * User database
+ * @author WT000
+ */
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
+    /**
+     *
+     * @param username The username to search for
+     * @return A list of User's which match the criteria
+     */
     @Query("select u from User u where u.username = :username")
     public List<User> findByUsername(@Param("username")String username);
 
+    /**
+     *
+     * @param firstName The User's first name
+     * @param secondName The User's surname
+     * @return A list of User's which match the criteria
+     */
     @Query("select u from User u where u.firstName = :firstName and u.secondName = :secondName")
     public List<User> findByNames(@Param("firstName") String firstName, @Param("secondName") String secondName);
 

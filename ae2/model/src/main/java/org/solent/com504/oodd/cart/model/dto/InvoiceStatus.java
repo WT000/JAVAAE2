@@ -16,9 +16,33 @@
 package org.solent.com504.oodd.cart.model.dto;
 
 /**
- *
+ * Represents the status of an order
  * @author Will
  */
 public enum InvoiceStatus {
-    PROCESSING, SHIPPING, DELIVERING, COMPLETE, REFUNDED;
+
+    /**
+     * The order has just been made, payment was successful
+     */
+    PROCESSING,
+
+    /**
+     * The contents of the order are being shipped
+     */
+    SHIPPING,
+
+    /**
+     * The contents of the order are on their way
+     */
+    DELIVERING,
+
+    /**
+     * The contents of the order have been delivered
+     */
+    COMPLETE,
+
+    /**
+     * The order was refunded (total amount given back to customer card)
+     */
+    REFUNDED;
 }

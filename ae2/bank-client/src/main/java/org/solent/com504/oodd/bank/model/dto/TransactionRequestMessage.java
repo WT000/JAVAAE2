@@ -15,6 +15,10 @@
  */
 package org.solent.com504.oodd.bank.model.dto;
 
+/**
+ * The request message to the bank's ReST service
+ * @author WT000
+ */
 public class TransactionRequestMessage {
 
     private CreditCard fromCard;
@@ -23,26 +27,50 @@ public class TransactionRequestMessage {
 
     private Double amount;
 
+    /**
+     *
+     * @return Current fromCard
+     */
     public CreditCard getFromCard() {
         return fromCard;
     }
 
+    /**
+     *
+     * @param fromCard fromCard to set to
+     */
     public void setFromCard(CreditCard fromCard) {
         this.fromCard = fromCard;
     }
 
+    /**
+     *
+     * @return Current toCard
+     */
     public CreditCard getToCard() {
         return toCard;
     }
 
+    /**
+     *
+     * @param toCard toCard to set to
+     */
     public void setToCard(CreditCard toCard) {
         this.toCard = toCard;
     }
 
+    /**
+     *
+     * @return Current amount
+     */
     public Double getAmount() {
         return amount;
     }
 
+    /**
+     *
+     * @param amount amount to set to
+     */
     public void setAmount(Double amount) {
         this.amount = amount;
     }

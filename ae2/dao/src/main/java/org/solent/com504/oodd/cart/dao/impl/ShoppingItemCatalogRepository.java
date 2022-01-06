@@ -22,30 +22,75 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+/**
+ * Shopping Item database
+ * @author WT000
+ */
 @Repository
 public interface ShoppingItemCatalogRepository  extends JpaRepository<ShoppingItem,Long>{
-    // The query below is used to test
+    /**
+     * (testing query)
+     * @param name The item name to search for
+     * @return A list of ShoppingItem's which match the criteria
+     */
     public List<ShoppingItem> findByNameIgnoreCase(String name);
     
+    /**
+     *
+     * @param uuid The item UUID to search for
+     * @return A list of ShoppingItem's which match the criteria
+     */
     public List<ShoppingItem> findByUuid(String uuid);
     
+    /**
+     *
+     * @param name The item name to search for
+     * @return A list of ShoppingItem's which match the criteria
+     */
     @Query("select si from ShoppingItem si where UPPER(si.name) like UPPER(?1) order by si.quantity desc, si.name")
     public List<ShoppingItem> findByNameIgnoreCaseContaining(String name);
     
+    /**
+     *
+     * @param category The category to search for
+     * @return A list of ShoppingItem's which match the criteria
+     */
     @Query("select si from ShoppingItem si where si.category = ?1 order by si.quantity desc, si.name")
     public List<ShoppingItem> findByCategory(ShoppingItemCategory category);
     
+    /**
+     *
+     * @param name The name to search for
+     * @param category The category to search for
+     * @return A list of ShoppingItem's which match the criteria
+     */
     @Query("select si from ShoppingItem si where UPPER(si.name) like UPPER(?1) and si.category = ?2 order by si.quantity desc, si.name")
     public List<ShoppingItem> findByNameIgnoreCaseContainingAndCategory(String name, ShoppingItemCategory category);
     
+    /**
+     *
+     * @return A list of every item in the database
+     */
     @Query("select si from ShoppingItem si order by si.quantity desc, si.name")
     public List<ShoppingItem> findAllItems();
     
-    public Long deleteByUuid(String uuid);
+    /**
+     *
+     * @param uuid The UUID to search for and delete
+     */
+    public void deleteByUuid(String uuid);
     
+    /**
+     *
+     * @return A list of ShoppingItem's where their quantity is greater than 0
+     */
     @Query("select si from ShoppingItem si where si.quantity > 0 order by si.id desc")
     public List<ShoppingItem> findAvailableItems();
     
+    /**
+     *
+     * @return A list of ShoppingItem's where their quantity is 0
+     */
     @Query("select si from ShoppingItem si where si.quantity = 0 order by si.id desc")
     public List<ShoppingItem> findUnavailableItems();
 }

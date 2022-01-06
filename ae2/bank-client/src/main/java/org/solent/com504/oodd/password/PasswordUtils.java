@@ -18,15 +18,26 @@ package org.solent.com504.oodd.password;
 import org.mindrot.jbcrypt.BCrypt;
 
 /**
- *
- * @author gallenc
+ * Various utilities to hash and check passwords for User objects
+ * @author WT000
  */
 public class PasswordUtils {
     
+    /**
+     *
+     * @param password The password to hash
+     * @return The hashed password
+     */
     public static String hashPassword(String password){
         return BCrypt.hashpw(password, BCrypt.gensalt(12));
     }
     
+    /**
+     *
+     * @param password The plain text password
+     * @param hashed The hashed password
+     * @return true bool if the passwords match, otherwise false bool
+     */
     public static boolean checkPassword(String password, String hashed){
         return BCrypt.checkpw(password, hashed);
     }

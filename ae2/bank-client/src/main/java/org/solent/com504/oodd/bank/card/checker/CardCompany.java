@@ -18,15 +18,38 @@ package org.solent.com504.oodd.bank.card.checker;
 
 /**
  * Enum for card company specifics
- * 
+ * @author cgallen
  */
 public enum CardCompany {
 
+    /**
+     * Visa company
+     */
     VISA ("^4[0-9]{12}(?:[0-9]{3})?$", "VISA"),
+
+    /**
+     * MasterCard company
+     */
     MASTERCARD ("^5[1-5][0-9]{14}$", "MASTER"),
+
+    /**
+     * Amex company
+     */
     AMEX ("^3[47][0-9]{13}$", "AMEX"),
+
+    /**
+     * Diners company
+     */
     DINERS ("^3(?:0[0-5]|[68][0-9])[0-9]{11}$", "Diners"),
+
+    /**
+     * Discover company
+     */
     DISCOVER ("^6(?:011|5[0-9]{2})[0-9]{12}$", "DISCOVER"),
+
+    /**
+     * JCB company
+     */
     JCB ("^(?:2131|1800|35\\d{3})\\d{11}$", "JCB");
 
     private String regex;

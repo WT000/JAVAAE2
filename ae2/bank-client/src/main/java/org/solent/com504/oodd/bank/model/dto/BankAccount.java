@@ -21,6 +21,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+/**
+ * BankAccount representation
+ * @author WT000
+ */
 @Entity
 public class BankAccount {
 
@@ -38,62 +42,118 @@ public class BankAccount {
 
     private boolean active = true;
 
+    /**
+     *
+     * @return ID Get Account ID
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
         return id;
     }
 
+    /**
+     *
+     * @param id ID to set
+     */
     public void setId(Long id) {
         this.id = id;
     }
 
+    /**
+     *
+     * @return Owner Get Owner (User)
+     */
     @Embedded
     public User getOwner() {
         return owner;
     }
 
+    /**
+     *
+     * @param owner User to set
+     */
     public void setOwner(User owner) {
         this.owner = owner;
     }
 
+    /**
+     *
+     * @return Get Sortcode
+     */
     public String getSortcode() {
         return sortcode;
     }
 
+    /**
+     *
+     * @param sortcode Sortcode to set
+     */
     public void setSortcode(String sortcode) {
         this.sortcode = sortcode;
     }
 
+    /**
+     *
+     * @return Get Account number
+     */
     public String getAccountNo() {
         return accountNo;
     }
 
+    /**
+     *
+     * @param accountNo accountNo to set to
+     */
     public void setAccountNo(String accountNo) {
         this.accountNo = accountNo;
     }
 
+    /**
+     *
+     * @return Get CreditCard
+     */
     @Embedded
     public CreditCard getCreditcard() {
         return creditcard;
     }
 
+    /**
+     *
+     * @param creditcard CreditCard to set to
+     */
     public void setCreditcard(CreditCard creditcard) {
         this.creditcard = creditcard;
     }
 
+    /**
+     *
+     * @return Get Active boolean
+     */
     public boolean isActive() {
         return active;
     }
 
+    /**
+     *
+     * @param active boolean to set to
+     */
     public void setActive(boolean active) {
         this.active = active;
     }
 
+    /**
+     *
+     * @return Get account balance
+     */
     public Double getBalance() {
         return balance;
     }
 
+    /**
+     *
+     * @param balance Balance to set to
+     */
     public void setBalance(Double balance) {
         this.balance = balance;
     }

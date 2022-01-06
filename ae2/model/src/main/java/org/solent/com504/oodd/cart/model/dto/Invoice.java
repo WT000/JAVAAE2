@@ -25,6 +25,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.CascadeType;
 
+/**
+ * Invoice entity to be stored in the Invoice database
+ * @author WT000
+ */
 @Entity
 public class Invoice {
 
@@ -37,71 +41,134 @@ public class Invoice {
     private List<InvoiceItem> savedBasketItems;
     private InvoiceStatus currentStatus = InvoiceStatus.PROCESSING;
 
+    /**
+     *
+     * @return Current ID
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
         return id;
     }
     
+    /**
+     *
+     * @param id ID to set to
+     */
     public void setId(Long id) {
         this.id = id;
     }
 
+    /**
+     *
+     * @return Current invoiceNumber
+     */
     public String getInvoiceNumber() {
         return invoiceNumber;
     }
 
+    /**
+     *
+     * @param invoiceNumber invoiceNumber to set to
+     */
     public void setInvoiceNumber(String invoiceNumber) {
         this.invoiceNumber = invoiceNumber;
     }
 
+    /**
+     *
+     * @return Current dateOfPurchase
+     */
     public Date getDateOfPurchase() {
         return dateOfPurchase;
     }
 
+    /**
+     *
+     * @param dateOfPurchase dateOfPurchase to set to
+     */
     public void setDateOfPurchase(Date dateOfPurchase) {
         this.dateOfPurchase = dateOfPurchase;
     }
 
+    /**
+     *
+     * @return Current amountDue
+     */
     public Double getAmountDue() {
         return amountDue;
     }
 
+    /**
+     *
+     * @param amountDue amountDue to set to
+     */
     public void setAmountDue(Double amountDue) {
         this.amountDue = amountDue;
     }
     
-    // Persist, so we can cascade updates (none others are needed)
+    /**
+     * Set the currently saved basket items, cascade updates
+     * @return Current savedBasketItems
+     */
     @OneToMany(cascade = CascadeType.PERSIST) 
     public List<InvoiceItem> getSavedBasketItems() {
         return savedBasketItems;
     }
     
+    /**
+     *
+     * @param basketItems savedBasketItems to set to
+     */
     public void setSavedBasketItems(List<InvoiceItem> basketItems) {
         this.savedBasketItems = basketItems;
     }
 
+    /**
+     * One to one relationship with a User
+     * @return Current purchaser
+     */
     @OneToOne
     public User getPurchaser() {
         return purchaser;
     }
 
+    /**
+     *
+     * @param purchaser purchaser to set to
+     */
     public void setPurchaser(User purchaser) {
         this.purchaser = purchaser;
     }
 
+    /**
+     *
+     * @return Current currentStatus
+     */
     public InvoiceStatus getCurrentStatus() {
         return currentStatus;
     }
 
+    /**
+     *
+     * @param currentStatus currentStatus to set to
+     */
     public void setCurrentStatus(InvoiceStatus currentStatus) {
         this.currentStatus = currentStatus;
     }
     
+    /**
+     *
+     * @return Current paymentCardNumber
+     */
     public String getPaymentCardNumber() {
         return paymentCardNumber;
     }
 
+    /**
+     *
+     * @param paymentCardNumber paymentCardNumber to set to
+     */
     public void setPaymentCardNumber(String paymentCardNumber) {
         this.paymentCardNumber = paymentCardNumber;
     }

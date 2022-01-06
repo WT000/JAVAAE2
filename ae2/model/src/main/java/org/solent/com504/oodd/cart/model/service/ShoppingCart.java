@@ -17,8 +17,21 @@ package org.solent.com504.oodd.cart.model.service;
 
 import java.util.LinkedHashMap;
 
+/**
+ * A representation of a ShoppingCart, which is just a LinkedHashMap
+ * @author WT000
+ */
 public interface ShoppingCart {
+
+    /**
+     *
+     * @return Current basket
+     */
     public LinkedHashMap<String, Integer> getBasket();
     
+    /**
+     *
+     * @param basket basket to set to
+     */
     public void setBasket(LinkedHashMap<String, Integer> basket);
 }

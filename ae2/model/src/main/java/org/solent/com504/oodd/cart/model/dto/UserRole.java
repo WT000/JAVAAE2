@@ -15,6 +15,24 @@
  */
 package org.solent.com504.oodd.cart.model.dto;
 
+/**
+ * Contains various roles for User's
+ * @author WT000
+ */
 public enum UserRole {
-    ANONYMOUS, CUSTOMER, ADMINISTRATOR
+
+    /**
+     * sessionUser isn't logged in
+     */
+    ANONYMOUS,
+
+    /**
+     * A created account
+     */
+    CUSTOMER,
+
+    /**
+     * A created account with admin privileges
+     */
+    ADMINISTRATOR
 }

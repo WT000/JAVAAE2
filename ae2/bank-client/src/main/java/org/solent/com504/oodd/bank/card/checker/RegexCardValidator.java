@@ -18,7 +18,6 @@ package org.solent.com504.oodd.bank.card.checker;
 
 /**
  * Validator for credit card numbers
- * 
  * @author ian.chen
  */
 public class RegexCardValidator {

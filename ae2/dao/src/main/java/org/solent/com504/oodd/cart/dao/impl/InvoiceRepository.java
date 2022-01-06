@@ -21,13 +21,32 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+/**
+ * Invoice database
+ * @author WT000
+ */
 @Repository
 public interface InvoiceRepository  extends JpaRepository<Invoice,Long>{
+
+    /**
+     *
+     * @param username The invoice to find by purchaser username
+     * @return A list of invoices which match the criteria
+     */
     @Query("select i from Invoice i where UPPER(i.purchaser.username) = UPPER(?1) order by i.id desc")
     public List<Invoice> findByPurchaserUsername(String username);
     
+    /**
+     *
+     * @return All invoices in date order
+     */
     @Query("select i from Invoice i order by i.id desc")
     public List<Invoice> findAllInvoices();
     
+    /**
+     *
+     * @param invoiceNumber The invoice to find by invoice number
+     * @return A list of invoices which match the criteria
+     */
     public List<Invoice> findByInvoiceNumber(String invoiceNumber);
 }

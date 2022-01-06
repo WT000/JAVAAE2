@@ -21,8 +21,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 /**
- *
- * @author cgallen
+ * Represents an item which can be purchased
+ * @author WT000
  */
 @Entity
 public class ShoppingItem {
@@ -36,69 +36,133 @@ public class ShoppingItem {
 
     private ShoppingItemCategory category;
 
+    /**
+     * Blank constructor
+     */
     public ShoppingItem() {
 
     }
 
+    /**
+     *
+     * @param name The name of the item
+     * @param price The price of an individual item
+     */
     public ShoppingItem(String name, Double price) {
         this.name = name;
         this.price = price;
     }
 
+    /**
+     *
+     * @return Current id
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
         return id;
     }
 
+    /**
+     *
+     * @param id id to set to
+     */
     public void setId(Long id) {
         this.id = id;
     }
 
+    /**
+     *
+     * @return Current uuid
+     */
     public String getUuid() {
         return uuid;
     }
 
-    public void setUuid(String uuuid) {
-        this.uuid = uuuid;
+    /**
+     *
+     * @param uuid uuid to set to
+     */
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
+    /**
+     *
+     * @return Current name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     *
+     * @param name name to set to
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     *
+     * @return Current quantity
+     */
     public Integer getQuantity() {
         return quantity;
     }
 
+    /**
+     *
+     * @param quantity quantity to set to
+     */
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 
+    /**
+     *
+     * @return Current price
+     */
     public Double getPrice() {
         return price;
     }
 
+    /**
+     *
+     * @param price price to set to
+     */
     public void setPrice(Double price) {
         this.price = price;
     }
 
+    /**
+     *
+     * @return Current category
+     */
     public ShoppingItemCategory getCategory() {
         return category;
     }
 
+    /**
+     *
+     * @param category category to set to
+     */
     public void setCategory(ShoppingItemCategory category) {
         this.category = category;
     }
 
+    /**
+     *
+     * @return Current description
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     *
+     * @param description description to set to
+     */
     public void setDescription(String description) {
         this.description = description;
     }

@@ -33,6 +33,10 @@ import javax.sql.DataSource;
 import java.util.Properties;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
+/**
+ * Various properties for the database
+ * @author WT000
+ */
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(basePackages = "org.solent.com504.oodd.cart.dao.impl")
@@ -43,6 +47,11 @@ public class PersistenceJPAConfig {
     private Environment env;
 
     // beans
+
+    /**
+     *
+     * @return A LocalContainerEntityManagerFactoryBean
+     */
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         final LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
@@ -56,6 +65,10 @@ public class PersistenceJPAConfig {
         return em;
     }
 
+    /**
+     *
+     * @return DataSource, unless a property isn't found
+     */
     @Bean
     public DataSource dataSource() {
         final DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -80,6 +93,10 @@ public class PersistenceJPAConfig {
         return dataSource;
     }
 
+    /**
+     *
+     * @return PlatformTransactionManager
+     */
     @Bean
     public PlatformTransactionManager transactionManager() {
         final JpaTransactionManager transactionManager = new JpaTransactionManager();
@@ -87,6 +104,10 @@ public class PersistenceJPAConfig {
         return transactionManager;
     }
 
+    /**
+     *
+     * @return PersistenceExceptionTranslationPostProcessor
+     */
     @Bean
     public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
         return new PersistenceExceptionTranslationPostProcessor();

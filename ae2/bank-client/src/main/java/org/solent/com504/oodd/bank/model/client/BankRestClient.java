@@ -18,9 +18,29 @@ package org.solent.com504.oodd.bank.model.client;
 import org.solent.com504.oodd.bank.model.dto.CreditCard;
 import org.solent.com504.oodd.bank.model.dto.TransactionReplyMessage;
 
+/**
+ * Interface for ReST client
+ * @author WT000
+ */
 public interface BankRestClient {
 
+    /**
+     *
+     * @param fromCard The card to take money from
+     * @param toCard The card to put money into
+     * @param amount The amount to send
+     * @return The result of the transaction
+     */
     public  TransactionReplyMessage transferMoney(CreditCard fromCard, CreditCard toCard, Double amount);
 
+    /**
+     *
+     * @param fromCard The card to take money from
+     * @param toCard The card to put money into
+     * @param amount The amount to send
+     * @param userName The toCard username
+     * @param password The toCard password
+     * @return The result of the transaction
+     */
     public  TransactionReplyMessage transferMoney(CreditCard fromCard, CreditCard toCard, Double amount, String userName, String password);
 }

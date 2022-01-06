@@ -18,6 +18,7 @@ package org.solent.com504.oodd.bank.card.checker;
 
 /**
  * Container for validation result
+ * @author cgallen
  */
 public class CardValidationResult {
 

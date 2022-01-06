@@ -20,6 +20,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+/**
+ * InvoiceItem stored within an Invoice object
+ * @author Will
+ */
 @Entity
 public class InvoiceItem {
     // Uncomment the various lines of code if you want the link between items
@@ -34,10 +38,18 @@ public class InvoiceItem {
     private String name;
 //    private ShoppingItem dbItem;
 
+    /**
+     * Blank constructor
+     */
     public InvoiceItem() {
 
     }
 
+    /**
+     *
+     * @param dbItem The ShoppingItem to take attributes from
+     * @param quantity The quantity of the item which were purchased
+     */
     public InvoiceItem(ShoppingItem dbItem, Integer quantity) {
         this.uuid = dbItem.getUuid();
         this.quantity = quantity;
@@ -46,44 +58,84 @@ public class InvoiceItem {
 //        this.dbItem = dbItem;
     }
 
+    /**
+     *
+     * @return Current id
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
         return id;
     }
 
+    /**
+     *
+     * @param id id to set to
+     */
     public void setId(Long id) {
         this.id = id;
     }
     
+    /**
+     *
+     * @return Current quantity
+     */
     public Integer getQuantity() {
         return quantity;
     }
 
+    /**
+     *
+     * @param quantity quantity to set to
+     */
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 
+    /**
+     *
+     * @return Current price
+     */
     public Double getPrice() {
         return price;
     }
 
+    /**
+     *
+     * @param price price to set to
+     */
     public void setPrice(Double price) {
         this.price = price;
     }
 
+    /**
+     *
+     * @return Current name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     *
+     * @param name name to set to
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     *
+     * @return Current uuid
+     */
     public String getUuid() {
         return uuid;
     }
 
+    /**
+     *
+     * @param uuid uuid to set to
+     */
     public void setUuid(String uuid) {
         this.uuid = uuid;
     }

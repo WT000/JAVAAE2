@@ -15,7 +15,19 @@
  */
 package org.solent.com504.oodd.bank.model.dto;
 
+/**
+ * TransactionStatus used for Transaction Messages
+ * @author WT000
+ */
 public enum BankTransactionStatus {
 
-    SUCCESS, FAIL
+    /**
+     * Successful transaction
+     */
+    SUCCESS,
+
+    /**
+     * Failed transaction
+     */
+    FAIL
 }

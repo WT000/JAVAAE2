@@ -16,9 +16,53 @@
 package org.solent.com504.oodd.cart.model.dto;
 
 /**
- *
- * @author Will
+ * Different categories of items, defaulted to OTHER when made by the MVC
+ * @author WT000
  */
 public enum ShoppingItemCategory {
-    TECH, HOME, DIY, TOYS, CLOTHING, SPORTS, JEWELRY, ASTRONOMY, OTHER;
+
+    /**
+     * Technology (e.g. laptops)
+     */
+    TECH,
+
+    /**
+     * Home (e.g. furniture)
+     */
+    HOME,
+
+    /**
+     * Do It Yourself (e.g. hammers)
+     */
+    DIY,
+
+    /**
+     * Toys (e.g. figures)
+     */
+    TOYS,
+
+    /**
+     * Clothing (e.g. t-shirts)
+     */
+    CLOTHING,
+
+    /**
+     * Sports (e.g. weights)
+     */
+    SPORTS,
+
+    /**
+     * Jewelry (e.g. rings)
+     */
+    JEWELRY,
+
+    /**
+     * Astronomy (e.g. telescopes)
+     */
+    ASTRONOMY,
+
+    /**
+     * Other (anything that isn't a category)
+     */
+    OTHER;
 }

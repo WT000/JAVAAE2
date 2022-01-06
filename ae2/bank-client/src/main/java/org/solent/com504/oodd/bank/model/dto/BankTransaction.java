@@ -23,6 +23,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
+/**
+ * Bank Transaction to store transaction details
+ * @author Will
+ */
 @Entity
 public class BankTransaction {
 
@@ -42,70 +46,134 @@ public class BankTransaction {
 
     private String message;
 
+    /**
+     *
+     * @return Current Transaction ID
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
         return id;
     }
 
+    /**
+     *
+     * @param id ID to set to
+     */
     public void setId(Long id) {
         this.id = id;
     }
 
+    /**
+     *
+     * @return Current fromAccount (BankAccount)
+     */
     @OneToOne
     public BankAccount getFromAccount() {
         return fromAccount;
     }
 
+    /**
+     *
+     * @param fromAccount BankAccount to set
+     */
     public void setFromAccount(BankAccount fromAccount) {
         this.fromAccount = fromAccount;
     }
 
+    /**
+     *
+     * @return Current toAccount (BankAccount)
+     */
     @OneToOne
     public BankAccount getToAccount() {
         return toAccount;
     }
 
+    /**
+     *
+     * @param toAccount BankAccount to set to
+     */
     public void setToAccount(BankAccount toAccount) {
         this.toAccount = toAccount;
     }
 
+    /**
+     *
+     * @return Current transactionDate
+     */
     public Date getTransactionDate() {
         return transactionDate;
     }
 
+    /**
+     *
+     * @param transactionDate Date to set to
+     */
     public void setTransactionDate(Date transactionDate) {
         this.transactionDate = transactionDate;
     }
 
+    /**
+     *
+     * @return Current amount
+     */
     public Double getAmount() {
         return amount;
     }
 
+    /**
+     *
+     * @param amount Amount to set to
+     */
     public void setAmount(Double amount) {
         this.amount = amount;
     }
 
+    /**
+     *
+     * @return Current status
+     */
     public BankTransactionStatus getStatus() {
         return status;
     }
 
+    /**
+     *
+     * @param status Status to set to
+     */
     public void setStatus(BankTransactionStatus status) {
         this.status = status;
     }
 
+    /**
+     *
+     * @return Current message
+     */
     public String getMessage() {
         return message;
     }
 
+    /**
+     *
+     * @param message Message to set to
+     */
     public void setMessage(String message) {
         this.message = message;
     }
 
+    /**
+     *
+     * @return Current transactionId
+     */
     public String getTransactionId() {
         return transactionId;
     }
 
+    /**
+     *
+     * @param transactionId transactionId to set to
+     */
     public void setTransactionId(String transactionId) {
         this.transactionId = transactionId;
     }
