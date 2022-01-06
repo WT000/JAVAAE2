@@ -1,6 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
 <jsp:include page="header.jsp" />
+
 <!-- Begin page content -->
 <main role="main" class="container">
     <h3>Login</h3>
@@ -16,6 +16,5 @@
     
     <a href="./register">Create a new account</a>
 </main>
-
 
 <jsp:include page="footer.jsp" />

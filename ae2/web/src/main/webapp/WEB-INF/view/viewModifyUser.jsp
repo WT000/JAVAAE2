@@ -7,7 +7,6 @@
 
 <!-- Begin page content -->
 <main role="main" class="container">
-
     <div>
         <h3>${modifyUser.username}'s profile</h3>
         <!-- print error message if there is one -->
@@ -149,9 +148,7 @@
             <br>
             <a href="./users" class="btn btn-primary" role="button">Return to Users</a>   
         </c:if> 
-
     </div>
-
 </main>
 
 <jsp:include page="footer.jsp" />

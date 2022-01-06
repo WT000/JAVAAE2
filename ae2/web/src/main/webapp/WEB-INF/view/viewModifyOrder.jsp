@@ -5,8 +5,8 @@
 <%@page import="org.solent.com504.oodd.cart.model.dto.ShoppingItem"%>
 <%@page import="org.solent.com504.oodd.cart.model.dto.ShoppingItemCategory"%>
 <%@page import="org.solent.com504.oodd.cart.model.dto.InvoiceStatus"%>
-
 <jsp:include page="header.jsp" />
+
 <!-- Begin page content -->
 <main role="main" class="container">
     <h3>AE2 Shopping Cart Invoice - ${invoice.dateOfPurchase}</h3>

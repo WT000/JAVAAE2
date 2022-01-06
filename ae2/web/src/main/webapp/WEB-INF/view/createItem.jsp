@@ -1,8 +1,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page import="org.solent.com504.oodd.cart.model.dto.ShoppingItemCategory"%>
-
 <jsp:include page="header.jsp" />
+
 <!-- Begin page content -->
 <main role="main" class="container">
     <h3>${item.name}</h3>

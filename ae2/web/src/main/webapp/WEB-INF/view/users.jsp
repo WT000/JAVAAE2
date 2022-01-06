@@ -1,11 +1,9 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
 <jsp:include page="header.jsp" />
 
 <!-- Begin page content -->
 <main role="main" class="container">
-
     <div>
         <h3>Manage Users</h3>
         <h1>Showing ${userListSize} users:</h1>

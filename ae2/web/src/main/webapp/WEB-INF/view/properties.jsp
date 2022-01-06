@@ -1,6 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
 <jsp:include page="header.jsp" />
+
 <!-- Begin page content -->
 <main role="main" class="container">
     <h3>Properties</h3>
@@ -48,6 +48,5 @@
         <button class="btn btn-success" type="submit">Submit</button>
     </form>
 </main>
-
 
 <jsp:include page="footer.jsp" />

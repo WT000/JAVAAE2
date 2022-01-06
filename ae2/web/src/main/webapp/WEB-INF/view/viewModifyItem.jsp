@@ -3,8 +3,8 @@
 <%@page import="org.solent.com504.oodd.cart.model.dto.User"%>
 <%@page import="org.solent.com504.oodd.cart.model.dto.ShoppingItem"%>
 <%@page import="org.solent.com504.oodd.cart.model.dto.ShoppingItemCategory"%>
-
 <jsp:include page="header.jsp" />
+
 <!-- Begin page content -->
 <main role="main" class="container">
     <h3>${item.name}</h3>
