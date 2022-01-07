@@ -41,8 +41,7 @@ public class GenericMVC {
 
     final static Logger LOG = LogManager.getLogger(GenericMVC.class);
 
-    // note that scope is session in configuration
-    // so the shopping cart is unique for each web session
+    // The shopping cart is unique for each web session
     @Autowired
     ShoppingCart shoppingCart = null;
 
@@ -56,8 +55,6 @@ public class GenericMVC {
         }
         return sessionUser;
     }
-
-    // this redirects calls to the root of our application to index.html
 
     /**
      *
@@ -78,11 +75,11 @@ public class GenericMVC {
     @RequestMapping(value = "/home", method = {RequestMethod.GET, RequestMethod.POST})
     public String home(Model model, HttpSession session) {
 
-        // get sessionUser from session
+        // Get sessionUser from session
         User sessionUser = getSessionUser(session);
         model.addAttribute("sessionUser", sessionUser);
 
-        // used to set tab selected
+        // Used to set tab selected
         model.addAttribute("selectedPage", "home");
 
         String message = "";
@@ -100,11 +97,11 @@ public class GenericMVC {
     @RequestMapping(value = "/about", method = {RequestMethod.GET, RequestMethod.POST})
     public String about(Model model, HttpSession session) {
 
-        // get sessionUser from session
+        // Get sessionUser from session
         User sessionUser = getSessionUser(session);
         model.addAttribute("sessionUser", sessionUser);
         
-        // used to set tab selected
+        // Used to set tab selected
         model.addAttribute("selectedPage", "about");
         return "about";
     }

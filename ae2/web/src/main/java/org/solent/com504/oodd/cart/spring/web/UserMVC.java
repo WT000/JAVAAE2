@@ -73,7 +73,8 @@ public class UserMVC {
             HttpSession session) {
         String message = "You have been successfully logged out.";
         String errorMessage = "";
-        // logout of session and clear
+        
+        // Logout of session and clear
         session.invalidate();
 
         return "redirect:/home";
@@ -92,7 +93,8 @@ public class UserMVC {
 
         User sessionUser = getSessionUser(session);
         model.addAttribute("sessionUser", sessionUser);
-
+        
+        // Only allow login if they're not already logged in
         if (!UserRole.ANONYMOUS.equals(sessionUser.getUserRole())) {
             errorMessage = "User " + sessionUser.getUsername() + "is already logged in.";
             LOG.warn(errorMessage);
@@ -102,11 +104,9 @@ public class UserMVC {
 
         model.addAttribute("message", message);
         model.addAttribute("errorMessage", errorMessage);
-        // used to set tab selected
         model.addAttribute("selectedPage", "login");
 
         return "login";
-
     }
 
     /**
@@ -130,11 +130,12 @@ public class UserMVC {
 
         LOG.debug("login for username=" + username);
 
-        // get current session modifyUser 
         User sessionUser = getSessionUser(session);
         model.addAttribute("sessionUser", sessionUser);
 
         model.addAttribute("selectedPage", "login");
+        
+        // Only allow login if not already logged in
         if (!UserRole.ANONYMOUS.equals(sessionUser.getUserRole())) {
             errorMessage = "User " + sessionUser.getUsername() + "is already logged in.";
             LOG.warn(errorMessage);
@@ -142,7 +143,8 @@ public class UserMVC {
             model.addAttribute("selectedPage", "home");
             return "home";
         };
-
+        
+        // No username was entered
         if (username == null || username.trim().isEmpty()) {
             errorMessage = "You must enter a username.";
             model.addAttribute("errorMessage", errorMessage);
@@ -152,14 +154,16 @@ public class UserMVC {
         List<User> userList = userRepository.findByUsername(username);
 
         if ("login".equals(action)) {
-            //todo find and add modifyUser and test password
             LOG.debug("logging in user username=" + username);
+            
+            // Check for errors and only login if information is valid
             if (userList.isEmpty()) {
                 errorMessage = "Couldn't find an account with the username: " + username + ".";
                 LOG.warn(errorMessage);
                 model.addAttribute("errorMessage", errorMessage);
                 return "login";
             }
+            
             if (password == null) {
                 errorMessage = "You must enter a password.";
                 LOG.warn(errorMessage);
@@ -178,21 +182,21 @@ public class UserMVC {
                 return "login";
             }
 
-            message = "You've now logged into " + username + "'s account.";
+            // Set the sessionUser to be the logged in user
             session.setAttribute("sessionUser", loginUser);
-
+            
+            message = "You've now logged into " + username + "'s account.";
             model.addAttribute("sessionUser", loginUser);
-
             model.addAttribute("message", message);
             model.addAttribute("errorMessage", errorMessage);
-            // used to set tab selected
             model.addAttribute("selectedPage", "home");
+            
             return "redirect:/home";
         } else {
-            model.addAttribute("errorMessage", "Unknown action requested:" + action + ".");
             LOG.error("login page unknown action requested:" + action);
+            
+            model.addAttribute("errorMessage", "Unknown action requested:" + action + ".");
             model.addAttribute("errorMessage", errorMessage);
-            // used to set tab selected
             model.addAttribute("selectedPage", "home");
             return "home";
         }
@@ -213,8 +217,6 @@ public class UserMVC {
         model.addAttribute("sessionUser", sessionUser);
         model.addAttribute("message", message);
         model.addAttribute("errorMessage", errorMessage);
-
-        // used to set tab selected
         model.addAttribute("selectedPage", "register");
 
         return "register";
@@ -253,6 +255,7 @@ public class UserMVC {
             return "register";
         }
 
+        // Find the username, then create the account if the info is valid
         List<User> userList = userRepository.findByUsername(username);
 
         if ("createNewAccount".equals(action)) {
@@ -277,7 +280,7 @@ public class UserMVC {
             modifyUser.setPassword(password);
             modifyUser = userRepository.save(modifyUser);
 
-            // if already logged in - keep session modifyUser else set session modifyUser to modifyUser
+            // If already logged in - keep session modifyUser else set session modifyUser to modifyUser
             // else set session modifyUser the newly created modifyUser (i.e. automatically log in)
             if (UserRole.ANONYMOUS.equals(sessionUser.getUserRole())) {
                 session.setAttribute("sessionUser", modifyUser);
@@ -344,7 +347,7 @@ public class UserMVC {
 
         LOG.debug("get viewModifyUser called for username=" + username);
 
-        // check secure access to modifyUser profile
+        // Check secure access to modifyUser profile
         User sessionUser = getSessionUser(session);
         model.addAttribute("sessionUser", sessionUser);
 
@@ -355,7 +358,7 @@ public class UserMVC {
         }
 
         if (!UserRole.ADMINISTRATOR.equals(sessionUser.getUserRole())) {
-            // if not an administrator you can only access your own account info
+            // If not an administrator you can only access your own account info
             if (!sessionUser.getUsername().equals(username)) {
                 errorMessage = username + ", you can only view your own account"
                         + " information! " + sessionUser.getUsername() + " is"
@@ -374,7 +377,6 @@ public class UserMVC {
 
         User modifyUser = userList.get(0);
         model.addAttribute("modifyUser", modifyUser);
-
         model.addAttribute("message", message);
         model.addAttribute("errorMessage", errorMessage);
         return "viewModifyUser";
@@ -436,7 +438,7 @@ public class UserMVC {
 
         LOG.debug("post updateUser called for username=" + username);
 
-        // security check if party is allowed to access or modify this party
+        // Security check if party is allowed to access or modify this party
         User sessionUser = getSessionUser(session);
         model.addAttribute("sessionUser", sessionUser);
 
@@ -445,7 +447,7 @@ public class UserMVC {
             model.addAttribute("errorMessage", errorMessage);
             return "home";
         }
-
+        
         if (!UserRole.ADMINISTRATOR.equals(sessionUser.getUserRole())) {
             if (!sessionUser.getUsername().equals(username)) {
                 errorMessage = username + ", you can only view your own account"
@@ -467,7 +469,7 @@ public class UserMVC {
 
         User modifyUser = userList.get(0);
 
-        // update password if requested
+        // Update password if requested
         if ("updatePassword".equals(action)) {
             if (password == null || !password.equals(password2) || password.length() < 8) {
                 errorMessage = "Failed the password check, please ensure it's more"
@@ -489,8 +491,8 @@ public class UserMVC {
             }
         }
 
-        // else update all other properties
-        // only admin can update modifyUser role aand enabled
+        // Else update all other properties
+        // only admin User's can update modifyUser role and enabled
         if (UserRole.ADMINISTRATOR.equals(sessionUser.getUserRole())) {
             try {
                 UserRole role = UserRole.valueOf(userRole);

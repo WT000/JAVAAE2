@@ -11,9 +11,9 @@
     <p>Username must be unique and password must be at least 8 characters.</p>
     <form action="./register" method="POST">
         <input type="hidden" name="action" value="createNewAccount">
-        <p>Username <input type="text" name="username" ></p><BR>
-        <p>Password <input type="password" name="password" ></p>
-        <p>Re Enter Password <input type="password" name="password2" ></p>
+        <p>Username <input type="text" name="username" required></p><br>
+        <p>Password <input type="password" name="password" required></p>
+        <p>Re Enter Password <input type="password" name="password2" required></p>
         <p><button class="btn btn-success" type="submit" >Create New Account</button></p>
     </form>
 

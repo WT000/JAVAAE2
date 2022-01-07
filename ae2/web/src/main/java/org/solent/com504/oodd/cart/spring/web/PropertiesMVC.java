@@ -154,9 +154,11 @@ public class PropertiesMVC {
              CreditCard testCard = new CreditCard(bankCard, bankCardName, bankCardDate, "111");
 
             try {
+                // Test the properties by sending a 0.0 transaction to the card
                 TransactionReplyMessage testResponse = testClient.transferMoney(testCard, testCard, 0.0, bankUsername, bankPassword);
                 
                 if (testResponse.getStatus() == BankTransactionStatus.SUCCESS) {
+                    LOG.debug("new properties are valid, updating...");
                     adminSettings.setProperty("org.solent.com504.oodd.ae2.url", bankURL);
                     adminSettings.setProperty("org.solent.com504.oodd.ae2.cardNumber", bankCard);
                     adminSettings.setProperty("org.solent.com504.oodd.ae2.username", bankUsername);
@@ -178,6 +180,7 @@ public class PropertiesMVC {
         
         // Check to ensure an error or Exception didn't happen
         if (errorMessage.length() > 0){
+            LOG.error("new properties are invalid, discarding.");
             errorMessage += "Changed reverted.";
         } else {
             message = "The new properties have been set.";

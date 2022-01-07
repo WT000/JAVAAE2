@@ -58,6 +58,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * The MVC controller for the catalogue and User cart
+ *
  * @author WT000
  */
 @Controller
@@ -72,7 +73,7 @@ public class CatalogueCartMVC {
 
     @Autowired
     UserRepository userRepository;
-    
+
     @Autowired
     InvoiceRepository invoiceRepository;
 
@@ -193,7 +194,7 @@ public class CatalogueCartMVC {
         if (foundItems.size() > 0) {
             // Item is found
             ShoppingItem specificItem = foundItems.get(0);
-            
+
             if (specificItem.getQuantity() == 0) {
                 redirectAtt.addAttribute("errorMessage", "The item is out of stock.");
             }
@@ -234,6 +235,7 @@ public class CatalogueCartMVC {
         String message = "";
         String errorMessage = "";
 
+        // Deny access if not an admin
         if (sessionUser.getUserRole() != UserRole.ADMINISTRATOR) {
             errorMessage = "You must be logged in as an admin to create items.";
             model.addAttribute("errorMessage", errorMessage);
@@ -280,6 +282,7 @@ public class CatalogueCartMVC {
         String message = "";
         String errorMessage = "";
 
+        // Deny the POST if not an admin
         if (sessionUser.getUserRole() != UserRole.ADMINISTRATOR) {
             errorMessage = "You must be logged in to create items.";
             model.addAttribute(errorMessage);
@@ -296,12 +299,14 @@ public class CatalogueCartMVC {
         itemToCreate.setPrice(Double.valueOf(price));
         itemToCreate.setUuid(UUID.randomUUID().toString());
 
+        // Refuse values below 0, then save
         if (Integer.valueOf(quantity) < 0) {
             quantity = "0";
         }
 
         itemToCreate.setQuantity(Integer.valueOf(quantity));
 
+        LOG.debug("saving new item to the db: " + itemToCreate);
         itemRepository.save(itemToCreate);
 
         return "redirect:/viewModifyItem?itemUuid=" + itemToCreate.getUuid();
@@ -328,6 +333,7 @@ public class CatalogueCartMVC {
 
         List<ShoppingItem> specificItem = itemRepository.findByUuid(uuid);
 
+        // Show a generic error if the item isn't found
         if (specificItem.isEmpty()) {
             errorMessage = "Couldn't find the item :(";
             model.addAttribute("errorMessage", errorMessage);
@@ -355,7 +361,8 @@ public class CatalogueCartMVC {
      * @param model Attributes
      * @param session Session
      * @param redirectAtt Redirect Attributes
-     * @return If successful, the viewModifyItem page (update) or catalogue page (delete)
+     * @return If successful, the viewModifyItem page (update) or catalogue page
+     * (delete)
      */
     @RequestMapping(value = "/viewModifyItem", method = {RequestMethod.POST})
     @Transactional
@@ -377,6 +384,7 @@ public class CatalogueCartMVC {
         String message = "";
         String errorMessage = "";
 
+        // Only admins can update items
         if (sessionUser.getUserRole() != UserRole.ADMINISTRATOR) {
             errorMessage = "You must be logged in to update items.";
             model.addAttribute(errorMessage);
@@ -387,32 +395,38 @@ public class CatalogueCartMVC {
         if ("updateItem".equals(action) || "deleteItem".equals(action)) {
             List<ShoppingItem> specificItem = itemRepository.findByUuid(uuid);
 
-            ShoppingItem itemToEdit = specificItem.get(0);
+            if (!specificItem.isEmpty()) {
+                ShoppingItem itemToEdit = specificItem.get(0);
 
-            // The user wants to update the item
-            if ("updateItem".equals(action)) {
-                itemToEdit.setName(name);
-                itemToEdit.setDescription(description);
-                itemToEdit.setCategory(ShoppingItemCategory.valueOf(category));
-                itemToEdit.setPrice(Double.valueOf(price));
+                // The user wants to update the item
+                if ("updateItem".equals(action)) {
+                    itemToEdit.setName(name);
+                    itemToEdit.setDescription(description);
+                    itemToEdit.setCategory(ShoppingItemCategory.valueOf(category));
+                    itemToEdit.setPrice(Double.valueOf(price));
 
-                if (Integer.valueOf(quantity) < 0) {
-                    quantity = "0";
+                    if (Integer.valueOf(quantity) < 0) {
+                        quantity = "0";
+                    }
+
+                    itemToEdit.setQuantity(Integer.valueOf(quantity));
+
+                    LOG.debug("updating item in the db: " + itemToEdit);
+                    itemRepository.save(itemToEdit);
+                    message = "Item successfully saved!";
+
+                    redirectAtt.addAttribute("message", message);
+                    model.addAttribute("item", itemToEdit);
+                    model.addAttribute("selectedPage", "catalogue");
+
+                    return "redirect:/viewModifyItem?itemUuid=" + itemToEdit.getUuid();
+                } else {
+                    // The user wants to delete the item
+                    LOG.debug("removing item in the db: " + itemToEdit);
+                    itemRepository.deleteByUuid(itemToEdit.getUuid());
+                    return "redirect:/catalogue";
                 }
-
-                itemToEdit.setQuantity(Integer.valueOf(quantity));
-
-                itemRepository.save(itemToEdit);
-                message = "Item successfully saved!";
-
-                redirectAtt.addAttribute("message", message);
-                model.addAttribute("item", itemToEdit);
-                model.addAttribute("selectedPage", "catalogue");
-
-                return "redirect:/viewModifyItem?itemUuid=" + itemToEdit.getUuid();
             } else {
-                // The user wants to delete the item
-                itemRepository.deleteByUuid(uuid);
                 return "redirect:/catalogue";
             }
         } else {
@@ -491,12 +505,15 @@ public class CatalogueCartMVC {
             HttpSession session,
             RedirectAttributes redirectAtt) {
 
-        // get sessionUser from session
+        // Get sessionUser from session
         User sessionUser = getSessionUser(session);
         model.addAttribute("sessionUser", sessionUser);
 
         LinkedHashMap<String, Integer> basket = shoppingCart.getBasket();
 
+        // If the item current is in the basket, remove it entirely if
+        // its quantity is 0, else take 1 off the current quantity as there's
+        // more than 1
         if (basket.get(uuid) != null) {
             try {
                 if (basket.get(uuid) == 1) {
@@ -533,6 +550,7 @@ public class CatalogueCartMVC {
             return "home";
         }
 
+        // Attempt to GET checkout using the current session username
         List<User> userList = userRepository.findByUsername(sessionUser.getUsername());
 
         if (userList.isEmpty()) {
@@ -542,12 +560,15 @@ public class CatalogueCartMVC {
 
         User checkoutUser = userList.get(0);
 
+        // If a decativated user is still logged in but goes to this page, deny
+        // entry
         if (!checkoutUser.getEnabled()) {
             errorMessage = "Sorry, your account is deactivated.";
             model.addAttribute("errorMessage", errorMessage);
             return "home";
         }
 
+        // Deny entry if the basket is empty
         if (shoppingCart.getBasket().isEmpty()) {
             errorMessage = "There's nothing to checkout.";
             model.addAttribute("errorMessage", errorMessage);
@@ -610,7 +631,7 @@ public class CatalogueCartMVC {
         double total = 0;
 
         boolean success = false;
-        
+
         // Only attempt checkout if they're signed in, the username is found, and
         // their account is enabled
         if (!UserRole.ANONYMOUS.equals(sessionUser.getUserRole())) {
@@ -626,10 +647,10 @@ public class CatalogueCartMVC {
                         redirectAtt.addAttribute("errorMessage", "You attempted to use our card, we're not purchasing the item for you!");
                         return "redirect:/checkout";
                     }
-                    
+
                     // Check card details
                     CreditCard customerCard = new CreditCard(cardNumber, cardName, cardDate, cardCvv);
-                        
+
                     CardValidationResult cardValidityNumber = RegexCardValidator.isValid(cardNumber);
                     boolean cardValidityDateExpired = customerCard.cardDateExpiredOrError();
 
@@ -645,45 +666,35 @@ public class CatalogueCartMVC {
                         redirectAtt.addAttribute("errorMessage", "There's nothing to checkout.");
                         return "home";
                     }
-                    
+
                     for (String itemUuid : basket.keySet()) {
                         List<ShoppingItem> foundItems = itemRepository.findByUuid(itemUuid);
 
                         if (foundItems.isEmpty()) {
-                            foundError = true;
-                            break;
+                            redirectAtt.addAttribute("errorMessage", "Something's wrong with your cart, an item could have been removed from the store or your cart no longer exists.");
+                            return "redirect:/checkout";
                         } else {
-                            if (foundItems.get(0) instanceof ShoppingItem) {
-                                ShoppingItem foundItem = foundItems.get(0);
+                            ShoppingItem foundItem = foundItems.get(0);
 
-                                // Set the quantity and add if there's enough stock for it
-                                if (foundItem.getQuantity() - basket.get(itemUuid) >= 0) {
-                                    ShoppingItem dupeItem = new ShoppingItem();
+                            // Set the quantity and add if there's enough stock for it
+                            if (foundItem.getQuantity() - basket.get(itemUuid) >= 0) {
+                                ShoppingItem dupeItem = new ShoppingItem();
 
-                                    // Only store needed information for the invoice
-                                    dupeItem.setUuid(foundItem.getUuid());
-                                    dupeItem.setName(foundItem.getName());
-                                    dupeItem.setPrice(foundItem.getPrice());
-                                    dupeItem.setQuantity(basket.get(itemUuid));
+                                // Only store needed information for the invoice
+                                dupeItem.setUuid(foundItem.getUuid());
+                                dupeItem.setName(foundItem.getName());
+                                dupeItem.setPrice(foundItem.getPrice());
+                                dupeItem.setQuantity(basket.get(itemUuid));
 
-                                    shoppingCartItems.add(dupeItem);
-                                    total += (foundItem.getPrice() * basket.get(itemUuid));
-                                    
-                                } else {
-                                    // Else, there isn't enough stock, we need to cancel
-                                    redirectAtt.addAttribute("errorMessage", "We don't have enough of the following item to complete the order: " + foundItem.getName() + ".");
-                                    return "redirect:/checkout";
-                                }
+                                shoppingCartItems.add(dupeItem);
+                                total += (foundItem.getPrice() * basket.get(itemUuid));
+
                             } else {
-                                foundError = true;
-                                break;
+                                // Else, there isn't enough stock, we need to cancel
+                                redirectAtt.addAttribute("errorMessage", "We don't have enough of the following item to complete the order: " + foundItem.getName() + ".");
+                                return "redirect:/checkout";
                             }
                         }
-                    }
-
-                    if (foundError) {
-                        redirectAtt.addAttribute("errorMessage", "Something's wrong with your cart, an item could have been removed from the store or your cart no longer exists.");
-                        return "redirect:/checkout";
                     }
 
                     // All is well, attempt the purchase using current properties
@@ -717,20 +728,29 @@ public class CatalogueCartMVC {
         }
 
         ArrayList<ShoppingItem> currentDbItems = new ArrayList<ShoppingItem>();
-        
+
+        // If the transaction was successful, we can decrement the stock and create
+        // an Invoice
         if (success) {
             // Decrement stock
             for (ShoppingItem cartItem : shoppingCartItems) {
                 List<ShoppingItem> foundItems = itemRepository.findByUuid(cartItem.getUuid());
                 ShoppingItem dbItem = foundItems.get(0);
-                
-                dbItem.setQuantity(dbItem.getQuantity() - cartItem.getQuantity());
+
+                // Do a check just to ensure this never falls below 0, an item
+                // cannot have lower than 0 stock
+                if (dbItem.getQuantity() - cartItem.getQuantity() >= 0) {
+                    dbItem.setQuantity(dbItem.getQuantity() - cartItem.getQuantity());
+                } else {
+                    dbItem.setQuantity(0);
+                }
+
                 itemRepository.save(dbItem);
-                
+
                 // Add the item to retrieve its details in the invoice if needed
                 currentDbItems.add(dbItem);
             }
-            
+
             // Create an invoice / order
             Invoice order = new Invoice();
             order.setAmountDue(total);
@@ -738,28 +758,29 @@ public class CatalogueCartMVC {
             order.setPurchaser(sessionUser);
             order.setInvoiceNumber(UUID.randomUUID().toString());
             order.setPaymentCardNumber(cardNumber);
-            
+
             ArrayList<InvoiceItem> tempList = new ArrayList<InvoiceItem>();
-            
+
             for (ShoppingItem cartItem : shoppingCartItems) {
                 List<ShoppingItem> foundItems = itemRepository.findByUuid(cartItem.getUuid());
                 ShoppingItem dbItem = foundItems.get(0);
-                
+
                 InvoiceItem toAdd = new InvoiceItem(dbItem, basket.get(cartItem.getUuid()));
                 tempList.add(toAdd);
             }
-            
+
             order.setSavedBasketItems(tempList);
-            
+
             LOG.debug("Saving new invoice: current items=" + currentDbItems + ", saved items=" + shoppingCartItems);
             invoiceRepository.save(order);
-            
+
             // Clear the basket and redirect to the created invoice / order
             basket.clear();
             return "redirect:/viewModifyOrder?invoiceNumber=" + order.getInvoiceNumber();
         }
 
-        // Display a relevant error msg on the checkout page
+        // Display a relevant error msg on the checkout page, we'll only reach
+        // this code if the transaction wasn't successful
         redirectAtt.addAttribute("errorMessage", errorMessage);
         return "redirect:/checkout";
     }
@@ -768,7 +789,6 @@ public class CatalogueCartMVC {
      * Default exception handler, catches all exceptions, redirects to friendly
      * error page. Does not catch request mapping errors
      */
-
     /**
      *
      * @param e The exception

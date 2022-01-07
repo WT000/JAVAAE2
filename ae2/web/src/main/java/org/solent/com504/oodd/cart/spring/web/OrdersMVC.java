@@ -94,6 +94,7 @@ public class OrdersMVC {
         String message = "";
         String errorMessage = "";
         
+        // This is viewing ALL orders, so ensure they're admin
         if (sessionUser.getUserRole() == UserRole.ANONYMOUS) {
             errorMessage = "You must be logged in to see orders.";
             model.addAttribute("errorMessage", errorMessage);
@@ -115,7 +116,8 @@ public class OrdersMVC {
                 ordersToShow = invoiceRepository.findAllInvoices();
             }
         }
-
+        
+        // No results found
         if (ordersToShow.isEmpty()) {
             errorMessage = "We couldn't find any orders :(";
         }
@@ -148,7 +150,8 @@ public class OrdersMVC {
         String errorMessage = "";
 
         List<Invoice> specificInvoice = invoiceRepository.findByInvoiceNumber(invoiceNumber);
-
+        
+        // No specific invoice found
         if (specificInvoice.isEmpty()) {
             errorMessage = "Couldn't find the invoice :(";
             model.addAttribute("errorMessage", errorMessage);
@@ -157,7 +160,8 @@ public class OrdersMVC {
         }
 
         Invoice invoiceToDisplay = specificInvoice.get(0);
-
+        
+        // Only show the invoice if they're an admin or the appropriate user
         if (!Objects.equals(invoiceToDisplay.getPurchaser().getId(), sessionUser.getId())) {
             // If they're not the user, make sure they're an admin, else don't render
             if (sessionUser.getUserRole() != UserRole.ADMINISTRATOR) {
@@ -226,12 +230,16 @@ public class OrdersMVC {
             alreadyRefunded = true;
         }
 
+        // Only update the status / refund if not refunded
         if (!alreadyRefunded) {
+            // Updating status
             if ("updateStatus".equals(action)) {
                 invoiceToDisplay.setCurrentStatus(InvoiceStatus.valueOf(status));
                 invoiceRepository.save(invoiceToDisplay);
+                LOG.debug("updated invoice " + invoiceToDisplay.getInvoiceNumber() + " status to " + InvoiceStatus.valueOf(status));
                 message = "Status has been updated.";
-
+                
+            // Refunding (locking the status to REFUNDED)
             } else if ("refund".equals(action)) {
                 // Follow a process similar to transactions, but the bank card is used as the toCard
                 BankRestClientImpl restClient = new BankRestClientImpl(adminSettings.getProperty("org.solent.com504.oodd.ae2.url"));
@@ -241,11 +249,13 @@ public class OrdersMVC {
                 CreditCard customerCard = new CreditCard(invoiceToDisplay.getPaymentCardNumber());
 
                 try {
+                    // Attempt the transaction now that we've got all the needed info
                     TransactionReplyMessage result = restClient.transferMoney(bankCard, customerCard, invoiceToDisplay.getAmountDue());
 
                     if (result.getStatus() == BankTransactionStatus.SUCCESS) {
                         invoiceToDisplay.setCurrentStatus(InvoiceStatus.REFUNDED);
                         invoiceRepository.save(invoiceToDisplay);
+                        LOG.debug("refunded " + invoiceToDisplay.getAmountDue() + "to " + customerCard.getCardnumber());
                         redirectAtt.addAttribute("message", "Refund complete.");
                         return "redirect:/viewModifyOrder?invoiceNumber=" + invoiceToDisplay.getInvoiceNumber();
                     } else {
