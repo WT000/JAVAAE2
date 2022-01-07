@@ -7,10 +7,4 @@ To run Tomcat as an embedded service using Tomcat
 mvn cargo:run
 ```
 
-then navigate to http://localhost:8080/shoppingCartApplication/
-
-
-
-
-
-
+then navigate to http://localhost:8080/ae2shoppingCartApplication/
