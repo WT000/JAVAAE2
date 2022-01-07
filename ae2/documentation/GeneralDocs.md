@@ -3,7 +3,7 @@
 - [Introduction](#introduction)
 - [Use Cases](#usecases)
 - **FINISHED APP**
-- [Tests against Use Cases](#features)
+- [Implemented Features and Testing](#features)
 - [Model and Diagrams](#diagrams)
 - [Javadoc](#javadoc)
 - [Additional notes](#notes)
