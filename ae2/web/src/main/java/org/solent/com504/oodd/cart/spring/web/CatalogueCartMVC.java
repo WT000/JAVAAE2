@@ -284,7 +284,7 @@ public class CatalogueCartMVC {
 
         // Deny the POST if not an admin
         if (sessionUser.getUserRole() != UserRole.ADMINISTRATOR) {
-            errorMessage = "You must be logged in to create items.";
+            errorMessage = "You must be logged in as an admin to create items.";
             model.addAttribute(errorMessage);
             model.addAttribute("selectedPage", "home");
             return "home";
@@ -296,15 +296,21 @@ public class CatalogueCartMVC {
         itemToCreate.setName(name);
         itemToCreate.setDescription(description);
         itemToCreate.setCategory(ShoppingItemCategory.valueOf(category));
-        itemToCreate.setPrice(Double.valueOf(price));
         itemToCreate.setUuid(UUID.randomUUID().toString());
 
         // Refuse values below 0, then save
         if (Integer.valueOf(quantity) < 0) {
             quantity = "0";
         }
+        
+        // Allow values of 0 for the price, maybe it's being given
+        // away for free?
+        if (Double.valueOf(price) < 0) {
+            price = "0.0";
+        }
 
         itemToCreate.setQuantity(Integer.valueOf(quantity));
+        itemToCreate.setPrice(Double.valueOf(price));
 
         LOG.debug("saving new item to the db: " + itemToCreate);
         itemRepository.save(itemToCreate);
@@ -403,13 +409,19 @@ public class CatalogueCartMVC {
                     itemToEdit.setName(name);
                     itemToEdit.setDescription(description);
                     itemToEdit.setCategory(ShoppingItemCategory.valueOf(category));
-                    itemToEdit.setPrice(Double.valueOf(price));
 
                     if (Integer.valueOf(quantity) < 0) {
                         quantity = "0";
                     }
+                    
+                    // Allow values of 0 for the price, maybe it's being given
+                    // away for free?
+                    if (Double.valueOf(price) < 0) {
+                        price = "0.0";
+                    }
 
                     itemToEdit.setQuantity(Integer.valueOf(quantity));
+                    itemToEdit.setPrice(Double.valueOf(price));
 
                     LOG.debug("updating item in the db: " + itemToEdit);
                     itemRepository.save(itemToEdit);
@@ -669,8 +681,9 @@ public class CatalogueCartMVC {
 
                     for (String itemUuid : basket.keySet()) {
                         List<ShoppingItem> foundItems = itemRepository.findByUuid(itemUuid);
-
-                        if (foundItems.isEmpty()) {
+                        
+                        // Ensure the item is still in the DB and the quantity in the basket isn't less than 1
+                        if (foundItems.isEmpty() || basket.get(itemUuid) < 1) {
                             redirectAtt.addAttribute("errorMessage", "Something's wrong with your cart, an item could have been removed from the store or your cart no longer exists.");
                             return "redirect:/checkout";
                         } else {

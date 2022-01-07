@@ -50,6 +50,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * The MVC controller for orders / invoices
+ *
  * @author WT000
  */
 @Controller
@@ -75,7 +76,7 @@ public class OrdersMVC {
         }
         return sessionUser;
     }
-    
+
     /**
      *
      * @param toFind If searching, the order to find
@@ -90,10 +91,10 @@ public class OrdersMVC {
             HttpSession session) {
         User sessionUser = getSessionUser(session);
         model.addAttribute("sessionUser", sessionUser);
-        
+
         String message = "";
         String errorMessage = "";
-        
+
         // This is viewing ALL orders, so ensure they're admin
         if (sessionUser.getUserRole() == UserRole.ANONYMOUS) {
             errorMessage = "You must be logged in to see orders.";
@@ -108,7 +109,7 @@ public class OrdersMVC {
         if (null != toFind && sessionUser.getUserRole() == UserRole.ADMINISTRATOR) {
             model.addAttribute("didSearch", true);
             ordersToShow = invoiceRepository.findByPurchaserUsername(toFind);
-            
+
         } else {
             if (sessionUser.getUserRole() != UserRole.ADMINISTRATOR) {
                 ordersToShow = invoiceRepository.findByPurchaserUsername(sessionUser.getUsername());
@@ -116,7 +117,7 @@ public class OrdersMVC {
                 ordersToShow = invoiceRepository.findAllInvoices();
             }
         }
-        
+
         // No results found
         if (ordersToShow.isEmpty()) {
             errorMessage = "We couldn't find any orders :(";
@@ -150,7 +151,7 @@ public class OrdersMVC {
         String errorMessage = "";
 
         List<Invoice> specificInvoice = invoiceRepository.findByInvoiceNumber(invoiceNumber);
-        
+
         // No specific invoice found
         if (specificInvoice.isEmpty()) {
             errorMessage = "Couldn't find the invoice :(";
@@ -160,7 +161,7 @@ public class OrdersMVC {
         }
 
         Invoice invoiceToDisplay = specificInvoice.get(0);
-        
+
         // Only show the invoice if they're an admin or the appropriate user
         if (!Objects.equals(invoiceToDisplay.getPurchaser().getId(), sessionUser.getId())) {
             // If they're not the user, make sure they're an admin, else don't render
@@ -179,7 +180,7 @@ public class OrdersMVC {
 
         return "viewModifyOrder";
     }
-    
+
     /**
      *
      * @param invoiceNumber The invoice number
@@ -208,15 +209,15 @@ public class OrdersMVC {
 
         List<Invoice> specificInvoice = invoiceRepository.findByInvoiceNumber(invoiceNumber);
 
-        if (specificInvoice.isEmpty()) {
-            errorMessage = "Couldn't find the invoice :(";
+        if (sessionUser.getUserRole() != UserRole.ADMINISTRATOR) {
+            errorMessage = "Your account isn't permitted to do this, are you signed in?";
             model.addAttribute("errorMessage", errorMessage);
             model.addAttribute("selectedPage", "home");
             return "home";
         }
 
-        if (sessionUser.getUserRole() != UserRole.ADMINISTRATOR) {
-            errorMessage = "Your account isn't permitted to do this, are you signed in?";
+        if (specificInvoice.isEmpty()) {
+            errorMessage = "Couldn't find the invoice :(";
             model.addAttribute("errorMessage", errorMessage);
             model.addAttribute("selectedPage", "home");
             return "home";
@@ -238,8 +239,8 @@ public class OrdersMVC {
                 invoiceRepository.save(invoiceToDisplay);
                 LOG.debug("updated invoice " + invoiceToDisplay.getInvoiceNumber() + " status to " + InvoiceStatus.valueOf(status));
                 message = "Status has been updated.";
-                
-            // Refunding (locking the status to REFUNDED)
+
+                // Refunding (locking the status to REFUNDED)
             } else if ("refund".equals(action)) {
                 // Follow a process similar to transactions, but the bank card is used as the toCard
                 BankRestClientImpl restClient = new BankRestClientImpl(adminSettings.getProperty("org.solent.com504.oodd.ae2.url"));
@@ -266,7 +267,7 @@ public class OrdersMVC {
                 }
             }
         }
-        
+
         model.addAttribute("message", message);
         model.addAttribute("errorMessage", errorMessage);
         model.addAttribute("savedPurchasedItems", invoiceToDisplay.getSavedBasketItems());
@@ -281,7 +282,6 @@ public class OrdersMVC {
      * Default exception handler, catches all exceptions, redirects to friendly
      * error page. Does not catch request mapping errors
      */
-
     /**
      *
      * @param e The Exception
