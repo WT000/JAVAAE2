@@ -184,13 +184,6 @@ public class UserMVC {
 
             // Set the sessionUser to be the logged in user
             session.setAttribute("sessionUser", loginUser);
-            
-            message = "You've now logged into " + username + "'s account.";
-            model.addAttribute("sessionUser", loginUser);
-            model.addAttribute("message", message);
-            model.addAttribute("errorMessage", errorMessage);
-            model.addAttribute("selectedPage", "home");
-            
             return "redirect:/home";
         } else {
             LOG.error("login page unknown action requested:" + action);
