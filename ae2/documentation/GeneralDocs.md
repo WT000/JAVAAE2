@@ -81,6 +81,7 @@ The class diagram below includes the main parts of the system, in particular the
 To visually demonstrate some of the use cases, here's some diagrams which follow the guidelines / rules of [this](https://www.visual-paradigm.com/guide/uml-unified-modeling-language/robustness-analysis-tutorial/) tutorial:
 
 - **CUSTOMER ACTOR**
+
 Below shows how a customer adds items into their cart and purchases them.
 
 Sequence diagram showing the process of the application from one layer / service to another:
