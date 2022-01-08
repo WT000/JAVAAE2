@@ -41,8 +41,8 @@ The following are the identified use cases for the application, each of which co
 ### BANK Actor
 - **UC13**: Money should be transfered between accounts when a transaction or refund takes place
 
-Below is a visual representation of the main use cases for the main Actor's of the system
-![UML Diagram](https://github.com/WT000/GROUPA5AE1/blob/main/ae1/documentation/UML/use-case-v2.drawio.png "UML Diagram")
+Below is a visual representation of the main use cases for the main Actor's of the system, those being CUSTOMER, ADMIN, and BANK:
+![UML Diagram](https://github.com/WT000/JAVAAE2/blob/main/ae2/documentation/drawio/ae2usecases.png "UML Diagram")
 
 # FINISHED APP
 
