@@ -80,24 +80,14 @@ The class diagram below includes the main parts of the system, in particular the
 ### Sequence and Robustness diagrams
 To visually demonstrate some of the use cases, here's some diagrams which follow the guidelines / rules of [this](https://www.visual-paradigm.com/guide/uml-unified-modeling-language/robustness-analysis-tutorial/) tutorial:
 
-- **UC1 (login)**
+- **CUSTOMER ACTOR**
 
-![login diagram](https://github.com/WT000/GROUPA5AE1/blob/main/ae1/documentation/UML/sequencelogin.png "login diagram")
-
-- **UC2 (properties)**
-
-![properties sequence diagram](https://github.com/WT000/GROUPA5AE1/blob/main/ae1/documentation/UML/sequenceproperties.png "properties sequence diagram")
+![customer sequence diagram](https://github.com/WT000/JAVAAE2/blob/main/ae2/documentation/drawio/ae2UserActorSequence.png "customer sequence diagram")
 ![properties robustness diagram](https://github.com/WT000/GROUPA5AE1/blob/main/ae1/documentation/UML/robustnessAdminProperties.png "properties robustness diagram")
 
-- **UC3 (refund)** 
+- **ADMIN ACTOR**
 
-![refund sequence diagram](https://github.com/WT000/GROUPA5AE1/blob/main/ae1/documentation/UML/sequencerefund.png "refund sequence diagram")
-![refund robustness diagram](https://github.com/WT000/GROUPA5AE1/blob/main/ae1/documentation/UML/robustnessAdminRefund.png "refund robustness diagram")
-
-- **UC4 / UC5 (add card and transaction)**
-
-![transaction sequence diagram](https://github.com/WT000/GROUPA5AE1/blob/main/ae1/documentation/UML/sequenceadd_transaction.png "transaction sequence diagram")
-![transaction robustness diagram](https://github.com/WT000/GROUPA5AE1/blob/main/ae1/documentation/UML/robustnessUser.png "transaction robustness diagram")
+![login diagram](https://github.com/WT000/GROUPA5AE1/blob/main/ae1/documentation/UML/sequencelogin.png "login diagram")
 
 ## <a name="javadoc"></a> Javadoc
 For those who want a greater understanding of how the program works, Javadoc has been used across the code to give details on how things are done. To view it, go to the ae2 parent folder and use ``` mvn javadoc:javadoc ```. Or, you could generate the Javadoc in [Netbeans](https://netbeans.apache.org/) by right clicking an open Maven module and selecting ***Generate Javadoc***.
