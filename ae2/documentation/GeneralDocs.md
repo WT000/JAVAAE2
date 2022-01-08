@@ -71,24 +71,14 @@ In total there are 5 MVC Controllers, each of which can handle errors and show a
 | PropertiesMVC    | Used to view and set new remote bank properties.                                                                                 |                                                                                                                                            |
 
 [Interested in seeing the test plan? Click here.](https://github.com/WT000/JAVAAE2/blob/main/ae2/documentation/TestDocs.md)
-## <a name="diagrams"></a> Diagrams & Screenshots
-### UML Class diagrams
-the raw cdg files are contained [here](https://github.com/WT000/GROUPA5AE1/tree/main/ae1/documentation/UML/raw-uml) if you wish to view them in that format.
+## <a name="diagrams"></a> Model and Diagrams
+### Model / UML Class diagram (simplified)
+The class diagram below includes the main parts of the system, in particular the databases, what classes will be stored in itm etc. Some relations and classes (such as the MVC's) have been removed for the sake of viewing, otherwise there would be relations across everything.
 
-- card-checker (handles parts of card validation before the ReST transfer)
-
-![card-checker class diagram](https://github.com/WT000/GROUPA5AE1/blob/main/ae1/documentation/UML/card-checker-uml.png "card-checker class diagram")
-
-- bank-client (handles the ReST transfer and contains DAO objects)
-
-![bank-client class diagram](https://github.com/WT000/GROUPA5AE1/blob/main/ae1/documentation/UML/bank-client-uml.png "bank-client class diagram")
-
-- web (brings everything together in a web app and controls properties)
-
-![web class diagram](https://github.com/WT000/GROUPA5AE1/blob/main/ae1/documentation/UML/web-uml.png "web class diagram")
+![class diagram](https://github.com/WT000/JAVAAE2/blob/main/ae2/documentation/images/ae2ClassDiagram.png "web class diagram")
 
 ### Sequence and Robustness diagrams
-To visually demonstrate some of our use cases, here's some diagrams which follow the guidelines / rules of [this](https://www.visual-paradigm.com/guide/uml-unified-modeling-language/robustness-analysis-tutorial/) tutorial:
+To visually demonstrate some of the use cases, here's some diagrams which follow the guidelines / rules of [this](https://www.visual-paradigm.com/guide/uml-unified-modeling-language/robustness-analysis-tutorial/) tutorial:
 
 - **UC1 (login)**
 
