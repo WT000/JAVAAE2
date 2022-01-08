@@ -81,8 +81,12 @@ The class diagram below includes the main parts of the system, in particular the
 To visually demonstrate some of the use cases, here's some diagrams which follow the guidelines / rules of [this](https://www.visual-paradigm.com/guide/uml-unified-modeling-language/robustness-analysis-tutorial/) tutorial:
 
 - **CUSTOMER ACTOR**
+Below shows how a customer adds items into their cart and purchases them.
 
+Sequence diagram showing the process of the application from one layer / service to another:
 ![customer sequence diagram](https://github.com/WT000/JAVAAE2/blob/main/ae2/documentation/drawio/ae2UserActorSequence.png "customer sequence diagram")
+
+Robustness diagram showing the same steps as the sequence diagram above:
 ![properties robustness diagram](https://github.com/WT000/GROUPA5AE1/blob/main/ae1/documentation/UML/robustnessAdminProperties.png "properties robustness diagram")
 
 - **ADMIN ACTOR**
