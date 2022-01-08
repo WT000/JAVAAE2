@@ -13,7 +13,7 @@ Now that you've got the dependencies you can move to the web module and run the 
 cd web
 mvn cargo:run
 ```
-The project will now be hosted at http://localhost:8080/ae2ShoppingCartApplication/index.html
+The project will now be hosted at http://localhost:8080/ae2ShoppingCartApplication/index.html and will show you the default admin password and log location.
 
 # DOCUMENTATION
 General documentation can be found [here](https://github.com/WT000/JAVAAE2/blob/main/ae2/documentation/GeneralDocs.md).
