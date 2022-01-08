@@ -87,13 +87,15 @@ Below shows how a customer adds items into their cart and purchases them.
 Sequence diagram showing the process of the application from one layer / service to another:
 ![customer sequence diagram](https://github.com/WT000/JAVAAE2/blob/main/ae2/documentation/drawio/ae2UserActorSequence.png "customer sequence diagram")
 
-Robustness diagram showing the same steps as the sequence diagram above:
-![properties robustness diagram](https://github.com/WT000/GROUPA5AE1/blob/main/ae1/documentation/UML/robustnessAdminProperties.png "properties robustness diagram")
-
 - **ADMIN ACTOR**
 
-Below shows how an admin adds items, updates items (which follows a similar process to updating invoices), and searches for invoices.
+Below shows how an admin adds items, updates items (which follows a similar process to updating invoices), and searches for invoices:
 ![admin sequence diagram](https://github.com/WT000/JAVAAE2/blob/main/ae2/documentation/drawio/ae2AdminActorSequence.png "admin sequence diagram")
+
+- **ALL ACTORS**
+
+Below is a robustness diagrams which covers the main features of the system:
+![properties robustness diagram](https://github.com/WT000/GROUPA5AE1/blob/main/ae1/documentation/UML/robustnessAdminProperties.png "properties robustness diagram")
 
 ## <a name="javadoc"></a> Javadoc
 For those who want a greater understanding of how the program works, Javadoc has been used across the code to give details on how things are done. To view it, go to the ae2 parent folder and use ``` mvn javadoc:javadoc ```. Or, you could generate the Javadoc in [Netbeans](https://netbeans.apache.org/) by right clicking an open Maven module and selecting ***Generate Javadoc***.
