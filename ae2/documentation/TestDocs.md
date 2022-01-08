@@ -16,7 +16,7 @@ The code already has unit tests to ensure classes and methods work as intended, 
 - **UC11**: Customers can view their own orders
 - **UC12**: Deactiavted accounts cannot be logged into
 
-# TESTS
+# TESTS (38)
 | Test Number | Use Case | Test Method                                                                                                         | Test Result (r1.0)                                                                                                                                | PASS / FAIL |
 |-------------|----------|---------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
 | 1.1         | UC1      | Attempt to set entirely valid properties without optional information.                                              | The properties successfully validate against the remote bank and apply.                                                                           | PASS        |
