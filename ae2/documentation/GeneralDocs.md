@@ -38,6 +38,10 @@ The following are the identified use cases for the application, each of which co
 ### DEACTIVATED Actor
 - **UC12**: Deactiavted accounts cannot be logged into
 
+### BANK Actor
+- **UC13**: Money should be transfered between accounts when a transaction or refund takes place
+
+Below is a visual representation of the main use cases for the main Actor's of the system
 ![UML Diagram](https://github.com/WT000/GROUPA5AE1/blob/main/ae1/documentation/UML/use-case-v2.drawio.png "UML Diagram")
 
 # FINISHED APP
@@ -56,6 +60,15 @@ The following are the identified use cases for the application, each of which co
 | 8                      | The app uses JSP's through Spring, which can be hosted through Tomcat.                                                                              |                                                                                                                                                   |
 | 9 (2)                  | Admins can add, edit, and remove items along with their stock count.                                                                                | Category types have been provided such as JEWELRY and TECH.                                                                                       |
 | 10 (9)                 | Users (apart from Anonymous and Deactivated users) can create accounts and edit their details, excluding their cvv.                                 | The user can save their card in the session or database. Furthermore, the checkout page has a card form in case they haven't saved a card.        |
+
+In total there are 5 MVC Controllers, each of which can handle errors and show an error page:
+| Controller Name  | Purpose                                                                                                                          | Additional Notes                                                                                                                           |
+|------------------|----------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------|
+| GenericMVC       | Used to display generic pages without much code behind them, like the home or about page.                                        |                                                                                                                                            |
+| UserMVC          | Used to handle user registration, user login, and user modification through the user database.                                   |                                                                                                                                            |
+| CatalogueCartMVC | Used to handle item creation, item viewing, item modification, item deletion, cart control, cart checkout, and invoice creation. | The checkout code is within the MVC itself instead of a Service object, perhaps this could be changed in the future to aid in scalability. |
+| OrdersMVC        | Used to handle order viewing, order modification, and order refunding.                                                           | The same point as above, the refund code is within the MVC itself.                                                                         |
+| PropertiesMVC    | Used to view and set new remote bank properties.                                                                                 |                                                                                                                                            |
 
 [Interested in seeing the test plan? Click here.](https://github.com/WT000/JAVAAE2/blob/main/ae2/documentation/TestDocs.md)
 ## <a name="diagrams"></a> Diagrams & Screenshots
