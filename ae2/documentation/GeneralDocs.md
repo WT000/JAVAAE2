@@ -92,7 +92,8 @@ Robustness diagram showing the same steps as the sequence diagram above:
 
 - **ADMIN ACTOR**
 
-![login diagram](https://github.com/WT000/GROUPA5AE1/blob/main/ae1/documentation/UML/sequencelogin.png "login diagram")
+Below shows how an admin adds items, updates items (which follows a similar process to updating invoices), and searches for invoices.
+![admin sequence diagram](https://github.com/WT000/JAVAAE2/blob/main/ae2/documentation/drawio/ae2AdminActorSequence.png "admin sequence diagram")
 
 ## <a name="javadoc"></a> Javadoc
 For those who want a greater understanding of how the program works, Javadoc has been used across the code to give details on how things are done. To view it, go to the ae2 parent folder and use ``` mvn javadoc:javadoc ```. Or, you could generate the Javadoc in [Netbeans](https://netbeans.apache.org/) by right clicking an open Maven module and selecting ***Generate Javadoc***.
@@ -100,7 +101,9 @@ For those who want a greater understanding of how the program works, Javadoc has
 ## <a name="notes"></a> Additional notes
 ### CI / CD
 I decided to use this to ensure that my code is still functioning after each push to the repo, it's especially useful for finding commits which accidentally break the system and require fixing. It also saves time as I don't need to manually run tests right as I'm about to push, I can simply look at the status on GitHub and see if the app is okay!
+
 ### Persistence
 Persistence has been achieved through Hibernate (JPA), which is why some classes such as ShoppingItem are tagged with @Entity. If you want the database to not be in-memory edit the [persistence-app.properties](https://github.com/WT000/JAVAAE2/blob/main/ae2/web/src/main/resources/persistence-app.properties) file. Doing this will save DB files to (Tomcat)/target/hsqldb/ae2ProductDb.
+
 ### Additional Tests
 I've added additional tests when it comes to testing the database, classes, and objects, ensuring that there's as little bugs as possible.
