@@ -73,7 +73,7 @@ In total there are 5 MVC Controllers, each of which can handle errors and show a
 [Interested in seeing the test plan? Click here.](https://github.com/WT000/JAVAAE2/blob/main/ae2/documentation/TestDocs.md)
 ## <a name="diagrams"></a> Model and Diagrams
 ### Model / UML Class diagram (simplified)
-The class diagram below includes the main parts of the system, in particular the databases, what classes will be stored in itm etc. Some relations and classes (such as the MVC's) have been removed for the sake of viewing, otherwise there would be relations across everything.
+The class diagram below includes the main parts of the system, in particular the databases, what classes will be stored in them, etc. Some relations and classes (such as the MVC's) have been removed for the sake of viewing, otherwise there would be relations across everything and make it impossible to quickly understand what's going on.
 
 ![class diagram](https://github.com/WT000/JAVAAE2/blob/main/ae2/documentation/images/ae2ClassDiagram.png "web class diagram")
 
