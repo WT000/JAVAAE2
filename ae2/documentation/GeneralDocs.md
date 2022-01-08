@@ -100,5 +100,7 @@ For those who want a greater understanding of how the program works, Javadoc has
 ## <a name="notes"></a> Additional notes
 ### CI / CD
 I decided to use this to ensure that my code is still functioning after each push to the repo, it's especially useful for finding commits which accidentally break the system and require fixing. It also saves time as I don't need to manually run tests right as I'm about to push, I can simply look at the status on GitHub and see if the app is okay!
+### Persistence
+Persistence has been achieved through Hibernate (JPA), which is why some classes such as ShoppingItem are tagged with @Entity. If you want the database to be saved to a file, check out the [persistence-app.properties]() file (doing this will save DB files to (Tomcat)/target/hsqldb/ae2ProductDb).
 ### Additional Tests
 I've added additional tests when it comes to testing the database, classes, and objects, ensuring that there's as little bugs as possible.
