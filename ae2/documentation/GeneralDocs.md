@@ -8,7 +8,7 @@
 - [Javadoc](#javadoc)
 - [Additional notes](#notes)
 
-# APP DESIGN
+# General Documentation
 
 ## <a name="introduction"></a> Introduction
 Welcome to the documentation for the application! Here you'll find the standard stuff, such as its use cases (features), model, diagrams, etc.
@@ -94,8 +94,8 @@ Below shows how an admin adds items, updates items (which follows a similar proc
 
 - **ALL ACTORS**
 
-Below is a robustness diagrams which covers the main features of the system:
-![properties robustness diagram](https://github.com/WT000/GROUPA5AE1/blob/main/ae1/documentation/UML/robustnessAdminProperties.png "properties robustness diagram")
+Below is a fairly large robustness diagrams which covers the fundemental features of the system, making it easier to get an overview of the essentials of the application:
+![robustness diagram](https://github.com/WT000/JAVAAE2/blob/main/ae2/documentation/drawio/ae2robustness.png "robustness diagram")
 
 ## <a name="javadoc"></a> Javadoc
 For those who want a greater understanding of how the program works, Javadoc has been used across the code to give details on how things are done. To view it, go to the ae2 parent folder and use ``` mvn javadoc:javadoc ```. Or, you could generate the Javadoc in [Netbeans](https://netbeans.apache.org/) by right clicking an open Maven module and selecting ***Generate Javadoc***.
