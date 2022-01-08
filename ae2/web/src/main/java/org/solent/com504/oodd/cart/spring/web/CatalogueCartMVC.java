@@ -152,7 +152,9 @@ public class CatalogueCartMVC {
 
         } else {
             currentItems = itemRepository.findAvailableItems();
-            hiddenItems = itemRepository.findUnavailableItems();
+            if (sessionUser.getUserRole() == UserRole.ADMINISTRATOR) {
+                hiddenItems = itemRepository.findUnavailableItems();
+            }
         }
 
         if (currentItems.isEmpty()) {
