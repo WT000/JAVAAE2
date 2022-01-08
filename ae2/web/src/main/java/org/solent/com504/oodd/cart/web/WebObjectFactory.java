@@ -32,13 +32,6 @@ public class WebObjectFactory {
     private WebObjectFactory() {
 
     }
-    
-    /**
-     * @return A new ShoppingCard object for the user
-     */
-    public static ShoppingCart getNewShoppingCart() {
-        return ServiceObjectFactory.getNewShoppingCart();
-    }
 
     /**
      * Used to get the PropertiesDao of the application
