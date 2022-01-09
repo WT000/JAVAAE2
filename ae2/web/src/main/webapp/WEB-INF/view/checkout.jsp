@@ -17,35 +17,39 @@
                 <tbody>
                     <tr>
                         <td>First Name</td>
-                        <td><input type="text" name="firstName" value="${checkoutUser.firstName}" /></td>
+                        <td><input type="text" name="firstName" value="${checkoutUser.firstName}" readonly/></td>
                     </tr>
                     <tr>
                         <td>Last Name</td>
-                        <td><input type="text" name="secondName" value="${checkoutUser.secondName}" /></td>
+                        <td><input type="text" name="secondName" value="${checkoutUser.secondName}" readonly/></td>
                     </tr>
                     <tr>
                         <td>Address Line 1</td>
-                        <td><input type="text" name="addressLine1" value="${checkoutUser.address.addressLine1}" /></td>
+                        <td><input type="text" name="addressLine1" value="${checkoutUser.address.addressLine1}" readonly/></td>
                     </tr>
                     <tr>
                         <td>Address Line 2</td>
-                        <td><input type="text" name="addressLine2" value="${checkoutUser.address.addressLine2}" /></td>
+                        <td><input type="text" name="addressLine2" value="${checkoutUser.address.addressLine2}" readonly/></td>
                     </tr>
                     <tr>
                         <td>City</td>
-                        <td><input type="text" name="city" value="${checkoutUser.address.city}" /></td>
+                        <td><input type="text" name="city" value="${checkoutUser.address.city}" readonly/></td>
                     </tr>
                     <tr>
                         <td>County</td>
-                        <td><input type="text" name="county" value="${checkoutUser.address.county}" /></td>
+                        <td><input type="text" name="county" value="${checkoutUser.address.county}" readonly/></td>
                     </tr>
                     <tr>
                         <td>Postcode</td>
-                        <td><input type="text" name="postcode" value="${checkoutUser.address.postcode}" /></td>
+                        <td><input type="text" name="postcode" value="${checkoutUser.address.postcode}" readonly/></td>
                     </tr>
                     <tr>
                         <td>Mobile number</td>
-                        <td><input type="text" name="mobile" value="${checkoutUser.address.mobile}" /></td>
+                        <td><input type="text" name="mobile" value="${checkoutUser.address.mobile}" readonly/></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><a href="./viewModifyUser?username=${checkoutUser.username}">Edit your details</a></td>
                     </tr>
                 </tbody>
             </table>

@@ -600,14 +600,6 @@ public class CatalogueCartMVC {
 
     /**
      *
-     * @param firstName Checkout first name
-     * @param secondName Checkout surname
-     * @param addressLine1 Checkout address line 1
-     * @param addressLine2 Checkout address line 2
-     * @param city Checkout city
-     * @param county Checkout country
-     * @param postcode Checkout postcode
-     * @param mobile Checkout mobile number
      * @param cardNumber Card number
      * @param cardName Name on card
      * @param cardDate Card expiry date
@@ -620,14 +612,6 @@ public class CatalogueCartMVC {
     @RequestMapping(value = {"/checkout"}, method = RequestMethod.POST)
     @Transactional
     public synchronized String doCheckout(
-            @RequestParam(value = "firstName", required = true) String firstName,
-            @RequestParam(value = "secondName", required = true) String secondName,
-            @RequestParam(value = "addressLine1", required = false) String addressLine1,
-            @RequestParam(value = "addressLine2", required = false) String addressLine2,
-            @RequestParam(value = "city", required = false) String city,
-            @RequestParam(value = "county", required = false) String county,
-            @RequestParam(value = "postcode", required = false) String postcode,
-            @RequestParam(value = "mobile", required = false) String mobile,
             @RequestParam(value = "cardno", required = true) String cardNumber,
             @RequestParam(value = "cardname", required = true) String cardName,
             @RequestParam(value = "carddate", required = true) String cardDate,
