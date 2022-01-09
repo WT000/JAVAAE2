@@ -17,6 +17,7 @@ package org.solent.com504.oodd.cart.dao.test;
 
 import java.util.Optional;
 import java.util.UUID;
+import java.util.List;
 import javax.transaction.Transactional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -25,9 +26,9 @@ import org.junit.runner.RunWith;
 import static org.junit.Assert.*;
 import org.solent.com504.oodd.cart.dao.impl.InvoiceRepository;
 import org.solent.com504.oodd.cart.dao.impl.ShoppingItemCatalogRepository;
-import org.solent.com504.oodd.cart.model.dto.User;
 import org.solent.com504.oodd.cart.dao.impl.UserRepository;
 import org.solent.com504.oodd.cart.model.dto.ShoppingItem;
+import org.solent.com504.oodd.cart.model.dto.ShoppingItemCategory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -64,14 +65,16 @@ public class ShoppingItemCatalogRepositoryTest {
         shoppingItem1.setName("item 1");
         shoppingItem1.setPrice(100.1);
         shoppingItem1.setQuantity(1);
+        shoppingItem1.setCategory(ShoppingItemCategory.JEWELRY);
         shoppingItem1.setUuid(UUID.randomUUID().toString());
 
         shoppingItemCatalogRepository.save(shoppingItem1);
 
         ShoppingItem shoppingItem2 = new ShoppingItem();
-        shoppingItem2.setName("item 1");
+        shoppingItem2.setName("item 2");
         shoppingItem2.setPrice(100.1);
-        shoppingItem2.setQuantity(1);
+        shoppingItem2.setQuantity(0);
+        shoppingItem2.setCategory(ShoppingItemCategory.OTHER);
         shoppingItem2.setUuid(UUID.randomUUID().toString());
 
         shoppingItem2 = shoppingItemCatalogRepository.save(shoppingItem2);
@@ -87,10 +90,36 @@ public class ShoppingItemCatalogRepositoryTest {
         foundItem.setName("THE BEST ITEM");
         shoppingItemCatalogRepository.save(foundItem);
         
-        optional = shoppingItemCatalogRepository.findById(shoppingItem2.getId());
-        foundItem = optional.get();
-        
+        LOG.debug("trying to find by UUID");
+        List<ShoppingItem> list = shoppingItemCatalogRepository.findByUuid(shoppingItem2.getUuid());
+        foundItem = list.get(0);
         assertEquals("THE BEST ITEM", foundItem.getName());
+        
+        LOG.debug("trying to find by name");
+        list = shoppingItemCatalogRepository.findByNameIgnoreCaseContaining("THE BEST ITEM");
+        foundItem = list.get(0);
+        assertEquals("THE BEST ITEM", foundItem.getName());
+        
+        LOG.debug("trying to find available");
+        list = shoppingItemCatalogRepository.findAvailableItems();
+        foundItem = list.get(0);
+        assertEquals("item 1", foundItem.getName());
+        
+        LOG.debug("trying to find unavailable");
+        list = shoppingItemCatalogRepository.findUnavailableItems();
+        foundItem = list.get(0);
+        LOG.debug(foundItem);
+        assertEquals("THE BEST ITEM", foundItem.getName());
+        
+        LOG.debug("trying to find by category");
+        list = shoppingItemCatalogRepository.findByCategory(ShoppingItemCategory.JEWELRY);
+        foundItem = list.get(0);
+        assertEquals("item 1", foundItem.getName());
+        
+        LOG.debug("trying to find by name and category");
+        list = shoppingItemCatalogRepository.findByNameIgnoreCaseContainingAndCategory("item 1", ShoppingItemCategory.JEWELRY);
+        foundItem = list.get(0);
+        assertEquals("item 1", foundItem.getName());
         
         LOG.debug("****************** test complete");
     }

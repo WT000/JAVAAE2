@@ -23,7 +23,6 @@ import java.util.UUID;
 import javax.transaction.Transactional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.junit.Assert.*;
@@ -68,8 +67,9 @@ public class InvoiceRepositoryTest {
         invoiceRepository.deleteAll();
 
         User user1 = new User();
-        user1.setFirstName("craig");
-        user1.setSecondName("gallen");
+        user1.setUsername("robotuser");
+        user1.setFirstName("robo");
+        user1.setSecondName("user");
         user1 = userRepository.save(user1);
         assertEquals(1, userRepository.count());
 
@@ -77,6 +77,7 @@ public class InvoiceRepositoryTest {
         invoice1.setAmountDue(100.0);
         invoice1.setDateOfPurchase(new Date());
         invoice1.setPurchaser(user1);
+        invoice1.setInvoiceNumber("ABC");
 
         invoice1 = invoiceRepository.save(invoice1);
         assertEquals(1, invoiceRepository.count());
@@ -104,9 +105,19 @@ public class InvoiceRepositoryTest {
 
         LOG.debug("found Invoice, validating...");
         assertEquals(InvoiceStatus.PROCESSING, foundInvoice.getCurrentStatus());
-        assertEquals("craig", foundInvoice.getPurchaser().getFirstName());
+        assertEquals("robo", foundInvoice.getPurchaser().getFirstName());
         assertEquals((Double) 100.0, foundInvoice.getAmountDue());
         assertEquals(1, foundInvoice.getSavedBasketItems().size());
+        
+        LOG.debug("trying to find by invoice number");
+        List<Invoice> list = invoiceRepository.findByInvoiceNumber("ABC");
+        foundInvoice = list.get(0);
+        assertEquals("robo", foundInvoice.getPurchaser().getFirstName());
+        
+        LOG.debug("trying to find by username");
+        list = invoiceRepository.findByPurchaserUsername("robotuser");
+        foundInvoice = list.get(0);
+        assertEquals("robo", foundInvoice.getPurchaser().getFirstName());
         
         LOG.debug("****************** test complete");
     }
