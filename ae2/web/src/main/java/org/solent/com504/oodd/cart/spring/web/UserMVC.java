@@ -23,6 +23,7 @@ import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import org.solent.com504.oodd.cart.dao.impl.UserRepository;
 import org.solent.com504.oodd.cart.model.dto.Address;
 import org.solent.com504.oodd.cart.model.dto.User;
@@ -30,6 +31,7 @@ import org.solent.com504.oodd.cart.model.dto.UserRole;
 import org.solent.com504.oodd.bank.model.dto.CreditCard;
 import org.solent.com504.oodd.bank.card.checker.RegexCardValidator;
 import org.solent.com504.oodd.bank.card.checker.CardValidationResult;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,6 +39,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * The MVC controller for User's and logging in
@@ -346,6 +349,7 @@ public class UserMVC {
 
         if (UserRole.ANONYMOUS.equals(sessionUser.getUserRole())) {
             errorMessage = "You must be logged in to access user information.";
+            model.addAttribute("selectedPage", "home");
             model.addAttribute("errorMessage", errorMessage);
             return "home";
         }
@@ -353,19 +357,23 @@ public class UserMVC {
         if (!UserRole.ADMINISTRATOR.equals(sessionUser.getUserRole())) {
             // If not an administrator you can only access your own account info
             if (!sessionUser.getUsername().equals(username)) {
-                errorMessage = username + ", you can only view your own account"
+                errorMessage = "You can only view your own account"
                         + " information! " + sessionUser.getUsername() + " is"
                         + " currently logged in.";
                 LOG.warn(errorMessage);
+                model.addAttribute("selectedPage", "home");
                 model.addAttribute("errorMessage", errorMessage);
-                return ("home");
+                return "home";
             }
         }
 
         List<User> userList = userRepository.findByUsername(username);
         if (userList.isEmpty()) {
             LOG.error("viewModifyUser called for unknown username=" + username);
-            return ("home");
+            
+            model.addAttribute("selectedPage", "home");
+            model.addAttribute("errorMessage", "The user doesn't exist.");
+            return "home";
         }
 
         User modifyUser = userList.get(0);
@@ -399,6 +407,7 @@ public class UserMVC {
      * @param action The action
      * @param model Attributes
      * @param session Session
+     * @param redirectAtt Redirect Attributes
      * @return If successful, the viewModifyUser page with updated information
      */
     @RequestMapping(value = {"/viewModifyUser"}, method = RequestMethod.POST)
@@ -425,7 +434,8 @@ public class UserMVC {
             @RequestParam(value = "savecard", required = false) String saveCard,
             @RequestParam(value = "action", required = false) String action,
             Model model,
-            HttpSession session) {
+            HttpSession session,
+            RedirectAttributes redirectAtt) {
         String message = "";
         String errorMessage = "";
 
@@ -437,6 +447,7 @@ public class UserMVC {
 
         if (UserRole.ANONYMOUS.equals(sessionUser.getUserRole())) {
             errorMessage = "You must be logged in to access user information.";
+            model.addAttribute("selectedPage", "home");
             model.addAttribute("errorMessage", errorMessage);
             return "home";
         }
@@ -446,6 +457,7 @@ public class UserMVC {
                 errorMessage = username + ", you can only view your own account"
                         + " information! " + sessionUser.getUsername() + " is"
                         + " currently logged in.";
+                model.addAttribute("selectedPage", "home");
                 model.addAttribute("errorMessage", errorMessage);
                 LOG.warn(errorMessage);
                 return ("home");
@@ -456,6 +468,7 @@ public class UserMVC {
         if (userList.isEmpty()) {
             errorMessage = "Update user called for unknown username:" + username + ".";
             LOG.warn(errorMessage);
+            model.addAttribute("selectedPage", "home");
             model.addAttribute("errorMessage", errorMessage);
             return ("home");
         }
@@ -470,17 +483,15 @@ public class UserMVC {
                         + " twice.";
                 LOG.warn(errorMessage);
 
-                model.addAttribute("modifyUser", modifyUser);
-                model.addAttribute("errorMessage", errorMessage);
-                return "viewModifyUser";
+                redirectAtt.addAttribute("errorMessage", errorMessage);
+                return "redirect:/viewModifyUser?username=" + modifyUser.getUsername();
 
             } else {
                 modifyUser.setPassword(password);
                 modifyUser = userRepository.save(modifyUser);
-                model.addAttribute("modifyUser", modifyUser);
-                message = "Password updated for user :" + modifyUser.getUsername() + ".";
-                model.addAttribute("message", message);
-                return "viewModifyUser";
+                
+                redirectAtt.addAttribute("message", "User " + modifyUser.getUsername() + "'s password updated successfully.");
+                return "redirect:/viewModifyUser?username=" + modifyUser.getUsername();
             }
         }
 
@@ -498,6 +509,8 @@ public class UserMVC {
             } catch (Exception ex) {
                 errorMessage = "Cannot parse userRole" + userRole + ".";
                 LOG.warn(errorMessage);
+                
+                model.addAttribute("selectedPage", "home");
                 model.addAttribute("errorMessage", errorMessage);
                 return ("home");
             }
@@ -538,15 +551,13 @@ public class UserMVC {
 
                         CardValidationResult cardNumTest = RegexCardValidator.isValid(cardNumber);
                         if (!cardNumTest.isValid()) {
-                            model.addAttribute("modifyUser", modifyUser);
-                            model.addAttribute("errorMessage", "The card number is invalid.");
-                            return "viewModifyUser";
+                            redirectAtt.addAttribute("errorMessage", "The card number is invalid.");
+                            return "redirect:/viewModifyUser?username=" + modifyUser.getUsername();
                         }
 
                         if (card.cardDateExpiredOrError()) {
-                            model.addAttribute("modifyUser", modifyUser);
-                            model.addAttribute("errorMessage", "The card has an invalid or expired date.");
-                            return "viewModifyUser";
+                            redirectAtt.addAttribute("errorMessage", "The card has an invalid or expired date.");
+                            return "redirect:/viewModifyUser?username=" + modifyUser.getUsername();
                         }
 
                         // Only store card details in the session user, not the modifyUser
@@ -561,9 +572,8 @@ public class UserMVC {
                         sessionUser.setCard(card);
 
                     } else {
-                        model.addAttribute("modifyUser", modifyUser);
-                        model.addAttribute("errorMessage", "One of the card fields is missing.");
-                        return "viewModifyUser";
+                        redirectAtt.addAttribute("errorMessage", "One of the card fields is missing.");
+                        return "redirect:/viewModifyUser?username=" + modifyUser.getUsername();
                     }
                 } else {
                     sessionUser.setCard(new CreditCard());
@@ -574,12 +584,8 @@ public class UserMVC {
 
         modifyUser = userRepository.save(modifyUser);
 
-        model.addAttribute("modifyUser", modifyUser);
-        model.addAttribute("errorMessage", errorMessage);
-        model.addAttribute("message", "User " + modifyUser.getUsername() + " updated successfully.");
-        model.addAttribute("selectedPage", "home");
-
-        return "viewModifyUser";
+        redirectAtt.addAttribute("message", "User " + modifyUser.getUsername() + " updated successfully.");
+        return "redirect:/viewModifyUser?username=" + modifyUser.getUsername();
     }
 
     /*

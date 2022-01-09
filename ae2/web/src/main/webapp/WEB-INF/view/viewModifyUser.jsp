@@ -10,8 +10,10 @@
     <div>
         <h3>${modifyUser.username}'s profile</h3>
         <!-- print error message if there is one -->
+        <div style="color:red;">${param.errorMessage}</div>
         <div style="color:red;">${errorMessage}</div>
         <div style="color:green;">${message}</div>
+        <div style="color:green;">${param.message}</div>
 
         <h1>General Information</h1>
         <form action="./viewModifyUser" method="POST">
@@ -43,15 +45,15 @@
                     </tr>
                     <tr>
                         <td>Postcode</td>
-                        <td><input type="text" name="postcode" value="${modifyUser.address.postcode}"/></td>
+                        <td><input type="text" name="postcode" value="${modifyUser.address.postcode}" minlength="5" maxlength="8"/></td>
                     </tr>
                     <tr>
                         <td>Telephone number</td>
-                        <td><input type="text" name="telephone" value="${modifyUser.address.telephone}"/></td>
+                        <td><input type="text" name="telephone" value="${modifyUser.address.telephone}" pattern="[0-9]{11}"/></td>
                     </tr>
                     <tr>
                         <td>Mobile number</td>
-                        <td><input type="text" name="mobile" value="${modifyUser.address.mobile}"/></td>
+                        <td><input type="text" name="mobile" value="${modifyUser.address.mobile}" pattern="[0-9]{11}"/></td>
                     </tr>
                 </tbody>
             </table>
