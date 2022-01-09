@@ -11,8 +11,6 @@
         <h3>${modifyUser.username}'s profile</h3>
         <!-- print error message if there is one -->
         <div style="color:red;">${param.errorMessage}</div>
-        <div style="color:red;">${errorMessage}</div>
-        <div style="color:green;">${message}</div>
         <div style="color:green;">${param.message}</div>
 
         <h1>General Information</h1>

@@ -470,7 +470,7 @@ public class UserMVC {
             LOG.warn(errorMessage);
             model.addAttribute("selectedPage", "home");
             model.addAttribute("errorMessage", errorMessage);
-            return ("home");
+            return "home";
         }
 
         User modifyUser = userList.get(0);
