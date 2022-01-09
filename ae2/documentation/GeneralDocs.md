@@ -82,9 +82,7 @@ To visually demonstrate some of the use cases, here's some diagrams which follow
 
 - **CUSTOMER ACTOR**
 
-Below shows how a customer adds items into their cart and purchases them.
-
-Sequence diagram showing the process of the application from one layer / service to another:
+Sequence diagram showing how a customer adds items into their cart and purchases them:
 ![customer sequence diagram](https://github.com/WT000/JAVAAE2/blob/main/ae2/documentation/drawio/ae2UserActorSequence.png "customer sequence diagram")
 
 - **ADMIN ACTOR**
