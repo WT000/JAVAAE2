@@ -61,7 +61,7 @@ Below is a visual representation of the main use cases for the main Actor's of t
 | 9 (2)                  | Admins can add, edit, and remove items along with their stock count.                                                                                | Category types have been provided such as JEWELRY and TECH.                                                                                       |
 | 10 (9)                 | Users (apart from Anonymous and Deactivated users) can create accounts and edit their details, excluding their cvv.                                 | The user can save their card in the session or database. Furthermore, the checkout page has a card form in case they haven't saved a card.        |
 
-In total there are 5 MVC Controllers, each of which can handle errors and show an error page:
+In total there are 5 MVC Controllers, each of which can handle errors and show an error page if the error message couldn't be displayed:
 | Controller Name  | Purpose                                                                                                                          | Additional Notes                                                                                                                           |
 |------------------|----------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------|
 | GenericMVC       | Used to display generic pages without much code behind them, like the home or about page.                                        |                                                                                                                                            |
@@ -103,7 +103,15 @@ For those who want a greater understanding of how the program works, Javadoc has
 I decided to use this to ensure that my code is still functioning after each push to the repo, it's especially useful for finding commits which accidentally break the system and require fixing. It also saves time as I don't need to manually run tests right as I'm about to push, I can simply look at the status on GitHub and see if the app is okay!
 
 ### Persistence
-Persistence has been achieved through Hibernate (JPA), which is why some classes such as ShoppingItem are tagged with @Entity. If you want the database to not be in-memory edit the [persistence-app.properties](https://github.com/WT000/JAVAAE2/blob/main/ae2/web/src/main/resources/persistence-app.properties) file. Doing this will save DB files to (Tomcat)/target/hsqldb/ae2ProductDb.
+Persistence has been achieved through Hibernate (JPA), which is why some classes such as ShoppingItem are tagged with @Entity. If you want the database to not be in-memory, edit the [persistence-app.properties](https://github.com/WT000/JAVAAE2/blob/main/ae2/web/src/main/resources/persistence-app.properties) file. Doing this will save DB files to (Tomcat)/target/hsqldb/ae2ProductDb.
 
 ### Additional Tests
-I've added additional tests when it comes to testing the database, classes, and objects, ensuring that there's as little bugs as possible.
+I've added additional tests when it comes to testing the database, classes, and objects, ensuring that there are as little bugs as possible.
+
+### Logging
+Methods which perform important actions (such as transactions with the database) will log a message to the console to help with debugging, of which are saved into a ae2cart-perf file.
+
+As mentioned earlier, the transaction and performance logs will be stored in (Tomcat)/logs/ae2cart.
+
+### Synchronized methods
+Methods used to fetch properties are synchronzied to ensure changes aren't made at the same time as reading, I've also made the transaction process synchronzied to ensure that transactions only happen one at a time (which will ensure that decremented stock will always be checked before the next transaction).
