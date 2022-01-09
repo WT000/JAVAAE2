@@ -48,6 +48,7 @@ Below is a visual representation of the main use cases for the main Actor's of t
 
 ## <a name="features"></a> List of finished features from the AE2 brief & test plan
 
+Below shows feature numbers from the AE2 brief, followed by which use cases directly tackle them (if appropriate):
 | Feature No (Use Cases) | Implementation                                                                                                                                      | Additional Notes                                                                                                                                  |
 |------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|
 | 1 (1-12)               | All four major roles have been added to the system, all requirements for each have been met.                                                        | Deactivated users are technically counted as Customer users, but the deactivation still works.                                                    |
